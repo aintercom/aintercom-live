@@ -126,10 +126,75 @@ nav{position:sticky;top:0;z-index:500;height:var(--nav-h);display:flex;align-ite
 .empty-state-sub{font-size:0.95rem;max-width:400px;margin:0 auto}
 
 /* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .container{padding:0 24px}
+  .events-grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+  .login-title{font-size:clamp(2rem,4vw,3rem)}
+  .dashboard-title{font-size:clamp(1.6rem,2.5vw,2.2rem)}
+  .event-card{padding:20px}
+  .event-card-icon{width:46px;height:46px;font-size:20px}
+}
 @media(max-width:768px){
   .container{padding:0 18px}
   .events-grid{grid-template-columns:1fr}
   .login-hero{padding:40px 18px}
+  .login-title{font-size:clamp(1.8rem,3.5vw,2.5rem)}
+  .login-sub{font-size:1rem}
+  .btn-google{padding:14px 24px;font-size:0.9rem}
+  .dashboard-main{padding:36px 0}
+  .dashboard-header{margin-bottom:32px}
+  .dashboard-title{font-size:1.8rem}
+  .dashboard-sub{font-size:0.95rem}
+  .event-card{padding:18px}
+  .event-card-title{font-size:1.1rem}
+  .event-card-meta{font-size:0.85rem}
+  .event-card-actions{flex-direction:column}
+  .btn-primary,.btn-ghost{width:100%;justify-content:center}
+  .nav-inner{padding:0 12px}
+  .logo{font-size:1.1rem}
+  .ctrl-btn{width:32px;height:32px}
+  .user-avatar{width:32px;height:32px}
+}
+@media(max-width:480px){
+  .container{padding:0 14px}
+  .login-hero{padding:32px 14px}
+  .login-title{font-size:1.6rem}
+  .login-sub{font-size:0.95rem;margin-bottom:24px}
+  .login-badge{font-size:0.65rem;padding:6px 14px;margin-bottom:20px}
+  .btn-google{padding:12px 20px;font-size:0.85rem;width:100%}
+  .dashboard-main{padding:28px 0}
+  .dashboard-title{font-size:1.6rem}
+  .dashboard-sub{font-size:0.9rem}
+  .event-card{padding:16px}
+  .event-card-icon{width:40px;height:40px;font-size:18px;margin-bottom:12px}
+  .event-card-title{font-size:1rem}
+  .event-card-meta{font-size:0.8rem}
+  .event-card-status{font-size:0.65rem;padding:4px 10px}
+  .event-card-create{min-height:180px}
+  .event-card-create-icon{width:40px;height:40px;font-size:18px;margin-bottom:12px}
+  .event-card-create-title{font-size:1rem}
+  .event-card-create-sub{font-size:0.8rem}
+  .empty-state{padding:40px 16px}
+  .empty-state-icon{font-size:36px}
+  .empty-state-title{font-size:1.2rem}
+  .empty-state-sub{font-size:0.9rem}
+  nav{height:60px}
+  .logo{font-size:1rem}
+  .btn-live{font-size:0.72rem;padding:6px 12px}
+  .nav-controls{gap:3px}
+  .ctrl-btn{width:30px;height:30px;font-size:0.75rem}
+  .user-avatar{width:30px;height:30px;font-size:0.75rem}
+}
+@media(max-width:360px){
+  .login-title{font-size:1.4rem}
+  .login-sub{font-size:0.9rem}
+  .login-badge{font-size:0.6rem}
+  .dashboard-title{font-size:1.4rem}
+  .event-card{padding:14px}
+  .event-card-icon{width:36px;height:36px}
+  .event-card-title{font-size:0.95rem}
+  .event-card-meta{font-size:0.75rem}
+  .btn-primary,.btn-ghost{font-size:0.8rem;padding:8px 14px}
 }
 </style>
 </head>
