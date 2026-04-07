@@ -1,0 +1,2266 @@
+<!DOCTYPE html>
+<html lang="fr" id="root">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AINTERCOM PRO</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,900&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   AINTERCOM PRO — DESIGN SYSTEM V2
+   Typo: DM Sans + DM Mono
+   Direction: Utilitarian Pro — Régie Live
+═══════════════════════════════════════════ */
+:root {
+  --accent:#2563EB; --accent2:#1D4ED8; --accent-glow:rgba(37,99,235,.12);
+  --danger:#DC2626; --danger-bg:rgba(220,38,38,.08);
+  --success:#16A34A; --success-bg:rgba(22,163,74,.08);
+  --warning:#D97706; --warning-bg:rgba(217,119,6,.08);
+  --info:#0891B2;
+  --font:'DM Sans',sans-serif; --mono:'DM Mono',monospace;
+  --r:10px; --r-sm:6px; --r-lg:16px;
+  --tr:.15s ease;
+}
+/* DARK */
+:root { --bg:#07090E; --bg2:#0E1117; --bg3:#151A23; --bg4:#1C2230;
+  --border:#1E2535; --border2:#2A3347;
+  --tx:#E8EDF5; --tx2:#8B96A8; --tx3:#4A5568; }
+/* LIGHT */
+html.light { --bg:#F4F6F9; --bg2:#FFFFFF; --bg3:#EEF1F5; --bg4:#E4E8EE;
+  --border:#D5DAE3; --border2:#C0C8D4;
+  --tx:#111827; --tx2:#4B5563; --tx3:#9CA3AF; }
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--tx);font-size:14px;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* ── LAYOUT ── */
+#page-home{display:none!important}
+#app{display:flex;flex-direction:column;height:100vh}
+#hdr{height:52px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;padding:0 16px;z-index:100;flex-shrink:0}
+#body{display:flex;flex:1;overflow:hidden}
+#nav{width:200px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:10px 6px;gap:1px;overflow-y:auto;flex-shrink:0}
+#main{flex:1;overflow-y:auto;background:var(--bg)}
+#ftr{height:30px;background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex-shrink:0}
+
+/* ── HEADER ── */
+.hdr-logo{font-size:16px;font-weight:900;letter-spacing:-.5px;color:var(--accent);cursor:pointer;white-space:nowrap}
+.hdr-logo span{color:var(--tx)}
+.hdr-sep{width:1px;height:28px;background:var(--border);flex-shrink:0}
+.hdr-clock{font-family:var(--mono);font-size:22px;font-weight:700;letter-spacing:-1px;color:var(--tx);line-height:1}
+.hdr-date{font-size:9px;color:var(--accent);font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.hdr-cue{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:6px;max-width:200px;overflow:hidden}
+.hdr-cue-dot{width:6px;height:6px;border-radius:50%;background:var(--success);animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hdr-phase{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:3px 10px;border-radius:20px;border:1px solid var(--border);color:var(--tx2)}
+.hdr-phase.montage{border-color:var(--warning);color:var(--warning)}
+.hdr-phase.show{border-color:var(--success);color:var(--success);animation:blink 2s infinite}
+.hdr-phase.demo{border-color:var(--info);color:var(--info)}
+.hdr-retard{font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px}
+.hdr-retard.ok{background:var(--success-bg);color:var(--success)}
+.hdr-retard.late{background:var(--danger-bg);color:var(--danger)}
+.hdr-spacer{flex:1}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:var(--r-sm);font-size:11px;font-weight:700;letter-spacing:.02em;border:none;cursor:pointer;transition:var(--tr);white-space:nowrap;font-family:var(--font)}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent2)}
+.btn-danger{background:var(--danger);color:#fff}.btn-danger:hover{opacity:.85}
+.btn-success{background:var(--success);color:#fff}
+.btn-warning{background:var(--warning);color:#fff}
+.btn-ghost{background:var(--bg3);color:var(--tx2);border:1px solid var(--border)}.btn-ghost:hover{color:var(--tx);background:var(--bg4)}
+.btn-icon{padding:6px 9px}
+.btn-sm{padding:4px 10px;font-size:10px}
+.btn-lg{padding:10px 22px;font-size:13px}
+.btn-next{background:var(--accent);color:#fff;padding:6px 16px;font-size:12px;font-weight:800;letter-spacing:.05em}
+.btn-sos{background:var(--danger);color:#fff;padding:6px 14px;font-size:11px;font-weight:800;letter-spacing:.05em;animation:none}
+.btn-sos:hover{animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+
+/* ── NAV ── */
+.nav-section{font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.12em;padding:8px 8px 4px;margin-top:6px}
+.nav-btn{display:flex;align-items:center;gap:9px;padding:7px 8px;border-radius:var(--r-sm);font-size:12px;font-weight:600;color:var(--tx2);cursor:pointer;transition:var(--tr);background:transparent;border:none;width:100%;text-align:left;font-family:var(--font)}
+.nav-btn:hover{background:var(--bg3);color:var(--tx)}
+.nav-btn.active{background:var(--accent-glow);color:var(--accent);font-weight:700;border-left:2px solid var(--accent);padding-left:6px}
+.nav-btn i{width:14px;text-align:center;font-size:11px}
+.nav-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:8px;min-width:16px;text-align:center}
+
+/* ── TABS ── */
+.tab{display:none;padding:20px;min-height:100%}
+.tab.active{display:block}
+
+/* ── CARDS ── */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.card-sm{padding:12px}
+.card-title{font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.card-value{font-family:var(--mono);font-size:26px;font-weight:700;color:var(--tx)}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.g-auto{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+
+/* ── SECTION HEADER ── */
+.sec-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;gap:12px}
+.sec-title{font-size:20px;font-weight:800;letter-spacing:-.5px;color:var(--tx)}
+.sec-sub{font-size:11px;color:var(--tx2);margin-top:2px}
+.sec-actions{display:flex;gap:6px;align-items:center;flex-shrink:0;flex-wrap:wrap}
+
+/* ── TABLE ── */
+.tbl-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;padding:9px 12px;background:var(--bg3);text-align:left;border-bottom:1px solid var(--border)}
+td{padding:9px 12px;font-size:12px;font-weight:500;border-bottom:1px solid var(--border);color:var(--tx);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--bg3)}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+.b-success{background:var(--success-bg);color:var(--success)}
+.b-danger{background:var(--danger-bg);color:var(--danger)}
+.b-warning{background:var(--warning-bg);color:var(--warning)}
+.b-info{background:rgba(8,145,178,.1);color:var(--info)}
+.b-accent{background:var(--accent-glow);color:var(--accent)}
+.b-neutral{background:var(--bg3);color:var(--tx2);border:1px solid var(--border)}
+
+/* ── INPUTS ── */
+input,select,textarea{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:7px 10px;font-family:var(--font);font-size:12px;color:var(--tx);width:100%;transition:var(--tr);outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px}
+.fg{margin-bottom:12px}
+.fg-row{display:flex;gap:10px}.fg-row>.fg{flex:1}
+
+/* ── PROGRESS ── */
+.prog{height:4px;background:var(--bg4);border-radius:4px;overflow:hidden;margin-top:6px}
+.prog-fill{height:100%;border-radius:4px;transition:width .6s ease}
+
+/* ── MODALS ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(3px);z-index:1000;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;width:500px;max-width:95vw;max-height:88vh;overflow-y:auto}
+.modal-lg{width:680px}
+.modal-xl{width:900px;max-width:96vw}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.modal-title{font-size:16px;font-weight:800;color:var(--tx)}
+.modal-close{background:var(--bg3);border:1px solid var(--border);border-radius:5px;width:26px;height:26px;cursor:pointer;color:var(--tx2);font-size:13px;display:flex;align-items:center;justify-content:center;font-family:var(--font)}
+.modal-close:hover{color:var(--tx)}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
+
+/* ── TOAST ── */
+#toasts{position:fixed;top:60px;right:16px;z-index:2000;display:flex;flex-direction:column;gap:6px}
+.toast{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:8px;min-width:220px;animation:toastIn .2s ease;box-shadow:0 4px 20px rgba(0,0,0,.25)}
+.toast-s{border-left:3px solid var(--success)}.toast-d{border-left:3px solid var(--danger)}.toast-i{border-left:3px solid var(--accent)}
+@keyframes toastIn{from{transform:translateX(16px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* ── PHASE SELECTOR ── */
+.phase-sel{display:flex;gap:3px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:3px}
+.phase-btn{flex:1;padding:5px 8px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;border:none;cursor:pointer;background:transparent;color:var(--tx2);transition:var(--tr);font-family:var(--font)}
+.phase-btn.active{background:var(--accent);color:#fff}
+
+/* ── COCKPIT WIDGETS ── */
+.cw{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px}
+.cw-label{font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.cw-big{font-family:var(--mono);font-size:30px;font-weight:700;line-height:1;color:var(--tx)}
+.cw-now{background:var(--bg2);border:1px solid var(--accent);border-radius:var(--r);padding:18px;border-left:4px solid var(--accent)}
+.cw-now-title{font-size:18px;font-weight:800;color:var(--tx);margin-bottom:8px;line-height:1.2}
+.cw-now-timer{font-family:var(--mono);font-size:38px;font-weight:700;color:var(--accent);letter-spacing:-2px;line-height:1}
+.live-dot{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;color:var(--danger);text-transform:uppercase;letter-spacing:.08em}
+.live-dot::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--danger);animation:blink .8s infinite}
+
+/* ── CONDUCTEUR LINES ── */
+.run-row{display:grid;grid-template-columns:44px 68px 52px 1fr 90px 80px 70px 60px 90px;align-items:center;gap:6px;padding:9px 12px;border-bottom:1px solid var(--border);transition:var(--tr)}
+.run-row:hover{background:var(--bg3)}
+.run-row.live-row{background:rgba(37,99,235,.06);border-left:3px solid var(--accent)}
+.run-row.done-row{opacity:.4}
+.run-hdr{display:grid;grid-template-columns:44px 68px 52px 1fr 90px 80px 70px 60px 90px;gap:6px;padding:7px 12px;background:var(--bg3);border-bottom:1px solid var(--border)}
+
+/* ── CREW ORG ── */
+.org-wrap{display:flex;flex-direction:column;align-items:center;gap:0;overflow-x:auto;padding-bottom:20px}
+.org-level{display:flex;gap:16px;align-items:flex-start;justify-content:center;position:relative;margin-top:0}
+.org-node{display:flex;flex-direction:column;align-items:center;gap:0}
+.org-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;text-align:center;cursor:pointer;transition:var(--tr);min-width:120px;max-width:140px;position:relative}
+.org-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.org-card.top{border-color:var(--accent);border-width:2px}
+.org-avatar{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;margin:0 auto 7px}
+.org-name{font-size:12px;font-weight:700;color:var(--tx)}
+.org-role{font-size:10px;color:var(--tx2);margin-top:2px}
+.org-status{width:8px;height:8px;border-radius:50%;position:absolute;top:8px;right:8px}
+.org-line{width:2px;height:20px;background:var(--border);margin:0 auto}
+.org-branch{display:flex;gap:0;position:relative}
+.org-branch::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:calc(100% - 140px);height:2px;background:var(--border)}
+
+/* ── MATOS CARD ── */
+.matos-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;transition:var(--tr)}
+.matos-card:hover{border-color:var(--accent)}
+.matos-num{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--tx3);margin-bottom:8px}
+.matos-name{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:6px}
+.matos-detail{font-family:var(--mono);font-size:10px;color:var(--tx2);margin-bottom:8px;line-height:1.6}
+.bat-bar{height:3px;background:var(--bg4);border-radius:3px;overflow:hidden;margin-top:4px}
+.bat-fill{height:100%;border-radius:3px}
+
+/* ── SIGN PREVIEW ── */
+.sign-preview{background:#fff;color:#000;border-radius:var(--r);padding:40px 30px;text-align:center;font-family:'DM Sans',sans-serif}
+.sign-arrow-svg{margin:0 auto 12px;display:block}
+.sign-title{font-size:48px;font-weight:900;text-transform:uppercase;letter-spacing:-2px;line-height:1;color:#000}
+.sign-subtitle{font-size:20px;font-weight:600;color:#333;margin-top:8px}
+.sign-picto{font-size:42px;margin-bottom:10px}
+
+/* ── INCIDENT ── */
+.inc-item{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--danger);border-radius:var(--r);padding:12px;display:flex;gap:12px;align-items:flex-start}
+.inc-item.resolved{border-left-color:var(--success);opacity:.55}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:40px 20px;color:var(--tx3)}
+.empty i{font-size:28px;margin-bottom:10px;display:block}
+.empty p{font-size:12px;font-weight:500}
+
+/* ── ELEC ── */
+.elec-row{display:flex;align-items:center;gap:10px;padding:7px 10px;background:var(--bg3);border-radius:var(--r-sm);border:1px solid var(--border)}
+.elec-name{flex:1;font-size:12px;font-weight:600}
+.elec-w{font-family:var(--mono);font-size:11px;color:var(--warning);font-weight:700;width:65px;text-align:right}
+
+/* ── METEO ── */
+.meteo-hour{flex-shrink:0;text-align:center;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 12px;min-width:64px}
+.meteo-day{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px;text-align:center;flex:1}
+
+/* ── PAGE ACCUEIL ── */
+#page-home{display:flex;flex-direction:column;min-height:100vh;background:var(--bg)}
+.home-hdr{height:52px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.home-body{flex:1;padding:32px;max-width:1100px;margin:0 auto;width:100%}
+.event-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:var(--tr)}
+.event-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.event-card-icon{width:48px;height:48px;border-radius:12px;background:var(--accent-glow);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.event-card-info{flex:1}
+.event-card-name{font-size:15px;font-weight:800;color:var(--tx)}
+.event-card-meta{font-size:11px;color:var(--tx2);margin-top:3px}
+.event-status{font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.06em}
+
+/* ── PRINT ── */
+@media print{
+  #app,#page-home{display:none!important}
+  #print-zone{display:block!important}
+}
+#print-zone{display:none}
+
+/* ── UTIL ── */
+.divider{height:1px;background:var(--border);margin:14px 0}
+.notif-dot{position:absolute;top:-2px;right:-2px;width:7px;height:7px;border-radius:50%;background:var(--danger);border:2px solid var(--bg2)}
+.proc-step{display:flex;gap:10px;align-items:flex-start;padding:5px 0}
+.proc-num{width:22px;height:22px;border-radius:50%;background:var(--danger);color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════
+     PAGE 0 — MES ÉVÉNEMENTS
+═══════════════════════════════ -->
+<div id="page-home">
+  <div class="home-hdr">
+    <div style="font-size:18px;font-weight:900;letter-spacing:-.5px;color:var(--accent)">AINTERCOM <span style="color:var(--tx)">PRO</span></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost btn-icon btn-sm" onclick="toggleTheme()" id="home-theme-btn" title="Dark/Light"><i class="fas fa-moon"></i></button>
+    </div>
+  </div>
+  <div class="home-body">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+      <div>
+        <div style="font-size:26px;font-weight:900;letter-spacing:-.5px">Mes Événements</div>
+        <div style="font-size:12px;color:var(--tx2);margin-top:3px">Gérez et pilotez vos événements depuis un seul endroit</div>
+      </div>
+      <button class="btn btn-primary btn-lg" onclick="openModal('modal-new-event')"><i class="fas fa-plus"></i> Nouvel événement</button>
+    </div>
+
+    <!-- Events list -->
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px" id="home-events-list"></div>
+
+    <!-- Templates -->
+    <div style="margin-top:28px">
+      <div style="font-size:13px;font-weight:800;color:var(--tx2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">Modèles / Templates</div>
+      <div id="home-templates-list" class="g-auto"></div>
+      <div class="empty" id="home-templates-empty" style="display:none"><i class="fas fa-copy"></i><p>Aucun template — Dupliquez un événement comme template depuis sa carte</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     INTERFACE PRINCIPALE
+═══════════════════════════════ -->
+<div id="app">
+
+  <!-- HEADER -->
+  <header id="hdr">
+    <div class="hdr-logo" onclick="goHome()">AINTERCOM <span>PRO</span></div>
+    <div class="hdr-sep"></div>
+    <div>
+      <div class="hdr-clock" id="hdr-clock">00:00:00</div>
+      <div class="hdr-date" id="hdr-date">-- --- 2026</div>
+    </div>
+    <div class="hdr-sep"></div>
+    <div class="hdr-cue"><div class="hdr-cue-dot"></div><span id="hdr-cue-name" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">En attente</span></div>
+    <div class="hdr-phase" id="hdr-phase">MONTAGE</div>
+    <div class="hdr-retard ok" id="hdr-retard">À l'heure</div>
+    <div class="hdr-spacer"></div>
+    <div style="display:flex;gap:6px;align-items:center">
+      <button class="btn btn-sos btn-sm" onclick="openModal('modal-incident')"><i class="fas fa-triangle-exclamation"></i> SOS</button>
+      <button class="btn btn-next btn-sm" onclick="nextTop()"><i class="fas fa-forward-step"></i> NEXT TOP</button>
+      <div class="hdr-sep"></div>
+      <button class="btn btn-ghost btn-icon btn-sm" onclick="toggleTheme()" id="app-theme-btn" title="Thème"><i class="fas fa-moon"></i></button>
+      <button class="btn btn-ghost btn-icon btn-sm" onclick="saveManual()" title="Sauvegarder"><i class="fas fa-floppy-disk"></i></button>
+      <button class="btn btn-ghost btn-icon btn-sm" onclick="doPrint()" title="Imprimer / Export"><i class="fas fa-print"></i></button>
+      <div id="user-avatar" onclick="logout()" title="Se déconnecter">?</div>
+    </div>
+  </header>
+
+  <!-- BODY -->
+  <div id="body">
+    <!-- NAV -->
+    <nav id="nav">
+      <div class="nav-section">Navigation</div>
+      <button class="nav-btn active" onclick="switchTab('cockpit',this)"><i class="fas fa-gauge-high"></i>Cockpit</button>
+      <button class="nav-btn" onclick="switchTab('conducteur',this)"><i class="fas fa-film"></i>Conducteur</button>
+      <button class="nav-btn" onclick="switchTab('crew',this)"><i class="fas fa-users"></i>Crew</button>
+      <button class="nav-btn" onclick="switchTab('matos',this)"><i class="fas fa-walkie-talkie"></i>Matos</button>
+      <div class="nav-section">Outils</div>
+      <button class="nav-btn" onclick="switchTab('meteo',this)"><i class="fas fa-cloud-sun"></i>Météo</button>
+      <button class="nav-btn" onclick="switchTab('budget',this)"><i class="fas fa-euro-sign"></i>Budget</button>
+      <button class="nav-btn" onclick="switchTab('tech',this)" style="position:relative"><i class="fas fa-shield-halved"></i>Tech & Sécu<span class="nav-badge" id="nav-inc-badge" style="display:none">0</span></button>
+      <button class="nav-btn" onclick="switchTab('sign',this)"><i class="fas fa-sign"></i>Signalétique</button>
+      <div class="nav-section" style="margin-top:auto">Phase</div>
+      <div style="padding:6px">
+        <div class="phase-sel">
+          <button class="phase-btn active" onclick="setPhase('montage',this)">Mont.</button>
+          <button class="phase-btn" onclick="setPhase('show',this)">Show</button>
+          <button class="phase-btn" onclick="setPhase('demo',this)">Démo</button>
+        </div>
+      </div>
+      <div style="padding:6px;text-align:center">
+        <div style="font-size:9px;color:var(--tx3);font-weight:600">Auto-save</div>
+        <div style="font-size:9px;color:var(--success);font-weight:700" id="save-ind">● Actif</div>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main id="main">
+
+      <!-- ══ COCKPIT ══ -->
+      <section class="tab active" id="tab-cockpit">
+        <div class="sec-hdr">
+          <div><div class="sec-title">🎛️ Cockpit</div><div class="sec-sub" id="cockpit-event-sub">Vision globale en temps réel</div></div>
+          <div class="sec-actions">
+            <button class="btn btn-ghost btn-sm" onclick="openModal('modal-event-edit')"><i class="fas fa-pen"></i> Modifier événement</button>
+          </div>
+        </div>
+
+        <!-- ROW 1: NOW / NEXT / GLOBAL TIMER -->
+        <div class="g3" style="margin-bottom:14px">
+          <div class="cw-now">
+            <div class="cw-label"><span class="live-dot" id="live-dot-label">EN ATTENTE</span></div>
+            <div class="cw-now-title" id="cw-now-title">Prêt au démarrage</div>
+            <div class="cw-now-timer" id="cw-now-timer">00:00</div>
+            <div style="margin-top:8px;display:flex;gap:6px;align-items:center">
+              <span class="badge b-neutral" id="cw-now-resp">—</span>
+              <span class="badge b-neutral" id="cw-now-cues" style="font-size:9px">—</span>
+            </div>
+          </div>
+          <div class="cw">
+            <div class="cw-label"><i class="fas fa-forward" style="color:var(--tx3)"></i> Séquence suivante</div>
+            <div style="font-size:15px;font-weight:700;color:var(--tx2);margin-bottom:6px" id="cw-next-title">—</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <span class="badge b-neutral" id="cw-next-time">—</span>
+              <span class="badge b-neutral" id="cw-next-resp">—</span>
+            </div>
+          </div>
+          <div class="cw" style="background:var(--bg3)">
+            <div class="cw-label">⏱ Timer global</div>
+            <div class="cw-big" id="cw-global-timer" style="color:var(--accent)">00:00:00</div>
+            <div style="display:flex;gap:5px;margin-top:10px">
+              <button class="btn btn-ghost btn-sm" id="gt-btn" onclick="gtToggle()"><i class="fas fa-play"></i></button>
+              <button class="btn btn-ghost btn-sm" onclick="gtReset()"><i class="fas fa-rotate-left"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ROW 2: STATS -->
+        <div class="g4" style="margin-bottom:14px">
+          <div class="cw" style="cursor:pointer" onclick="switchTab('tech',navBtnByTab('tech'))">
+            <div class="cw-label">⚡ Power Load</div>
+            <div style="font-family:var(--mono);font-size:22px;font-weight:700" id="cw-elec">0 W</div>
+            <div class="prog"><div class="prog-fill" id="cw-elec-bar" style="width:0%;background:var(--success)"></div></div>
+            <div style="font-size:10px;color:var(--tx3);margin-top:4px" id="cw-amp">0.0 A mono</div>
+          </div>
+          <div class="cw" style="cursor:pointer" onclick="switchTab('tech',navBtnByTab('tech'))">
+            <div class="cw-label">🚨 Incidents</div>
+            <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--danger)" id="cw-inc">0</div>
+            <div style="font-size:10px;color:var(--tx3);margin-top:4px">actifs</div>
+          </div>
+          <div class="cw" style="cursor:pointer" onclick="switchTab('crew',navBtnByTab('crew'))">
+            <div class="cw-label">👥 Crew</div>
+            <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--success)" id="cw-crew">0</div>
+            <div style="font-size:10px;color:var(--tx3);margin-top:4px" id="cw-crew-total">/ 0 total</div>
+          </div>
+          <div class="cw" id="cw-budget-widget">
+            <div class="cw-label">💰 Budget restant</div>
+            <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--success)" id="cw-budget">—</div>
+            <div style="font-size:10px;color:var(--tx3);margin-top:4px" id="cw-budget-sub">Admin uniquement</div>
+          </div>
+        </div>
+
+        <!-- ROW 3: METEO + NOTE + FLUX -->
+        <div class="g3">
+          <div class="cw">
+            <div class="cw-label">🌤 Météo</div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="font-size:36px" id="cw-meteo-icon">—</div>
+              <div>
+                <div style="font-size:22px;font-weight:800;letter-spacing:-1px" id="cw-meteo-temp">--°C</div>
+                <div style="font-size:11px;color:var(--tx2)" id="cw-meteo-desc">—</div>
+                <div style="font-size:10px;color:var(--tx3)" id="cw-meteo-wind">Vent: -- km/h</div>
+              </div>
+            </div>
+          </div>
+          <div class="cw">
+            <div class="cw-label" style="display:flex;justify-content:space-between">📝 Note rapide<button class="btn btn-ghost btn-sm" onclick="saveNote()" style="margin-top:-2px"><i class="fas fa-check" style="font-size:9px"></i></button></div>
+            <textarea id="quick-note" rows="3" placeholder="Mémo permanent..." style="font-size:12px;resize:none"></textarea>
+          </div>
+          <div class="cw">
+            <div class="cw-label">📋 Activité récente</div>
+            <div id="cw-activity" style="display:flex;flex-direction:column;gap:5px;max-height:110px;overflow-y:auto">
+              <div style="font-size:11px;color:var(--tx3);font-style:italic">Aucune activité</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ CONDUCTEUR ══ -->
+      <section class="tab" id="tab-conducteur">
+        <div class="sec-hdr">
+          <div><div class="sec-title">🎬 Conducteur</div><div class="sec-sub">Timeline de show · Cues · Scripts</div></div>
+          <div class="sec-actions">
+            <div class="phase-sel">
+              <button class="phase-btn active" id="rp-mont" onclick="setRunPhase('montage',this)">Montage</button>
+              <button class="phase-btn" id="rp-show" onclick="setRunPhase('show',this)">Show</button>
+              <button class="phase-btn" id="rp-demo" onclick="setRunPhase('demo',this)">Démontage</button>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openAddSeq()"><i class="fas fa-plus"></i> Ajouter</button>
+            <button class="btn btn-ghost btn-sm" onclick="printConducteur()"><i class="fas fa-print"></i> Imprimer</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <div class="run-hdr">
+            <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase;text-align:center">LIVE</div>
+            <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">HEURE</div>
+            <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">DURÉE</div>
+            <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">SÉQUENCE</div>
+            <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">RESP.</div>
+            <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">CUES</div>
+            <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">CHRONO</div>
+            <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">STATUT</div>
+            <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">ACTIONS</div>
+          </div>
+          <div id="run-body"></div>
+        </div>
+      </section>
+
+      <!-- ══ CREW ══ -->
+      <section class="tab" id="tab-crew">
+        <div class="sec-hdr">
+          <div><div class="sec-title">👥 Crew</div><div class="sec-sub">Organigramme · Fiches · Accréditations</div></div>
+          <div class="sec-actions">
+            <input type="text" id="crew-search" placeholder="Rechercher..." style="width:150px" oninput="renderCrew()">
+            <select id="crew-filter" style="width:120px" onchange="renderCrew()">
+              <option value="">Tous</option><option>Technique</option><option>Accueil</option><option>Sécurité</option><option>Staff</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-crew')"><i class="fas fa-plus"></i> Ajouter</button>
+            <button class="btn btn-ghost btn-sm" onclick="printCrew()"><i class="fas fa-print"></i></button>
+          </div>
+        </div>
+        <!-- Organigramme -->
+        <div class="card" style="margin-bottom:14px;overflow-x:auto">
+          <div class="card-title">Organigramme</div>
+          <div id="org-chart"></div>
+        </div>
+        <!-- Liste filtrable -->
+        <div id="crew-list" class="g-auto"></div>
+      </section>
+
+      <!-- ══ MATOS ══ -->
+      <section class="tab" id="tab-matos">
+        <div class="sec-hdr">
+          <div><div class="sec-title">📦 Matos</div><div class="sec-sub">Motorola · Hollyland · Mégaphone · Équipements</div></div>
+          <div class="sec-actions">
+            <button class="btn btn-ghost btn-sm" onclick="openModal('modal-canaux-config')"><i class="fas fa-sliders"></i> Config canaux</button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-matos')"><i class="fas fa-plus"></i> Équipement</button>
+          </div>
+        </div>
+
+        <!-- Motorola -->
+        <div class="card" style="margin-bottom:14px">
+          <div class="card-title">📻 Motorola XT420 — 12 Talkies · 15 canaux</div>
+          <div class="g-auto" id="motorola-grid"></div>
+        </div>
+
+        <!-- Hollyland -->
+        <div class="card" style="margin-bottom:14px">
+          <div class="card-title">🎧 Hollyland Solidcom SE Pro 6S — 1 Master + 5 casques</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px" id="hollyland-grid"></div>
+        </div>
+
+        <!-- Megaphone -->
+        <div class="card" style="margin-bottom:14px">
+          <div class="card-title">📢 Mégaphone VONYX MEG065</div>
+          <div id="mega-card"></div>
+        </div>
+
+        <!-- Autres -->
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div class="card-title" style="margin-bottom:0">Équipements additionnels</div>
+            <button class="btn btn-ghost btn-sm" onclick="openModal('modal-add-matos')"><i class="fas fa-plus"></i></button>
+          </div>
+          <div id="extra-matos-list"></div>
+        </div>
+      </section>
+
+      <!-- ══ METEO ══ -->
+      <section class="tab" id="tab-meteo">
+        <div class="sec-hdr">
+          <div><div class="sec-title">🌤️ Météo</div><div class="sec-sub">Station météo live — Données en temps réel</div></div>
+          <div class="sec-actions">
+            <input type="text" id="meteo-city" placeholder="Ville..." style="width:160px" value="Lyon">
+            <button class="btn btn-ghost btn-sm" onclick="geolocate()"><i class="fas fa-location-dot"></i> Me localiser</button>
+            <button class="btn btn-primary btn-sm" onclick="fetchWeather()"><i class="fas fa-rotate"></i> Actualiser</button>
+          </div>
+        </div>
+        <div class="g3" style="margin-bottom:14px">
+          <div class="card" style="text-align:center;padding:24px">
+            <div style="font-size:64px;line-height:1;margin-bottom:6px" id="met-icon">☁️</div>
+            <div style="font-size:48px;font-weight:800;letter-spacing:-2px" id="met-temp">--°C</div>
+            <div style="font-size:14px;color:var(--tx2);margin-top:4px" id="met-desc">—</div>
+            <div style="font-size:12px;color:var(--tx3);margin-top:3px" id="met-feels">Ressenti --°C</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Conditions</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--tx2)"><i class="fas fa-wind"></i> Vent</span><span style="font-family:var(--mono);font-weight:700" id="met-wind">-- km/h</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--tx2)"><i class="fas fa-droplet"></i> Humidité</span><span style="font-family:var(--mono);font-weight:700" id="met-hum">--%</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--tx2)"><i class="fas fa-cloud-rain"></i> Pluie</span><span style="font-family:var(--mono);font-weight:700" id="met-rain">--%</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--tx2)"><i class="fas fa-sun"></i> Lever</span><span style="font-family:var(--mono);font-weight:700" id="met-rise">--:--</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--tx2)"><i class="fas fa-moon"></i> Coucher</span><span style="font-family:var(--mono);font-weight:700" id="met-set">--:--</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">⚠️ Alertes & Seuils</div>
+            <div id="met-alerts" style="margin-bottom:12px"><div style="font-size:11px;color:var(--tx3);font-style:italic">Aucune alerte</div></div>
+            <div class="divider"></div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;gap:6px;align-items:center"><label style="margin-bottom:0;white-space:nowrap;font-size:10px">Vent max</label><input type="number" id="seuil-vent" value="40" style="width:60px"><span style="font-size:11px;color:var(--tx2)">km/h</span></div>
+              <div style="display:flex;gap:6px;align-items:center"><label style="margin-bottom:0;white-space:nowrap;font-size:10px">Pluie alerte</label><input type="number" id="seuil-pluie" value="60" style="width:60px"><span style="font-size:11px;color:var(--tx2)">%</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:14px">
+          <div class="card-title">Prévisions heure par heure</div>
+          <div id="met-hourly" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Prévisions 5 jours</div>
+          <div id="met-days" style="display:flex;gap:10px;flex-wrap:wrap"></div>
+        </div>
+      </section>
+
+      <!-- ══ BUDGET ══ -->
+      <section class="tab" id="tab-budget">
+        <div class="sec-hdr">
+          <div><div class="sec-title">💰 Budget</div></div>
+          <div class="sec-actions">
+            <span class="badge b-warning" id="budget-lock-badge"><i class="fas fa-lock"></i> Verrouillé</span>
+            <button class="btn btn-ghost btn-sm" onclick="toggleBudget()"><i class="fas fa-lock" id="budget-lock-ico"></i> <span id="budget-lock-lbl">Déverrouiller</span></button>
+            <button class="btn btn-primary btn-sm" id="btn-add-budget" style="display:none" onclick="openModal('modal-add-budget')"><i class="fas fa-plus"></i> Ajouter</button>
+            <button class="btn btn-ghost btn-sm" onclick="printBudget()"><i class="fas fa-print"></i></button>
+          </div>
+        </div>
+        <div id="budget-locked" class="empty"><i class="fas fa-lock" style="color:var(--warning)"></i><p>Budget verrouillé — Accès Admin uniquement</p><button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="toggleBudget()">Déverrouiller</button></div>
+        <div id="budget-open" style="display:none">
+          <div class="g4" style="margin-bottom:16px">
+            <div class="cw"><div class="cw-label">Budget alloué</div><div class="card-value" id="b-alloue">0 €</div></div>
+            <div class="cw"><div class="cw-label">Dépensé</div><div class="card-value" style="color:var(--danger)" id="b-depense">0 €</div></div>
+            <div class="cw"><div class="cw-label">Restant</div><div class="card-value" style="color:var(--success)" id="b-restant">0 €</div></div>
+            <div class="cw"><div class="cw-label">Consommé</div><div class="card-value" id="b-pct">0%</div><div class="prog"><div class="prog-fill" id="b-bar" style="width:0%;background:var(--success)"></div></div></div>
+          </div>
+          <div class="tbl-wrap">
+            <table><thead><tr><th>Catégorie</th><th>Description</th><th>Fournisseur</th><th>Prévu</th><th>Réel</th><th>Écart</th><th>Statut</th><th>Date</th><th>Note</th><th>Actions</th></tr></thead>
+            <tbody id="budget-body"></tbody></table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ TECH & SECU ══ -->
+      <section class="tab" id="tab-tech">
+        <div class="sec-hdr"><div><div class="sec-title">🛠️ Tech & Sécu</div></div></div>
+        <div class="g2" style="margin-bottom:14px">
+
+          <!-- Incidents -->
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <div style="font-size:14px;font-weight:800">🚨 Journal des Incidents</div>
+              <button class="btn btn-danger btn-sm" onclick="openModal('modal-incident')"><i class="fas fa-plus"></i> Déclarer</button>
+            </div>
+            <div id="inc-log" style="display:flex;flex-direction:column;gap:7px;max-height:380px;overflow-y:auto"></div>
+          </div>
+
+          <!-- Elec -->
+          <div>
+            <div style="font-size:14px;font-weight:800;margin-bottom:10px">⚡ Calculateur Électrique</div>
+            <div class="card" style="margin-bottom:10px">
+              <div class="g3" style="text-align:center;gap:8px">
+                <div><div class="cw-label">Total</div><div style="font-family:var(--mono);font-size:18px;font-weight:700" id="elec-total">0 W</div></div>
+                <div><div class="cw-label">Mono 230V</div><div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--accent)" id="elec-mono">0.0 A</div></div>
+                <div><div class="cw-label">Tri 400V</div><div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--info)" id="elec-tri">0.0 A</div></div>
+              </div>
+              <div class="prog" style="margin-top:10px"><div class="prog-fill" id="elec-bar" style="width:0%;background:var(--success)"></div></div>
+              <div style="font-size:10px;color:var(--tx3);margin-top:6px;font-style:italic" id="elec-tip">Une prise standard = 16A max = 3 680W. Ne jamais cumuler sono + lumière + machines sur le même circuit.</div>
+            </div>
+            <div id="elec-devices" style="display:flex;flex-direction:column;gap:5px;margin-bottom:8px"></div>
+            <div style="display:flex;gap:6px;margin-bottom:6px">
+              <input type="text" id="elec-dev-name" placeholder="Appareil" style="flex:2">
+              <input type="number" id="elec-dev-w" placeholder="Watts" style="flex:1">
+              <button class="btn btn-warning btn-sm" onclick="addElecDev()"><i class="fas fa-plus"></i></button>
+            </div>
+            <div style="display:flex;gap:5px;flex-wrap:wrap">
+              <button class="btn btn-ghost btn-sm" onclick="addPower(1000)">+1000W Lumière</button>
+              <button class="btn btn-ghost btn-sm" onclick="addPower(500)">+500W Audio</button>
+              <button class="btn btn-ghost btn-sm" onclick="addPower(3500)">+3500W Chauffage</button>
+              <button class="btn btn-ghost btn-sm" onclick="resetElec()"><i class="fas fa-rotate-left"></i> Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Réglementation -->
+        <div class="g3" style="margin-bottom:14px">
+          <div class="card">
+            <div class="card-title">📋 ERP — Établissements Recevant du Public</div>
+            <div style="font-size:11px;color:var(--tx2);line-height:1.9">
+              <div><strong style="color:var(--tx)">Cat. 1</strong> — Plus de 1 500 personnes</div>
+              <div><strong style="color:var(--tx)">Cat. 2</strong> — De 701 à 1 500 personnes</div>
+              <div><strong style="color:var(--tx)">Cat. 3</strong> — De 301 à 700 personnes</div>
+              <div><strong style="color:var(--tx)">Cat. 4</strong> — De 200 à 300 personnes</div>
+              <div><strong style="color:var(--tx)">Cat. 5</strong> — Moins de 200 (seuils variables)</div>
+              <div class="divider"></div>
+              <div><strong style="color:var(--warning)">Type L</strong> — Salles de spectacle / conférences</div>
+              <div><strong style="color:var(--warning)">Type N</strong> — Restaurants, cafés, bals</div>
+              <div><strong style="color:var(--warning)">Type P</strong> — Salles polyvalentes / danse</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">⛺ CTS — Structures Temporaires</div>
+            <div style="font-size:11px;color:var(--tx2);line-height:1.9">
+              <div><strong style="color:var(--tx)">≤ 50 m²</strong> — Simple déclaration en mairie</div>
+              <div><strong style="color:var(--tx)">50 à 800 m²</strong> — Notice de sécurité obligatoire</div>
+              <div><strong style="color:var(--tx)">&gt; 800 m²</strong> — Dossier complet en préfecture</div>
+              <div class="divider"></div>
+              <div style="color:var(--danger);font-weight:700">⚠ Délai minimum 15 jours avant ouverture</div>
+              <div>Vérification structure par bureau de contrôle</div>
+              <div>PV de levée des réserves obligatoire</div>
+              <div>Arrêté d'ouverture requis</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">🦺 SSIAP — Agents de sécurité incendie</div>
+            <div style="font-size:11px;color:var(--tx2);line-height:1.9">
+              <div><strong style="color:var(--tx)">Moins de 700 pers.</strong> — 1 agent SSIAP 1</div>
+              <div><strong style="color:var(--tx)">701 à 1 500 pers.</strong> — 1 SSIAP 1 + 1 SSIAP 2</div>
+              <div><strong style="color:var(--tx)">Plus de 1 500 pers.</strong> — Équipe complète + chef</div>
+              <div class="divider"></div>
+              <div style="font-size:10px;color:var(--warning);font-style:italic">Ces informations sont indicatives. Consultez toujours un professionnel agréé ou la préfecture de votre département.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Checklist + Urgences -->
+        <div class="g2" style="margin-bottom:14px">
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <div class="card-title" style="margin-bottom:0">✅ Checklist Conformité</div>
+              <span style="font-size:11px;font-weight:700;color:var(--success)" id="conform-count">0/0</span>
+            </div>
+            <div id="conform-list"></div>
+          </div>
+          <div class="card" style="background:var(--danger-bg);border-color:rgba(220,38,38,.2)">
+            <div class="card-title" style="color:var(--danger)">🚨 Procédures d'Urgence</div>
+            <div style="margin-bottom:14px">
+              <div style="font-size:11px;font-weight:800;color:var(--danger);margin-bottom:6px">🔥 ÉVACUATION INCENDIE</div>
+              <div class="proc-step"><div class="proc-num">1</div><div style="font-size:12px;padding-top:4px">Couper la musique immédiatement</div></div>
+              <div class="proc-step"><div class="proc-num">2</div><div style="font-size:12px;padding-top:4px">Lumière salle FULL ON</div></div>
+              <div class="proc-step"><div class="proc-num">3</div><div style="font-size:12px;padding-top:4px">Message micro : évacuation calme</div></div>
+              <div class="proc-step"><div class="proc-num">4</div><div style="font-size:12px;padding-top:4px">Canal sécu — balisage sorties</div></div>
+              <div class="proc-step"><div class="proc-num">5</div><div style="font-size:12px;padding-top:4px">Appel 18 / 112</div></div>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:800;color:var(--accent);margin-bottom:6px">🏥 URGENCE MÉDICALE</div>
+              <div class="proc-step"><div class="proc-num" style="background:var(--accent)">1</div><div style="font-size:12px;padding-top:4px">Balisage zone — ne pas déplacer</div></div>
+              <div class="proc-step"><div class="proc-num" style="background:var(--accent)">2</div><div style="font-size:12px;padding-top:4px">Canal 03 Sécu — appel SSIAP</div></div>
+              <div class="proc-step"><div class="proc-num" style="background:var(--accent)">3</div><div style="font-size:12px;padding-top:4px">Appel 15 SAMU</div></div>
+              <div class="proc-step"><div class="proc-num" style="background:var(--accent)">4</div><div style="font-size:12px;padding-top:4px">Accueil pompiers — dégagement couloir</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contacts -->
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div style="font-size:14px;font-weight:800">📞 Contacts d'Urgence & Lieu</div>
+            <button class="btn btn-ghost btn-sm" onclick="openModal('modal-add-contact')"><i class="fas fa-plus"></i></button>
+          </div>
+          <div id="contacts-grid" class="g3"></div>
+        </div>
+      </section>
+
+      <!-- ══ SIGNALÉTIQUE ══ -->
+      <section class="tab" id="tab-sign">
+        <div class="sec-hdr">
+          <div><div class="sec-title">🪧 Signalétique</div><div class="sec-sub">Générateur de panneaux professionnels — Impression directe A4/A3</div></div>
+        </div>
+        <div class="g2">
+          <div class="card">
+            <div class="card-title">Générateur</div>
+            <div class="fg"><label>Titre principal</label><input type="text" id="sig-titre" value="SALLE DE PRESSE" oninput="updateSign()" style="font-size:16px;font-weight:700;text-transform:uppercase"></div>
+            <div class="fg"><label>Sous-titre (optionnel)</label><input type="text" id="sig-sub" placeholder="Niveau 2 — Couloir B" oninput="updateSign()"></div>
+            <div class="fg">
+              <label>Direction</label>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px">
+                <button class="btn btn-ghost" id="db-u" onclick="setDir('haut',this)" style="font-size:22px;padding:14px;font-weight:900">↑</button>
+                <button class="btn btn-ghost" id="db-r" onclick="setDir('droite',this)" style="font-size:22px;padding:14px;font-weight:900">→</button>
+                <button class="btn btn-ghost" id="db-l" onclick="setDir('gauche',this)" style="font-size:22px;padding:14px;font-weight:900">←</button>
+                <button class="btn btn-ghost" id="db-d" onclick="setDir('bas',this)" style="font-size:22px;padding:14px;font-weight:900">↓</button>
+              </div>
+            </div>
+            <div class="fg">
+              <label>Pictogramme</label>
+              <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">
+                <button class="btn btn-ghost" onclick="setPicto('🚻',this)" style="font-size:18px;padding:10px">🚻</button>
+                <button class="btn btn-ghost" onclick="setPicto('🚪',this)" style="font-size:18px;padding:10px">🚪</button>
+                <button class="btn btn-ghost" onclick="setPicto('⭐',this)" style="font-size:18px;padding:10px">⭐</button>
+                <button class="btn btn-ghost" onclick="setPicto('💎',this)" style="font-size:18px;padding:10px">💎</button>
+                <button class="btn btn-ghost" onclick="setPicto('⚠️',this)" style="font-size:18px;padding:10px">⚠️</button>
+                <button class="btn btn-ghost" onclick="setPicto('🎭',this)" style="font-size:18px;padding:10px">🎭</button>
+                <button class="btn btn-ghost" onclick="setPicto('🅿️',this)" style="font-size:18px;padding:10px">🅿️</button>
+                <button class="btn btn-ghost" onclick="setPicto('👋',this)" style="font-size:18px;padding:10px">👋</button>
+                <button class="btn btn-ghost" onclick="setPicto('',this)" style="font-size:10px;padding:10px">Aucun</button>
+              </div>
+            </div>
+            <div class="fg"><label>Format</label>
+              <div style="display:flex;gap:8px">
+                <button class="btn btn-ghost" id="fmt-a4" onclick="setFormat('A4',this)" style="flex:1">A4</button>
+                <button class="btn btn-ghost" id="fmt-a3" onclick="setFormat('A3',this)" style="flex:1">A3</button>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn btn-primary" onclick="printSign()"><i class="fas fa-print"></i> Imprimer</button>
+              <button class="btn btn-ghost" onclick="saveSign()"><i class="fas fa-floppy-disk"></i> Sauvegarder</button>
+              <button class="btn btn-ghost" onclick="clearSign()"><i class="fas fa-rotate-left"></i> Reset</button>
+            </div>
+          </div>
+
+          <!-- Preview -->
+          <div>
+            <div class="sign-preview" id="sign-preview" style="min-height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+              <div class="sign-picto" id="sig-picto-out"></div>
+              <svg id="sig-arrow-out" width="180" height="140" viewBox="0 0 180 140" style="margin-bottom:14px"></svg>
+              <div class="sign-title" id="sig-title-out">SALLE DE PRESSE</div>
+              <div class="sign-subtitle" id="sig-sub-out"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Historique -->
+        <div class="card" style="margin-top:14px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <div style="font-size:14px;font-weight:800">Panneaux créés cette session</div>
+            <button class="btn btn-ghost btn-sm" onclick="clearSignHistory()"><i class="fas fa-trash"></i></button>
+          </div>
+          <div id="sign-history" class="g-auto"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer id="ftr">
+    <div style="font-size:10px;color:var(--tx3)">AINTERCOM PRO V2 · <span id="ftr-save">Jamais sauvegardé</span></div>
+    <div style="display:flex;gap:6px;align-items:center">
+      <span style="font-size:10px;color:var(--tx3)">Cette interface vous aide ?</span>
+      <button class="btn btn-ghost btn-sm" onclick="toast('Merci ! 👍','s')" style="padding:2px 7px">👍</button>
+      <button class="btn btn-ghost btn-sm" onclick="openModal('modal-feedback')" style="padding:2px 7px">👎</button>
+      <button class="btn btn-ghost btn-sm" onclick="openModal('modal-feedback')"><i class="fas fa-comment" style="font-size:9px"></i> Suggérer</button>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════════════════════════ MODALS ═══════════════════════════════ -->
+
+<!-- NOUVEL ÉVÉNEMENT -->
+<div class="overlay" id="modal-new-event">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">Créer un événement</div><button class="modal-close" onclick="closeModal('modal-new-event')">✕</button></div>
+    <div class="fg"><label>Nom de l'événement</label><input type="text" id="ne-nom" placeholder="Ex: Gala Annuel 2026"></div>
+    <div class="fg-row"><div class="fg"><label>Date</label><input type="date" id="ne-date"></div><div class="fg"><label>Heure début</label><input type="time" id="ne-heure" value="20:00"></div></div>
+    <div class="fg"><label>Lieu</label><input type="text" id="ne-lieu" placeholder="Ex: Groupama Stadium, Lyon"></div>
+    <div class="fg-row">
+      <div class="fg"><label>Type</label><select id="ne-type"><option>Soirée privée</option><option>Conférence / Séminaire</option><option>Concert / Festival</option><option>Événement sportif</option><option>Stade / Arena</option><option>Autre</option></select></div>
+      <div class="fg"><label>Jauge</label><input type="number" id="ne-jauge" placeholder="500"></div>
+    </div>
+    <div class="fg"><label>Adresse exacte (pour les secours)</label><input type="text" id="ne-adresse" placeholder="7 avenue Simone Veil, 69150 Décines-Charpieu"></div>
+    <div class="fg-row"><div class="fg"><label>Code WiFi lieu</label><input type="text" id="ne-wifi" placeholder="Réseau / Mot de passe"></div><div class="fg"><label>Code d'accès</label><input type="text" id="ne-code" placeholder="Digicode / Badge"></div></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-new-event')">Annuler</button>
+      <button class="btn btn-primary" onclick="createEvent()"><i class="fas fa-plus"></i> Créer et ouvrir</button>
+    </div>
+  </div>
+</div>
+
+<!-- ÉDITER ÉVÉNEMENT -->
+<div class="overlay" id="modal-event-edit">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">Modifier l'événement</div><button class="modal-close" onclick="closeModal('modal-event-edit')">✕</button></div>
+    <div class="fg"><label>Nom</label><input type="text" id="ee-nom"></div>
+    <div class="fg-row"><div class="fg"><label>Date</label><input type="date" id="ee-date"></div><div class="fg"><label>Heure</label><input type="time" id="ee-heure"></div></div>
+    <div class="fg"><label>Lieu</label><input type="text" id="ee-lieu"></div>
+    <div class="fg-row"><div class="fg"><label>Type</label><select id="ee-type"><option>Soirée privée</option><option>Conférence / Séminaire</option><option>Concert / Festival</option><option>Événement sportif</option><option>Stade / Arena</option><option>Autre</option></select></div><div class="fg"><label>Jauge</label><input type="number" id="ee-jauge"></div></div>
+    <div class="fg"><label>Adresse exacte</label><input type="text" id="ee-adresse"></div>
+    <div class="fg-row"><div class="fg"><label>WiFi</label><input type="text" id="ee-wifi"></div><div class="fg"><label>Code accès</label><input type="text" id="ee-code"></div></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-event-edit')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveEventEdit()"><i class="fas fa-floppy-disk"></i> Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<!-- INCIDENT -->
+<div class="overlay" id="modal-incident">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title" style="color:var(--danger)">🚨 Déclarer un Incident</div><button class="modal-close" onclick="closeModal('modal-incident')">✕</button></div>
+    <div class="fg"><label>Description</label><input type="text" id="inc-desc" placeholder="Décrivez l'incident..."></div>
+    <div class="fg-row">
+      <div class="fg"><label>Catégorie</label><select id="inc-cat"><option>Technique</option><option>Médical</option><option>Sécurité</option><option>Logistique</option><option>Autre</option></select></div>
+      <div class="fg"><label>Priorité</label><select id="inc-prio"><option value="critique">🔴 Critique</option><option value="urgent" selected>🟠 Urgent</option><option value="mineur">🟡 Mineur</option></select></div>
+    </div>
+    <div class="fg"><label>Assigné à</label><select id="inc-assign"><option value="">Non assigné</option></select></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-incident')">Annuler</button>
+      <button class="btn btn-danger" onclick="addIncident()"><i class="fas fa-triangle-exclamation"></i> Déclarer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT SÉQUENCE -->
+<div class="overlay" id="modal-seq">
+  <div class="modal modal-lg">
+    <div class="modal-hdr"><div class="modal-title" id="seq-modal-title">Ajouter une Séquence</div><button class="modal-close" onclick="closeModal('modal-seq')">✕</button></div>
+    <div class="fg-row">
+      <div class="fg"><label>Heure prévue</label><input type="time" id="seq-time" value="20:00"></div>
+      <div class="fg"><label>Durée (min)</label><input type="number" id="seq-dur" value="10" min="1"></div>
+      <div class="fg"><label>Phase</label><select id="seq-phase"><option value="show">Show</option><option value="montage">Montage</option><option value="demo">Démontage</option></select></div>
+    </div>
+    <div class="fg"><label>Titre de la séquence</label><input type="text" id="seq-title" placeholder="Ex: Ouverture / Vidéo Intro"></div>
+    <div class="fg-row">
+      <div class="fg"><label>Responsable</label><select id="seq-resp"><option value="">—</option></select></div>
+      <div class="fg"><label>Cues techniques</label><input type="text" id="seq-cues" placeholder="Ex: Cue 01 L, Mic 1 ON"></div>
+    </div>
+    <div class="fg"><label>Script Speaker</label><textarea id="seq-script" rows="5" placeholder="Texte complet pour le speaker..."></textarea></div>
+    <div class="fg"><label>Notes internes</label><input type="text" id="seq-note" placeholder="Optionnel"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-seq')">Annuler</button>
+      <button class="btn btn-primary" id="seq-save-btn" onclick="saveSeq()"><i class="fas fa-plus"></i> Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL SÉQUENCE / PROMPTEUR -->
+<div class="overlay" id="modal-seq-detail">
+  <div class="modal modal-lg">
+    <div class="modal-hdr"><div class="modal-title" id="sd-title">Séquence</div><button class="modal-close" onclick="closeModal('modal-seq-detail')">✕</button></div>
+    <div id="sd-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" id="sd-prompteur-btn"><i class="fas fa-expand"></i> Prompteur</button>
+      <button class="btn btn-ghost btn-sm" id="sd-edit-btn"><i class="fas fa-pen"></i> Modifier</button>
+      <button class="btn btn-danger btn-sm" id="sd-del-btn"><i class="fas fa-trash"></i> Supprimer</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-seq-detail')">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROMPTEUR -->
+<div class="overlay" id="modal-prompteur">
+  <div class="modal modal-xl" style="background:#000;border-color:#111">
+    <div class="modal-hdr" style="border-bottom:1px solid #1a1a1a">
+      <div style="font-size:11px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.1em" id="pt-label">Séquence</div>
+      <button class="modal-close" onclick="closeModal('modal-prompteur')" style="background:#111;border-color:#222;color:#555">✕</button>
+    </div>
+    <div style="padding:40px 30px;text-align:center">
+      <div id="pt-text" style="font-size:52px;font-weight:800;color:#fff;line-height:1.25;letter-spacing:-.5px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD CREW -->
+<div class="overlay" id="modal-add-crew">
+  <div class="modal modal-lg">
+    <div class="modal-hdr"><div class="modal-title">Ajouter un membre</div><button class="modal-close" onclick="closeModal('modal-add-crew')">✕</button></div>
+    <div class="fg-row"><div class="fg"><label>Prénom</label><input type="text" id="cr-prenom" placeholder="Marc"></div><div class="fg"><label>Nom</label><input type="text" id="cr-nom" placeholder="Antoine"></div></div>
+    <div class="fg-row">
+      <div class="fg"><label>Rôle exact</label><input type="text" id="cr-role" placeholder="Ex: Régisseur Général"></div>
+      <div class="fg"><label>Métier</label><select id="cr-metier"><option>Technique</option><option>Accueil</option><option>Sécurité</option><option>Staff</option></select></div>
+    </div>
+    <div class="fg"><label>Téléphone</label><input type="tel" id="cr-tel" placeholder="+33 6 00 00 00 00"></div>
+    <div class="fg-row"><div class="fg"><label>Zone principale</label><input type="text" id="cr-zone" placeholder="Régie / Scène / Entrée..."></div><div class="fg"><label>Zones autorisées</label><input type="text" id="cr-zones-auth" placeholder="A, B, C"></div></div>
+    <div class="fg-row"><div class="fg"><label>Arrivée</label><input type="time" id="cr-arrive" value="08:00"></div><div class="fg"><label>Départ</label><input type="time" id="cr-depart" value="23:00"></div></div>
+    <div class="fg"><label>Notes internes</label><input type="text" id="cr-notes" placeholder="Optionnel"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-add-crew')">Annuler</button>
+      <button class="btn btn-primary" onclick="addCrew()"><i class="fas fa-plus"></i> Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<!-- FICHE CREW DETAIL -->
+<div class="overlay" id="modal-crew-detail">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title" id="cd-name">Fiche</div><button class="modal-close" onclick="closeModal('modal-crew-detail')">✕</button></div>
+    <div id="cd-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" id="cd-edit-btn"><i class="fas fa-pen"></i> Modifier</button>
+      <button class="btn btn-danger btn-sm" id="cd-del-btn"><i class="fas fa-trash"></i> Supprimer</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-crew-detail')">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIG CANAUX MOTOROLA -->
+<div class="overlay" id="modal-canaux-config">
+  <div class="modal modal-lg">
+    <div class="modal-hdr"><div class="modal-title">Configuration des 15 canaux Motorola</div><button class="modal-close" onclick="closeModal('modal-canaux-config')">✕</button></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="canaux-config-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-canaux-config')">Fermer</button>
+      <button class="btn btn-primary" onclick="saveCanaux()"><i class="fas fa-floppy-disk"></i> Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD MATOS -->
+<div class="overlay" id="modal-add-matos">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">Ajouter un équipement</div><button class="modal-close" onclick="closeModal('modal-add-matos')">✕</button></div>
+    <div class="fg"><label>Type</label><select id="m-type"><option>Autre</option><option>Câble</option><option>Lumière</option><option>Audio</option><option>Vidéo</option><option>Électrique</option></select></div>
+    <div class="fg"><label>Nom / Référence</label><input type="text" id="m-nom" placeholder="Ex: Câble XLR 10m #3"></div>
+    <div class="fg"><label>Zone</label><input type="text" id="m-zone" placeholder="Zone B - Scène"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-add-matos')">Annuler</button>
+      <button class="btn btn-primary" onclick="addMatosExtra()"><i class="fas fa-plus"></i> Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD BUDGET -->
+<div class="overlay" id="modal-add-budget">
+  <div class="modal modal-lg">
+    <div class="modal-hdr"><div class="modal-title" id="budget-modal-title">Ajouter une ligne budget</div><button class="modal-close" onclick="closeModal('modal-add-budget')">✕</button></div>
+    <div class="fg-row">
+      <div class="fg"><label>Catégorie</label><select id="b-cat"><option>Matos</option><option>Crew</option><option>Lieu</option><option>Traiteur</option><option>Communication</option><option>Imprévus</option></select></div>
+      <div class="fg"><label>Statut</label><select id="b-statut"><option>Devis</option><option>Commandé</option><option>Facturé</option><option>Payé</option></select></div>
+    </div>
+    <div class="fg"><label>Description</label><input type="text" id="b-desc" placeholder="Ex: Location sono"></div>
+    <div class="fg"><label>Fournisseur</label><input type="text" id="b-fourn" placeholder="Ex: Sono Pro Lyon"></div>
+    <div class="fg-row">
+      <div class="fg"><label>Montant prévu (€)</label><input type="number" id="b-prevu" placeholder="0"></div>
+      <div class="fg"><label>Montant réel (€)</label><input type="number" id="b-reel" placeholder="0"></div>
+      <div class="fg"><label>Date</label><input type="date" id="b-date"></div>
+    </div>
+    <div class="fg"><label>Note</label><input type="text" id="b-note" placeholder="Optionnel"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-add-budget')">Annuler</button>
+      <button class="btn btn-primary" id="b-save-btn" onclick="saveBudgetLine()"><i class="fas fa-plus"></i> Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD CONTACT -->
+<div class="overlay" id="modal-add-contact">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">Ajouter un contact</div><button class="modal-close" onclick="closeModal('modal-add-contact')">✕</button></div>
+    <div class="fg"><label>Nom / Fonction</label><input type="text" id="ct-nom" placeholder="Ex: Référent technique salle"></div>
+    <div class="fg"><label>Téléphone</label><input type="tel" id="ct-tel" placeholder="+33 6 00 00 00 00"></div>
+    <div class="fg"><label>Catégorie</label><select id="ct-cat"><option>Urgence</option><option>Lieu</option><option>Technique</option><option>Prestataire</option></select></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-add-contact')">Annuler</button>
+      <button class="btn btn-primary" onclick="addContact()"><i class="fas fa-plus"></i> Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<!-- FEEDBACK -->
+<div class="overlay" id="modal-feedback">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">💬 Suggérer une fonctionnalité</div><button class="modal-close" onclick="closeModal('modal-feedback')">✕</button></div>
+    <div class="fg"><label>Votre suggestion</label><textarea id="fb-text" rows="5" placeholder="Décrivez la fonctionnalité que vous aimeriez voir..."></textarea></div>
+    <div class="fg"><label>Catégorie</label><select id="fb-cat"><option>Nouvelle fonctionnalité</option><option>Amélioration</option><option>Bug</option><option>Interface / UX</option></select></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-feedback')">Annuler</button>
+      <button class="btn btn-primary" onclick="submitFeedback()"><i class="fas fa-paper-plane"></i> Envoyer</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toasts"></div>
+
+<!-- PRINT ZONE -->
+<div id="print-zone"></div>
+
+<script>
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let S = {
+  events: [],
+  currentEventId: null,
+  theme: 'dark',
+  phase: 'montage',
+  runPhase: 'show',
+  budgetUnlocked: false,
+  globalTimer: {running:false, elapsed:0},
+  elec: 0,
+  elecDevices: [],
+  sequences: [],
+  crew: [],
+  motorola: Array.from({length:12},(_,i)=>({id:i+1,canal:i+1,assigneA:'',zone:'',bat:100,statut:'Disponible',notes:''})),
+  canaux: Array.from({length:15},(_,i)=>({ch:i+1,freq:`462.${562+i*25}`,code:String(67+i*4)})),
+  hollyland: [{id:'master',label:'Master 👑',assigneA:'',bat:100,statut:'OK'},{id:'h1',label:'Casque 1',assigneA:'',bat:100,statut:'OK'},{id:'h2',label:'Casque 2',assigneA:'',bat:100,statut:'OK'},{id:'h3',label:'Casque 3',assigneA:'',bat:100,statut:'OK'},{id:'h4',label:'Casque 4',assigneA:'',bat:100,statut:'OK'},{id:'h5',label:'Casque 5',assigneA:'',bat:100,statut:'OK'}],
+  megaphone: {assigneA:'',zone:'',statut:'Disponible',notes:''},
+  extraMatos: [],
+  incidents: [],
+  budget: {alloue:10000,lignes:[]},
+  contacts: [{id:1,nom:'🚒 Pompiers',tel:'18',cat:'Urgence'},{id:2,nom:'🚑 SAMU',tel:'15',cat:'Urgence'},{id:3,nom:'🚔 Police',tel:'17',cat:'Urgence'}],
+  conformItems: ['Vérification structure / plancher','Extincteurs accessibles et vérifiés','Issues de secours dégagées','Éclairage de sécurité fonctionnel','Présence SSIAP vérifiée','Câbles fixés et protégés (tapis si passage)','Plan évacuation affiché','Pompiers notifiés si ERP','Trousse de secours localisée','Alimentation électrique vérifiée'],
+  conformDone: {},
+  signHistory: [],
+  signCurrent: {titre:'SALLE DE PRESSE',sub:'',dir:'haut',picto:'',format:'A4'},
+  activityFeed: [],
+  note: '',
+  nextId: 200,
+  weatherCache: null,
+};
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+window.onload = () => {
+  loadStorage();
+  S.currentEventId = 'default';
+  renderAll();
+  fetchWeather();
+  startClock();
+  startAutoSave();
+  addActivity('Interface chargée','i');
+  switchTab('cockpit', null);
+  document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
+};
+
+// ═══════════════════════════════════════════
+// HORLOGE
+// ═══════════════════════════════════════════
+function startClock(){
+  function tick(){
+    const now=new Date();
+    const hms=now.toLocaleTimeString('fr-FR');
+    const date=now.toLocaleDateString('fr-FR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}).toUpperCase();
+    ['hdr-clock'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=hms});
+    ['hdr-date'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=date});
+    if(S.globalTimer.running){S.globalTimer.elapsed++;document.getElementById('cw-global-timer').textContent=fmtTime(S.globalTimer.elapsed)}
+    S.sequences.forEach((s,i)=>{if(s.active){s.elapsed++;const el=document.getElementById('seq-chrono-'+i);if(el)el.textContent=fmtSec(s.elapsed);document.getElementById('cw-now-timer').textContent=fmtSec(s.elapsed)}});
+  }
+  tick();
+  setInterval(tick,1000);
+}
+
+// ═══════════════════════════════════════════
+// PAGE ACCUEIL
+// ═══════════════════════════════════════════
+function renderHomeEvents(){
+  const list=document.getElementById('home-events-list');
+  if(!S.events.length){
+    list.innerHTML=`<div class="empty"><i class="fas fa-calendar-plus"></i><p>Aucun événement — Créez votre premier événement</p></div>`;
+  } else {
+    const statusColors={Préparation:'b-neutral','Montage':'b-warning','Show Live':'b-danger','Démontage':'b-info','Terminé':'b-neutral'};
+    list.innerHTML=S.events.map(ev=>`
+      <div class="event-card">
+        <div class="event-card-icon">${ev.type==='Concert / Festival'?'🎵':ev.type==='Conférence / Séminaire'?'🎤':ev.type==='Événement sportif'?'🏆':ev.type==='Stade / Arena'?'🏟️':'🎉'}</div>
+        <div class="event-card-info">
+          <div class="event-card-name">${ev.nom}</div>
+          <div class="event-card-meta">${ev.date?new Date(ev.date+'T12:00').toLocaleDateString('fr-FR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}):'Date non définie'} ${ev.heure?'· '+ev.heure:''} ${ev.lieu?'· '+ev.lieu:''}</div>
+          <div style="margin-top:5px;display:flex;gap:6px;align-items:center">
+            <span class="badge ${statusColors[ev.statut]||'b-neutral'} event-status">${ev.statut||'Préparation'}</span>
+            ${ev.jauge?`<span class="badge b-neutral" style="font-size:9px">👥 ${ev.jauge} pers.</span>`:''}
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0">
+          <button class="btn btn-primary btn-sm" onclick="openEvent('${ev.id}')"><i class="fas fa-arrow-right"></i> Ouvrir</button>
+          <button class="btn btn-ghost btn-sm" onclick="duplicateEvent('${ev.id}')"><i class="fas fa-copy"></i> Template</button>
+          <button class="btn btn-ghost btn-sm" onclick="deleteEvent('${ev.id}')" style="color:var(--danger)"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+    `).join('');
+  }
+  // Templates
+  const tmpls=S.events.filter(e=>e.isTemplate);
+  const te=document.getElementById('home-templates-empty');
+  const tl=document.getElementById('home-templates-list');
+  if(tmpls.length){te.style.display='none';tl.innerHTML=tmpls.map(t=>`<div class="matos-card"><div class="matos-num">TEMPLATE</div><div class="matos-name">${t.nom}</div><div style="display:flex;gap:5px;margin-top:8px"><button class="btn btn-primary btn-sm" onclick="useTemplate('${t.id}')">Utiliser</button><button class="btn btn-ghost btn-sm" onclick="deleteEvent('${t.id}')"><i class="fas fa-trash" style="color:var(--danger)"></i></button></div></div>`).join('');}
+  else{te.style.display='block';tl.innerHTML='';}
+}
+
+function createEvent(){
+  const ev={
+    id:'ev_'+Date.now(),
+    nom:document.getElementById('ne-nom').value||'Nouvel événement',
+    date:document.getElementById('ne-date').value,
+    heure:document.getElementById('ne-heure').value,
+    lieu:document.getElementById('ne-lieu').value,
+    type:document.getElementById('ne-type').value,
+    jauge:document.getElementById('ne-jauge').value,
+    adresse:document.getElementById('ne-adresse').value,
+    wifi:document.getElementById('ne-wifi').value,
+    code:document.getElementById('ne-code').value,
+    statut:'Préparation',
+    isTemplate:false,
+    created:Date.now(),
+  };
+  S.events.push(ev);
+  closeModal('modal-new-event');
+  saveStorage();
+  openEvent(ev.id);
+}
+
+function openEvent(id){
+  const ev=S.events.find(e=>e.id===id);
+  if(!ev)return;
+  S.currentEventId=id;
+  // Charger les données spécifiques à l'événement sans écraser events/theme/currentEventId
+  const saved=localStorage.getItem('aintercom_event_'+id);
+  if(saved){
+    try{
+      const d=JSON.parse(saved);
+      const {events,theme,currentEventId,...eventData}=d;
+      Object.assign(S,eventData);
+    }catch(e){console.warn('Erreur chargement événement',e);}
+  }
+  // Show app
+  document.getElementById('page-home').style.display='none';
+  document.getElementById('app').style.display='flex';
+  // Update header
+  document.getElementById('cockpit-event-sub').textContent=ev.nom+' · '+(ev.lieu||'')+(ev.date?' · '+new Date(ev.date+'T12:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}):'');
+  // Populate event edit modal
+  document.getElementById('ee-nom').value=ev.nom;
+  document.getElementById('ee-date').value=ev.date;
+  document.getElementById('ee-heure').value=ev.heure;
+  document.getElementById('ee-lieu').value=ev.lieu;
+  document.getElementById('ee-type').value=ev.type;
+  document.getElementById('ee-jauge').value=ev.jauge;
+  document.getElementById('ee-adresse').value=ev.adresse||'';
+  document.getElementById('ee-wifi').value=ev.wifi||'';
+  document.getElementById('ee-code').value=ev.code||'';
+  // Render all
+  renderAll();
+  fetchWeather();
+  addActivity('Événement ouvert: '+ev.nom,'i');
+  switchTab('cockpit',null);
+}
+
+function goHome(){
+  document.getElementById('app').style.display='none';
+  document.getElementById('page-home').style.display='flex';
+  renderHomeEvents();
+}
+
+function deleteEvent(id){
+  if(!confirm('Supprimer cet événement ?'))return;
+  S.events=S.events.filter(e=>e.id!==id);
+  localStorage.removeItem('aintercom_event_'+id);
+  saveStorage();
+  renderHomeEvents();
+  toast('Événement supprimé','i');
+}
+
+function duplicateEvent(id){
+  const ev=S.events.find(e=>e.id===id);
+  if(!ev)return;
+  const t={...ev,id:'ev_'+Date.now(),nom:ev.nom+' (Template)',isTemplate:true};
+  S.events.push(t);
+  saveStorage();
+  renderHomeEvents();
+  toast('Template créé','s');
+}
+
+function useTemplate(id){
+  const t=S.events.find(e=>e.id===id);
+  if(!t)return;
+  const ev={...t,id:'ev_'+Date.now(),nom:t.nom.replace(' (Template)',''),isTemplate:false,statut:'Préparation'};
+  S.events.push(ev);
+  saveStorage();
+  openEvent(ev.id);
+}
+
+function saveEventEdit(){
+  const ev=S.events.find(e=>e.id===S.currentEventId);
+  if(!ev)return;
+  ev.nom=document.getElementById('ee-nom').value;
+  ev.date=document.getElementById('ee-date').value;
+  ev.heure=document.getElementById('ee-heure').value;
+  ev.lieu=document.getElementById('ee-lieu').value;
+  ev.type=document.getElementById('ee-type').value;
+  ev.jauge=document.getElementById('ee-jauge').value;
+  ev.adresse=document.getElementById('ee-adresse').value;
+  ev.wifi=document.getElementById('ee-wifi').value;
+  ev.code=document.getElementById('ee-code').value;
+  closeModal('modal-event-edit');
+  document.getElementById('cockpit-event-sub').textContent=ev.nom+' · '+(ev.lieu||'')+(ev.date?' · '+new Date(ev.date+'T12:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}):'');
+  saveStorage();
+  toast('Événement mis à jour','s');
+}
+
+// ═══════════════════════════════════════════
+// RENDER ALL
+// ═══════════════════════════════════════════
+function renderAll(){
+  renderRun();
+  renderCrew();
+  renderMatorola();
+  renderHollyland();
+  renderMegaphone();
+  renderExtraMatos();
+  renderConform();
+  renderContacts();
+  renderBudget();
+  renderIncidents();
+  renderElec();
+  renderSignHistory();
+  updateCockpit();
+  populateCrewSelects();
+}
+
+// ═══════════════════════════════════════════
+// THEME
+// ═══════════════════════════════════════════
+function toggleTheme(){
+  S.theme=S.theme==='dark'?'light':'dark';
+  document.getElementById('root').className=S.theme==='light'?'light':'';
+  ['home-theme-btn','app-theme-btn'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=S.theme==='light'?'<i class="fas fa-sun"></i>':'<i class="fas fa-moon"></i>';});
+  saveStorage();
+}
+
+// ═══════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════
+function switchTab(id,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const tab=document.getElementById('tab-'+id);
+  if(tab)tab.classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+function navBtnByTab(id){return document.querySelector('.nav-btn[onclick*="\''+id+'\'"]');}
+
+// ═══════════════════════════════════════════
+// PHASE
+// ═══════════════════════════════════════════
+function setPhase(p,btn){
+  S.phase=p;
+  document.querySelectorAll('#nav .phase-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  const labels={montage:'MONTAGE',show:'SHOW',demo:'DÉMONTAGE'};
+  const hdrPhase=document.getElementById('hdr-phase');
+  hdrPhase.textContent=labels[p];
+  hdrPhase.className='hdr-phase '+p;
+  addActivity('Phase: '+labels[p],'i');
+  saveStorage();
+}
+function setRunPhase(p,btn){
+  S.runPhase=p;
+  document.querySelectorAll('#tab-conducteur .phase-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderRun();
+}
+
+// ═══════════════════════════════════════════
+// COCKPIT UPDATE
+// ═══════════════════════════════════════════
+function updateCockpit(){
+  // Elec
+  const pct=Math.min((S.elec/7200)*100,100);
+  const elecColor=pct>90?'var(--danger)':pct>70?'var(--warning)':'var(--success)';
+  document.getElementById('cw-elec').textContent=S.elec+' W';
+  document.getElementById('cw-amp').textContent=(S.elec/230).toFixed(1)+' A mono';
+  document.getElementById('cw-elec-bar').style.width=pct+'%';
+  document.getElementById('cw-elec-bar').style.background=elecColor;
+  // Incidents
+  const activeInc=S.incidents.filter(i=>i.statut!=='Résolu').length;
+  document.getElementById('cw-inc').textContent=activeInc;
+  const nb=document.getElementById('nav-inc-badge');
+  nb.style.display=activeInc>0?'inline':'none';
+  nb.textContent=activeInc;
+  // Crew
+  const enPoste=S.crew.filter(c=>c.statut==='En poste').length;
+  document.getElementById('cw-crew').textContent=enPoste;
+  document.getElementById('cw-crew-total').textContent='/ '+S.crew.length+' total';
+  // Budget
+  if(S.budgetUnlocked){
+    const dep=S.budget.lignes.reduce((a,l)=>a+(l.reel||0),0);
+    document.getElementById('cw-budget').textContent=(S.budget.alloue-dep).toLocaleString('fr-FR')+' €';
+    document.getElementById('cw-budget-sub').textContent=Math.round((dep/S.budget.alloue)*100||0)+'% consommé';
+  }
+  // Live sequence
+  const live=S.sequences.find(s=>s.active);
+  if(live){
+    document.getElementById('cw-now-title').textContent=live.title;
+    document.getElementById('cw-now-resp').textContent=live.resp||'—';
+    document.getElementById('cw-now-cues').textContent=live.cues||'—';
+    document.getElementById('hdr-cue-name').textContent=live.title;
+    document.getElementById('live-dot-label').textContent='LIVE';
+    document.getElementById('live-dot-label').style.color='var(--danger)';
+    const filtered=S.sequences.filter(s=>s.phase===S.runPhase);
+    const li=filtered.findIndex(s=>s.active);
+    const next=filtered[li+1];
+    if(next){document.getElementById('cw-next-title').textContent=next.title;document.getElementById('cw-next-time').textContent=next.time;document.getElementById('cw-next-resp').textContent=next.resp||'—';}
+    else{document.getElementById('cw-next-title').textContent='Fin de programme';document.getElementById('cw-next-time').textContent='—';document.getElementById('cw-next-resp').textContent='—';}
+  } else {
+    document.getElementById('live-dot-label').textContent='EN ATTENTE';
+    document.getElementById('live-dot-label').style.color='var(--tx3)';
+  }
+}
+
+// ═══════════════════════════════════════════
+// CONDUCTEUR / RUN
+// ═══════════════════════════════════════════
+function renderRun(){
+  const body=document.getElementById('run-body');
+  const filtered=S.sequences.filter(s=>s.phase===S.runPhase);
+  if(!filtered.length){
+    body.innerHTML=`<div class="empty"><i class="fas fa-film"></i><p>Aucune séquence pour cette phase — Cliquez sur Ajouter</p></div>`;
+    return;
+  }
+  body.innerHTML=filtered.map(s=>{
+    const ri=S.sequences.indexOf(s);
+    const cueIcons=`<span style="cursor:pointer;opacity:${s.cueSon?1:.25};font-size:13px" onclick="toggleCue(${ri},'son')" title="Son">🔊</span><span style="cursor:pointer;opacity:${s.cueLum?1:.25};font-size:13px" onclick="toggleCue(${ri},'lum')" title="Lumière">💡</span><span style="cursor:pointer;opacity:${s.cueVid?1:.25};font-size:13px" onclick="toggleCue(${ri},'vid')" title="Vidéo">📺</span>`;
+    return `<div class="run-row ${s.active?'live-row':''} ${s.done?'done-row':''}">
+      <div style="display:flex;justify-content:center">
+        <button onclick="toggleLive(${ri})" style="width:34px;height:34px;border-radius:7px;background:${s.active?'var(--danger)':'var(--accent)'};color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;transition:var(--tr)">
+          <i class="fas ${s.active?'fa-stop':'fa-play'}" style="${!s.active?'margin-left:2px':''}"></i>
+        </button>
+      </div>
+      <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent)">${s.time}</div>
+      <div style="font-size:11px;color:var(--tx2)">${s.dur}min</div>
+      <div onclick="openSeqDetail(${ri})" style="cursor:pointer">
+        <div style="font-size:13px;font-weight:700">${s.title}</div>
+        ${s.cues?`<div style="font-size:10px;color:var(--tx3)">${s.cues}</div>`:''}
+      </div>
+      <div style="font-size:11px;color:var(--tx2)">${s.resp||'—'}</div>
+      <div style="display:flex;gap:4px">${cueIcons}</div>
+      <div style="font-family:var(--mono);font-size:14px;font-weight:700" id="seq-chrono-${ri}">${fmtSec(s.elapsed)}</div>
+      <div>${s.active?'<span class="badge b-danger">LIVE</span>':s.done?'<span class="badge b-success">DONE</span>':'<span class="badge b-neutral">WAIT</span>'}</div>
+      <div style="display:flex;gap:3px">
+        <button onclick="openSeqDetail(${ri})" class="btn btn-ghost btn-sm btn-icon" title="Détail"><i class="fas fa-expand" style="font-size:10px"></i></button>
+        <button onclick="markDone(${ri})" class="btn btn-ghost btn-sm btn-icon" title="Marquer DONE"><i class="fas fa-check" style="font-size:10px;color:var(--success)"></i></button>
+        <button onclick="editSeq(${ri})" class="btn btn-ghost btn-sm btn-icon" title="Modifier"><i class="fas fa-pen" style="font-size:10px"></i></button>
+        <button onclick="deleteSeq(${ri})" class="btn btn-ghost btn-sm btn-icon" title="Supprimer"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleCue(ri,type){const s=S.sequences[ri];if(!s)return;if(type==='son')s.cueSon=!s.cueSon;if(type==='lum')s.cueLum=!s.cueLum;if(type==='vid')s.cueVid=!s.cueVid;renderRun();saveStorage();}
+
+function toggleLive(ri){
+  const was=S.sequences[ri].active;
+  S.sequences.forEach(s=>s.active=false);
+  if(!was){S.sequences[ri].active=true;addActivity('LIVE: '+S.sequences[ri].title,'s');document.getElementById('hdr-cue-name').textContent=S.sequences[ri].title;}
+  else{document.getElementById('hdr-cue-name').textContent='En attente';}
+  renderRun();updateCockpit();saveStorage();
+}
+
+function markDone(ri){S.sequences[ri].done=!S.sequences[ri].done;S.sequences[ri].active=false;renderRun();saveStorage();}
+
+function deleteSeq(ri){if(!confirm('Supprimer cette séquence ?'))return;S.sequences.splice(ri,1);renderRun();addActivity('Séquence supprimée','i');saveStorage();toast('Séquence supprimée','i');}
+
+function nextTop(){
+  const f=S.sequences.filter(s=>s.phase===S.runPhase);
+  const ci=f.findIndex(s=>s.active);
+  const nxt=f[ci+1]||(ci===-1?f[0]:null);
+  if(nxt){const ri=S.sequences.indexOf(nxt);toggleLive(ri);toast('TOP: '+nxt.title,'s');}
+}
+
+let editingSeqIdx=-1;
+function openAddSeq(){editingSeqIdx=-1;document.getElementById('seq-modal-title').textContent='Ajouter une Séquence';document.getElementById('seq-save-btn').innerHTML='<i class="fas fa-plus"></i> Ajouter';document.getElementById('seq-time').value='20:00';document.getElementById('seq-dur').value='10';document.getElementById('seq-title').value='';document.getElementById('seq-resp').value='';document.getElementById('seq-cues').value='';document.getElementById('seq-script').value='';document.getElementById('seq-note').value='';document.getElementById('seq-phase').value=S.runPhase;openModal('modal-seq');}
+
+function editSeq(ri){
+  const s=S.sequences[ri];editingSeqIdx=ri;
+  document.getElementById('seq-modal-title').textContent='Modifier la Séquence';
+  document.getElementById('seq-save-btn').innerHTML='<i class="fas fa-floppy-disk"></i> Mettre à jour';
+  document.getElementById('seq-time').value=s.time;document.getElementById('seq-dur').value=s.dur;document.getElementById('seq-title').value=s.title;document.getElementById('seq-resp').value=s.resp||'';document.getElementById('seq-cues').value=s.cues||'';document.getElementById('seq-script').value=s.script||'';document.getElementById('seq-note').value=s.note||'';document.getElementById('seq-phase').value=s.phase;
+  openModal('modal-seq');
+}
+
+function saveSeq(){
+  const data={time:document.getElementById('seq-time').value,dur:parseInt(document.getElementById('seq-dur').value)||10,title:document.getElementById('seq-title').value||'Séquence',resp:document.getElementById('seq-resp').value,cues:document.getElementById('seq-cues').value,script:document.getElementById('seq-script').value,note:document.getElementById('seq-note').value,phase:document.getElementById('seq-phase').value,active:false,done:false,elapsed:0,cueSon:false,cueLum:false,cueVid:false};
+  if(editingSeqIdx===-1){data.id=S.nextId++;S.sequences.push(data);toast('Séquence ajoutée','s');addActivity('Ajout: '+data.title,'i');}
+  else{Object.assign(S.sequences[editingSeqIdx],data);toast('Séquence mise à jour','s');}
+  closeModal('modal-seq');renderRun();saveStorage();
+}
+
+function openSeqDetail(ri){
+  const s=S.sequences[ri];
+  document.getElementById('sd-title').textContent=s.title;
+  document.getElementById('sd-body').innerHTML=`
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="g2"><div><div class="cw-label">Heure</div><div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--accent)">${s.time}</div></div><div><div class="cw-label">Durée</div><div style="font-family:var(--mono);font-size:20px;font-weight:700">${s.dur} min</div></div></div>
+      <div><div class="cw-label">Responsable</div><div style="font-size:14px;font-weight:700">${s.resp||'—'}</div></div>
+      <div><div class="cw-label">Cues Techniques</div><div style="font-size:13px;color:var(--tx2)">${s.cues||'—'}</div></div>
+      <div style="display:flex;gap:8px"><span style="font-size:20px;opacity:${s.cueSon?1:.2}">🔊</span><span style="font-size:20px;opacity:${s.cueLum?1:.2}">💡</span><span style="font-size:20px;opacity:${s.cueVid?1:.2}">📺</span></div>
+      ${s.script?`<div><div class="cw-label">Script Speaker</div><div style="font-size:14px;line-height:1.7;background:var(--bg3);border-radius:var(--r-sm);padding:12px;border:1px solid var(--border)">${s.script}</div></div>`:'<div style="color:var(--tx3);font-size:12px;font-style:italic">Aucun script pour cette séquence</div>'}
+      ${s.note?`<div><div class="cw-label">Notes</div><div style="font-size:13px;color:var(--tx2)">${s.note}</div></div>`:''}
+    </div>`;
+  document.getElementById('sd-prompteur-btn').onclick=()=>{if(s.script){openPrompter(s);closeModal('modal-seq-detail');}else toast('Aucun script','i');};
+  document.getElementById('sd-edit-btn').onclick=()=>{closeModal('modal-seq-detail');editSeq(ri);};
+  document.getElementById('sd-del-btn').onclick=()=>{closeModal('modal-seq-detail');deleteSeq(ri);};
+  openModal('modal-seq-detail');
+}
+
+function openPrompter(s){document.getElementById('pt-label').textContent=s.title;document.getElementById('pt-text').textContent=s.script;openModal('modal-prompteur');}
+
+// ═══════════════════════════════════════════
+// CREW
+// ═══════════════════════════════════════════
+function renderCrew(){
+  renderOrgChart();
+  const search=(document.getElementById('crew-search')?.value||'').toLowerCase();
+  const filter=document.getElementById('crew-filter')?.value||'';
+  const filtered=S.crew.filter(c=>(c.prenom+' '+c.nom+' '+c.role).toLowerCase().includes(search)&&(!filter||c.metier===filter));
+  const grid=document.getElementById('crew-list');
+  if(!filtered.length){grid.innerHTML='<div class="empty"><i class="fas fa-users"></i><p>Aucun membre trouvé</p></div>';return;}
+  const metierColors={Technique:'var(--accent)',Accueil:'var(--warning)',Sécurité:'var(--danger)',Staff:'var(--success)'};
+  const statutColors={'En poste':'var(--success)','En pause':'var(--warning)','Off':'var(--tx3)','Injoignable':'var(--danger)'};
+  grid.innerHTML=filtered.map(c=>`
+    <div class="matos-card" onclick="openCrewDetail(${c.id})" style="cursor:pointer">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <div style="width:36px;height:36px;border-radius:8px;background:${metierColors[c.metier]||'var(--accent)'};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0">${(c.prenom[0]||'?')+(c.nom[0]||'')}</div>
+        <div>
+          <div style="font-size:13px;font-weight:700">${c.prenom} ${c.nom}</div>
+          <div style="font-size:11px;color:var(--tx2)">${c.role}</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px">
+        <span class="badge b-neutral" style="font-size:9px">${c.metier}</span>
+        <span style="font-size:10px;font-weight:700;color:${statutColors[c.statut]||'var(--tx3)'}">● ${c.statut||'En poste'}</span>
+      </div>
+      <div style="font-size:10px;color:var(--tx3)">${c.zone||''}</div>
+      <div style="display:flex;gap:5px;margin-top:8px">
+        ${c.tel?`<button onclick="event.stopPropagation();window.open('tel:${c.tel}')" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-phone" style="font-size:10px;color:var(--success)"></i></button><button onclick="event.stopPropagation();window.open('https://wa.me/${c.tel.replace(/\s/g,'').replace('+','')}','_blank')" class="btn btn-ghost btn-sm btn-icon"><i class="fab fa-whatsapp" style="font-size:10px;color:var(--success)"></i></button>`:''}
+        <button onclick="event.stopPropagation();deleteCrew(${c.id})" class="btn btn-ghost btn-sm btn-icon" style="margin-left:auto"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
+      </div>
+    </div>`).join('');
+  updateCockpit();
+}
+
+function renderOrgChart(){
+  const org=document.getElementById('org-chart');
+  if(!S.crew.length){org.innerHTML='<div class="empty" style="padding:20px"><i class="fas fa-sitemap"></i><p>Ajoutez des membres pour voir l\'organigramme</p></div>';return;}
+  const metierColors={Technique:'var(--accent)',Accueil:'var(--warning)',Sécurité:'var(--danger)',Staff:'var(--success)'};
+  const statutColors={'En poste':'var(--success)','En pause':'var(--warning)','Off':'var(--tx3)','Injoignable':'var(--danger)'};
+  // Group by metier
+  const metiers=['Technique','Accueil','Sécurité','Staff'];
+  const groups={};
+  metiers.forEach(m=>{groups[m]=S.crew.filter(c=>c.metier===m);});
+  // Top: first Technique person or first crew member
+  const top=S.crew.find(c=>c.role.toLowerCase().includes('régisseur général')||c.role.toLowerCase().includes('director'))||S.crew[0];
+  const makeCard=(c,isTop=false)=>`<div class="org-node"><div class="org-card ${isTop?'top':''}" onclick="openCrewDetail(${c.id})"><div class="org-status" style="background:${statutColors[c.statut]||'var(--tx3)'}"></div><div class="org-avatar" style="background:${metierColors[c.metier]||'var(--accent)'}">${(c.prenom[0]||'?')+(c.nom[0]||'')}</div><div class="org-name">${c.prenom} ${c.nom}</div><div class="org-role">${c.role}</div></div></div>`;
+  let html=`<div class="org-wrap"><div class="org-level">${makeCard(top,true)}</div><div class="org-line"></div><div style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap">`;
+  metiers.forEach(m=>{
+    const members=groups[m].filter(c=>c.id!==top.id);
+    if(!members.length)return;
+    html+=`<div style="display:flex;flex-direction:column;align-items:center"><div style="font-size:9px;font-weight:800;color:${metierColors[m]};text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;padding:3px 8px;background:${metierColors[m]}18;border-radius:4px">${m}</div><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">${members.map(c=>makeCard(c)).join('')}</div></div>`;
+  });
+  html+='</div></div>';
+  org.innerHTML=html;
+}
+
+function openCrewDetail(id){
+  const c=S.crew.find(m=>m.id===id);if(!c)return;
+  const metierColors={Technique:'var(--accent)',Accueil:'var(--warning)',Sécurité:'var(--danger)',Staff:'var(--success)'};
+  const statutColors={'En poste':'var(--success)','En pause':'var(--warning)','Off':'var(--tx3)','Injoignable':'var(--danger)'};
+  document.getElementById('cd-name').textContent=c.prenom+' '+c.nom;
+  document.getElementById('cd-body').innerHTML=`
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:center">
+        <div style="width:56px;height:56px;border-radius:12px;background:${metierColors[c.metier]||'var(--accent)'};display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;flex-shrink:0">${(c.prenom[0]||'?')+(c.nom[0]||'')}</div>
+        <div><div style="font-size:16px;font-weight:800">${c.prenom} ${c.nom}</div><div style="font-size:13px;color:var(--tx2)">${c.role}</div><span class="badge b-neutral" style="margin-top:4px">${c.metier}</span></div>
+      </div>
+      <div class="g2">
+        <div><div class="cw-label">Statut</div><select onchange="updateCrewStatut(${id},this.value)" style="width:auto"><option ${c.statut==='En poste'?'selected':''}>En poste</option><option ${c.statut==='En pause'?'selected':''}>En pause</option><option ${c.statut==='Off'?'selected':''}>Off</option><option ${c.statut==='Injoignable'?'selected':''}>Injoignable</option></select></div>
+        <div><div class="cw-label">Zone</div><div style="font-weight:700">${c.zone||'—'}</div></div>
+      </div>
+      <div><div class="cw-label">Téléphone</div><div style="display:flex;gap:8px;align-items:center"><span style="font-family:var(--mono);font-weight:700">${c.tel||'—'}</span>${c.tel?`<button onclick="window.open('tel:${c.tel}')" class="btn btn-ghost btn-sm"><i class="fas fa-phone"></i></button><button onclick="window.open('https://wa.me/${c.tel.replace(/\s/g,'').replace('+','')}','_blank')" class="btn btn-ghost btn-sm" style="color:var(--success)"><i class="fab fa-whatsapp"></i></button>`:''}</div></div>
+      <div class="g2"><div><div class="cw-label">Vacation</div><div style="font-weight:700">${c.arrive||'—'} → ${c.depart||'—'}</div></div><div><div class="cw-label">Zones autorisées</div><div style="font-weight:700">${c.zonesAuth||'—'}</div></div></div>
+      <div><div class="cw-label">Matos assigné</div><div style="font-size:13px">${getMatos(c.prenom+' '+c.nom)||'Aucun'}</div></div>
+      ${c.notes?`<div><div class="cw-label">Notes</div><div style="font-size:12px;color:var(--tx2)">${c.notes}</div></div>`:''}
+    </div>`;
+  document.getElementById('cd-edit-btn').onclick=()=>{closeModal('modal-crew-detail');openEditCrew(id);};
+  document.getElementById('cd-del-btn').onclick=()=>{if(confirm('Supprimer '+c.prenom+'?')){S.crew=S.crew.filter(m=>m.id!==id);closeModal('modal-crew-detail');renderCrew();saveStorage();toast('Membre supprimé','i');}};
+  openModal('modal-crew-detail');
+}
+
+function getMatos(name){
+  const mots=S.motorola.filter(m=>m.assigneA===name).map(m=>`Motorola #${m.id} CH${m.canal}`);
+  const hols=S.hollyland.filter(h=>h.assigneA===name).map(h=>h.label);
+  const meg=S.megaphone.assigneA===name?['Mégaphone']:[];
+  return [...mots,...hols,...meg].join(', ');
+}
+
+function updateCrewStatut(id,statut){const c=S.crew.find(m=>m.id===id);if(c){c.statut=statut;renderCrew();saveStorage();addActivity(c.prenom+' '+c.nom+': '+statut,'i');}}
+
+function openEditCrew(id){
+  const c=S.crew.find(m=>m.id===id);if(!c)return;
+  document.getElementById('cr-prenom').value=c.prenom;document.getElementById('cr-nom').value=c.nom;
+  document.getElementById('cr-role').value=c.role;document.getElementById('cr-metier').value=c.metier;
+  document.getElementById('cr-tel').value=c.tel||'';document.getElementById('cr-zone').value=c.zone||'';
+  document.getElementById('cr-zones-auth').value=c.zonesAuth||'';document.getElementById('cr-arrive').value=c.arrive||'';
+  document.getElementById('cr-depart').value=c.depart||'';document.getElementById('cr-notes').value=c.notes||'';
+  openModal('modal-add-crew');
+  document.querySelector('#modal-add-crew .btn-primary').onclick=()=>{Object.assign(c,{prenom:document.getElementById('cr-prenom').value,nom:document.getElementById('cr-nom').value,role:document.getElementById('cr-role').value,metier:document.getElementById('cr-metier').value,tel:document.getElementById('cr-tel').value,zone:document.getElementById('cr-zone').value,zonesAuth:document.getElementById('cr-zones-auth').value,arrive:document.getElementById('cr-arrive').value,depart:document.getElementById('cr-depart').value,notes:document.getElementById('cr-notes').value});closeModal('modal-add-crew');renderCrew();saveStorage();toast('Membre mis à jour','s');};
+}
+
+function addCrew(){
+  const c={id:S.nextId++,prenom:document.getElementById('cr-prenom').value||'Nouveau',nom:document.getElementById('cr-nom').value||'Membre',role:document.getElementById('cr-role').value,metier:document.getElementById('cr-metier').value,tel:document.getElementById('cr-tel').value,zone:document.getElementById('cr-zone').value,zonesAuth:document.getElementById('cr-zones-auth').value,arrive:document.getElementById('cr-arrive').value,depart:document.getElementById('cr-depart').value,notes:document.getElementById('cr-notes').value,statut:'En poste'};
+  S.crew.push(c);closeModal('modal-add-crew');renderCrew();populateCrewSelects();addActivity('Crew: '+c.prenom+' '+c.nom,'s');saveStorage();toast('Membre ajouté','s');
+  // Reset btn
+  document.querySelector('#modal-add-crew .btn-primary').onclick=addCrew;
+}
+
+function deleteCrew(id){if(!confirm('Supprimer?'))return;S.crew=S.crew.filter(c=>c.id!==id);renderCrew();saveStorage();toast('Membre supprimé','i');}
+
+function populateCrewSelects(){
+  const opts='<option value="">—</option>'+S.crew.map(c=>`<option>${c.prenom} ${c.nom}</option>`).join('');
+  ['seq-resp','inc-assign'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=opts;});
+}
+
+// ═══════════════════════════════════════════
+// MATOS — MOTOROLA
+// ═══════════════════════════════════════════
+function renderMatorola(){
+  const grid=document.getElementById('motorola-grid');
+  grid.innerHTML=S.motorola.map((m,i)=>{
+    const ch=S.canaux[m.canal-1]||{};
+    const bc=m.bat<20?'var(--danger)':m.bat<50?'var(--warning)':'var(--success)';
+    const crewOpts='<option value="">Libre</option>'+S.crew.map(c=>`<option value="${c.prenom} ${c.nom}" ${m.assigneA===c.prenom+' '+c.nom?'selected':''}>${c.prenom} ${c.nom}</option>`).join('');
+    return `<div class="matos-card">
+      <div class="matos-num">TALKIE #${m.id}</div>
+      <div class="matos-detail">Canal <strong>${m.canal}</strong> · ${ch.freq||'—'} MHz<br>Code CTCSS: <strong>${ch.code||'—'}</strong></div>
+      <div class="fg" style="margin-bottom:8px"><label style="font-size:9px">Assigné à</label><select onchange="S.motorola[${i}].assigneA=this.value;saveStorage();renderCrew()">${crewOpts}</select></div>
+      <div class="fg" style="margin-bottom:8px"><label style="font-size:9px">Zone</label><input type="text" value="${m.zone}" onchange="S.motorola[${i}].zone=this.value;saveStorage()" placeholder="Zone..."></div>
+      <div><div style="display:flex;justify-content:space-between;font-size:10px;color:var(--tx3);margin-bottom:3px"><span>Batterie</span><span style="color:${bc};font-weight:700">${m.bat}%</span></div><div class="bat-bar"><div class="bat-fill" style="width:${m.bat}%;background:${bc}"></div></div></div>
+      <div style="display:flex;gap:4px;margin-top:8px">
+        <select onchange="S.motorola[${i}].canal=parseInt(this.value);renderMatorola();saveStorage()" style="flex:1;font-size:10px">
+          ${Array.from({length:15},(_,j)=>`<option value="${j+1}" ${m.canal===j+1?'selected':''}>CH ${j+1}</option>`).join('')}
+        </select>
+        <button onclick="S.motorola[${i}].bat=100;renderMatorola();saveStorage()" class="btn btn-ghost btn-sm btn-icon" title="Batterie pleine"><i class="fas fa-battery-full" style="font-size:10px;color:var(--success)"></i></button>
+        <select onchange="S.motorola[${i}].statut=this.value;saveStorage()" style="width:90px;font-size:10px">
+          <option ${m.statut==='Disponible'?'selected':''}>Disponible</option>
+          <option ${m.statut==='En service'?'selected':''}>En service</option>
+          <option ${m.statut==='Hs'?'selected':''}>Hs</option>
+        </select>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openCanauxConfig(){
+  const body=document.getElementById('canaux-config-body');
+  body.innerHTML=S.canaux.map((c,i)=>`
+    <div style="display:flex;gap:6px;align-items:center;padding:5px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:10px;font-weight:800;color:var(--tx3);width:38px">CH ${i+1}</span>
+      <input type="text" id="ch-freq-${i}" value="${c.freq}" placeholder="Fréquence MHz" style="flex:1;font-family:var(--mono);font-size:11px">
+      <input type="text" id="ch-code-${i}" value="${c.code}" placeholder="Code CTCSS" style="width:80px;font-family:var(--mono);font-size:11px">
+    </div>`).join('');
+  openModal('modal-canaux-config');
+}
+
+function saveCanaux(){
+  S.canaux=S.canaux.map((c,i)=>({ch:i+1,freq:document.getElementById('ch-freq-'+i).value,code:document.getElementById('ch-code-'+i).value}));
+  closeModal('modal-canaux-config');renderMatorola();saveStorage();toast('Canaux sauvegardés','s');
+}
+
+// ═══════════════════════════════════════════
+// HOLLYLAND
+// ═══════════════════════════════════════════
+function renderHollyland(){
+  const grid=document.getElementById('hollyland-grid');
+  grid.innerHTML=S.hollyland.map((h,i)=>{
+    const bc=h.bat<20?'var(--danger)':h.bat<50?'var(--warning)':'var(--success)';
+    const crewOpts='<option value="">Libre</option>'+S.crew.map(c=>`<option value="${c.prenom} ${c.nom}" ${h.assigneA===c.prenom+' '+c.nom?'selected':''}>${c.prenom} ${c.nom}</option>`).join('');
+    return `<div class="matos-card" style="${h.id==='master'?'border-color:var(--accent)':''}">
+      <div class="matos-num">${h.label}</div>
+      <div class="fg" style="margin-bottom:8px"><label style="font-size:9px">Assigné à</label><select onchange="S.hollyland[${i}].assigneA=this.value;saveStorage();renderCrew()">${crewOpts}</select></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:10px;color:var(--tx3)">Batterie</span><span style="font-size:10px;color:${bc};font-weight:700">${h.bat}%</span></div>
+      <div class="bat-bar"><div class="bat-fill" style="width:${h.bat}%;background:${bc}"></div></div>
+      <div style="display:flex;gap:4px;margin-top:8px">
+        <select onchange="S.hollyland[${i}].statut=this.value;saveStorage()" style="flex:1;font-size:10px"><option ${h.statut==='OK'?'selected':''}>OK</option><option ${h.statut==='Déconnecté'?'selected':''}>Déconnecté</option><option ${h.statut==='Erreur'?'selected':''}>Erreur</option></select>
+        <button onclick="S.hollyland[${i}].bat=100;renderHollyland();saveStorage()" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-battery-full" style="font-size:10px;color:var(--success)"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════
+// MEGAPHONE
+// ═══════════════════════════════════════════
+function renderMegaphone(){
+  const crewOpts='<option value="">Libre</option>'+S.crew.map(c=>`<option value="${c.prenom} ${c.nom}" ${S.megaphone.assigneA===c.prenom+' '+c.nom?'selected':''}>${c.prenom} ${c.nom}</option>`).join('');
+  document.getElementById('mega-card').innerHTML=`
+    <div style="display:flex;gap:16px;align-items:flex-start">
+      <div style="font-size:42px">📢</div>
+      <div style="flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <div class="fg" style="margin-bottom:0"><label>Assigné à</label><select onchange="S.megaphone.assigneA=this.value;saveStorage();renderCrew()">${crewOpts}</select></div>
+        <div class="fg" style="margin-bottom:0"><label>Zone</label><input type="text" value="${S.megaphone.zone}" onchange="S.megaphone.zone=this.value;saveStorage()" placeholder="Zone d'utilisation"></div>
+        <div class="fg" style="margin-bottom:0"><label>Statut</label><select onchange="S.megaphone.statut=this.value;saveStorage()"><option ${S.megaphone.statut==='Disponible'?'selected':''}>Disponible</option><option ${S.megaphone.statut==='En service'?'selected':''}>En service</option></select></div>
+      </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════
+// EXTRA MATOS
+// ═══════════════════════════════════════════
+function renderExtraMatos(){
+  const list=document.getElementById('extra-matos-list');
+  if(!S.extraMatos.length){list.innerHTML='<div class="empty" style="padding:16px"><i class="fas fa-plus-circle"></i><p>Aucun équipement additionnel</p></div>';return;}
+  list.innerHTML=S.extraMatos.map((m,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--bg3);border-radius:var(--r-sm);border:1px solid var(--border);margin-bottom:6px"><span class="badge b-neutral">${m.type}</span><span style="flex:1;font-size:12px;font-weight:600">${m.nom}</span><span style="font-size:11px;color:var(--tx3)">${m.zone||''}</span><button onclick="S.extraMatos.splice(${i},1);renderExtraMatos();saveStorage()" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button></div>`).join('');
+}
+
+function addMatosExtra(){
+  S.extraMatos.push({id:S.nextId++,type:document.getElementById('m-type').value,nom:document.getElementById('m-nom').value||'Équipement',zone:document.getElementById('m-zone').value});
+  closeModal('modal-add-matos');renderExtraMatos();saveStorage();toast('Équipement ajouté','s');
+}
+
+// ═══════════════════════════════════════════
+// INCIDENTS
+// ═══════════════════════════════════════════
+function addIncident(){
+  const inc={id:S.nextId++,time:new Date().toLocaleTimeString('fr-FR'),desc:document.getElementById('inc-desc').value||'Incident',cat:document.getElementById('inc-cat').value,prio:document.getElementById('inc-prio').value,assign:document.getElementById('inc-assign').value,statut:'Ouvert'};
+  S.incidents.unshift(inc);
+  document.getElementById('inc-desc').value='';
+  closeModal('modal-incident');
+  renderIncidents();updateCockpit();addActivity('🚨 '+inc.desc,'d');saveStorage();toast('Incident déclaré','d');
+}
+
+function renderIncidents(){
+  const log=document.getElementById('inc-log');
+  if(!S.incidents.length){log.innerHTML='<div class="empty"><i class="fas fa-circle-check" style="color:var(--success)"></i><p>Aucun incident — Tout est OK ✓</p></div>';return;}
+  const pc={critique:'var(--danger)',urgent:'var(--warning)',mineur:'var(--info)'};
+  log.innerHTML=S.incidents.map(inc=>`
+    <div class="inc-item ${inc.statut==='Résolu'?'resolved':''}">
+      <div style="flex-shrink:0"><div style="font-family:var(--mono);font-size:10px;color:var(--tx3)">${inc.time}</div><span class="badge" style="background:${pc[inc.prio]}18;color:${pc[inc.prio]};font-size:9px;margin-top:4px;display:inline-flex">${inc.prio?.toUpperCase()}</span></div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:700">${inc.desc}</div><div style="font-size:10px;color:var(--tx3);margin-top:2px">${inc.cat}${inc.assign?' — '+inc.assign:''}</div></div>
+      <div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0">
+        ${inc.statut!=='Résolu'?`<button onclick="resolveInc(${inc.id})" class="btn btn-success btn-sm" style="font-size:9px"><i class="fas fa-check"></i> Résolu</button>`:'<span class="badge b-success" style="font-size:9px">✓ Résolu</span>'}
+        <button onclick="deleteInc(${inc.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
+      </div>
+    </div>`).join('');
+  updateCockpit();
+}
+
+function resolveInc(id){const inc=S.incidents.find(i=>i.id===id);if(inc){inc.statut='Résolu';renderIncidents();updateCockpit();saveStorage();addActivity('Incident résolu: '+inc.desc,'s');}}
+function deleteInc(id){S.incidents=S.incidents.filter(i=>i.id!==id);renderIncidents();updateCockpit();saveStorage();}
+
+// ═══════════════════════════════════════════
+// ELECTRICITE
+// ═══════════════════════════════════════════
+function addPower(w){S.elec+=w;renderElec();updateCockpit();saveStorage();}
+function resetElec(){S.elec=0;S.elecDevices=[];renderElec();updateCockpit();saveStorage();}
+function addElecDev(){
+  const name=document.getElementById('elec-dev-name').value;
+  const w=parseInt(document.getElementById('elec-dev-w').value)||0;
+  if(!name||!w)return;
+  S.elecDevices.push({name,w});S.elec+=w;
+  document.getElementById('elec-dev-name').value='';document.getElementById('elec-dev-w').value='';
+  renderElec();updateCockpit();saveStorage();
+}
+function removeElecDev(i){S.elec-=S.elecDevices[i].w;S.elecDevices.splice(i,1);renderElec();updateCockpit();saveStorage();}
+
+function renderElec(){
+  const a230=(S.elec/230).toFixed(1);
+  const a400=(S.elec/(400*1.732)).toFixed(1);
+  const pct=Math.min((S.elec/7200)*100,100);
+  const color=pct>90?'var(--danger)':pct>70?'var(--warning)':'var(--success)';
+  document.getElementById('elec-total').textContent=S.elec+' W';
+  document.getElementById('elec-mono').textContent=a230+' A';
+  document.getElementById('elec-tri').textContent=a400+' A';
+  document.getElementById('elec-bar').style.width=pct+'%';
+  document.getElementById('elec-bar').style.background=color;
+  let tip='Une prise standard (16A) supporte max 3 680W. ';
+  if(pct>90)tip='⛔ SURCHARGE — Risque de disjonction imminent ! Réduisez la charge.';
+  else if(pct>70)tip='⚠️ Attention — Charge élevée. Ne pas ajouter d\'appareils puissants sur ce circuit.';
+  else tip+=`Il reste ${Math.round(7200-S.elec)}W disponibles sur ce circuit.`;
+  document.getElementById('elec-tip').textContent=tip;
+  document.getElementById('elec-tip').style.color=pct>90?'var(--danger)':pct>70?'var(--warning)':'var(--tx3)';
+  const devs=document.getElementById('elec-devices');
+  devs.innerHTML=S.elecDevices.map((d,i)=>`<div class="elec-row"><span class="elec-name">${d.name}</span><span class="elec-w">${d.w} W</span><button onclick="removeElecDev(${i})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-times" style="font-size:10px;color:var(--danger)"></i></button></div>`).join('');
+}
+
+// ═══════════════════════════════════════════
+// CHECKLIST CONFORMITÉ
+// ═══════════════════════════════════════════
+function renderConform(){
+  const list=document.getElementById('conform-list');
+  list.innerHTML=S.conformItems.map((item,i)=>`
+    <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:var(--r-sm);cursor:pointer;transition:var(--tr)" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='transparent'">
+      <input type="checkbox" ${S.conformDone[i]?'checked':''} onchange="S.conformDone[${i}]=this.checked;updateConformCount();saveStorage()" style="width:15px;height:15px;accent-color:var(--accent);cursor:pointer;flex-shrink:0">
+      <span style="font-size:12px;font-weight:500;${S.conformDone[i]?'text-decoration:line-through;color:var(--tx3)':''}">${item}</span>
+    </label>`).join('');
+  updateConformCount();
+}
+
+function updateConformCount(){
+  const total=S.conformItems.length;
+  const done=Object.values(S.conformDone).filter(Boolean).length;
+  const el=document.getElementById('conform-count');
+  el.textContent=done+'/'+total;
+  el.style.color=done===total?'var(--success)':done>0?'var(--warning)':'var(--tx3)';
+}
+
+// ═══════════════════════════════════════════
+// CONTACTS
+// ═══════════════════════════════════════════
+function renderContacts(){
+  const grid=document.getElementById('contacts-grid');
+  grid.innerHTML=S.contacts.map(c=>`
+    <div class="card card-sm" style="display:flex;align-items:center;gap:10px">
+      <div style="flex:1"><div style="font-size:13px;font-weight:700">${c.nom}</div><div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--accent);margin:3px 0">${c.tel}</div><span class="badge b-neutral" style="font-size:9px">${c.cat}</span></div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <button onclick="window.open('tel:${c.tel}')" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-phone" style="color:var(--success)"></i></button>
+        ${c.id>3?`<button onclick="deleteContact(${c.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function addContact(){
+  S.contacts.push({id:S.nextId++,nom:document.getElementById('ct-nom').value,tel:document.getElementById('ct-tel').value,cat:document.getElementById('ct-cat').value});
+  closeModal('modal-add-contact');renderContacts();saveStorage();toast('Contact ajouté','s');
+}
+function deleteContact(id){S.contacts=S.contacts.filter(c=>c.id!==id);renderContacts();saveStorage();}
+
+// ═══════════════════════════════════════════
+// BUDGET
+// ═══════════════════════════════════════════
+function toggleBudget(){
+  S.budgetUnlocked=!S.budgetUnlocked;
+  document.getElementById('budget-locked').style.display=S.budgetUnlocked?'none':'block';
+  document.getElementById('budget-open').style.display=S.budgetUnlocked?'block':'none';
+  document.getElementById('btn-add-budget').style.display=S.budgetUnlocked?'inline-flex':'none';
+  document.getElementById('budget-lock-ico').className=S.budgetUnlocked?'fas fa-lock-open':'fas fa-lock';
+  document.getElementById('budget-lock-lbl').textContent=S.budgetUnlocked?'Verrouiller':'Déverrouiller';
+  document.getElementById('budget-lock-badge').style.display=S.budgetUnlocked?'none':'inline-flex';
+  if(S.budgetUnlocked)renderBudget();
+}
+
+function renderBudget(){
+  if(!S.budgetUnlocked)return;
+  const lignes=S.budget.lignes;
+  const dep=lignes.reduce((a,l)=>a+(l.reel||0),0);
+  const al=S.budget.alloue;
+  const rest=al-dep;
+  const pct=al?Math.round((dep/al)*100):0;
+  const bc=pct>90?'var(--danger)':pct>70?'var(--warning)':'var(--success)';
+  document.getElementById('b-alloue').textContent=al.toLocaleString('fr-FR')+' €';
+  document.getElementById('b-depense').textContent=dep.toLocaleString('fr-FR')+' €';
+  document.getElementById('b-restant').textContent=rest.toLocaleString('fr-FR')+' €';
+  document.getElementById('b-pct').textContent=pct+'%';
+  document.getElementById('b-bar').style.width=pct+'%';
+  document.getElementById('b-bar').style.background=bc;
+  const sb={Devis:'b-neutral',Commandé:'b-info',Facturé:'b-warning',Payé:'b-success'};
+  document.getElementById('budget-body').innerHTML=lignes.map(l=>{
+    const ecart=(l.reel||0)-(l.prevu||0);
+    return `<tr>
+      <td><span class="badge b-accent">${l.cat}</span></td>
+      <td style="font-weight:600">${l.desc}</td>
+      <td style="color:var(--tx2)">${l.fourn||'—'}</td>
+      <td style="font-family:var(--mono)">${(l.prevu||0).toLocaleString('fr-FR')} €</td>
+      <td style="font-family:var(--mono);font-weight:700">${(l.reel||0).toLocaleString('fr-FR')} €</td>
+      <td style="font-family:var(--mono);color:${ecart>0?'var(--danger)':ecart<0?'var(--success)':'var(--tx2)'};font-weight:700">${ecart>0?'+':''}${ecart.toLocaleString('fr-FR')} €</td>
+      <td><span class="badge ${sb[l.statut]||'b-neutral'}">${l.statut}</span></td>
+      <td style="color:var(--tx3)">${l.date||'—'}</td>
+      <td style="color:var(--tx3);font-size:11px">${l.note||''}</td>
+      <td style="display:flex;gap:3px">
+        <button onclick="editBudgetLine(${l.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-pen" style="font-size:10px"></i></button>
+        <button onclick="deleteBudgetLine(${l.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
+      </td>
+    </tr>`;
+  }).join('');
+  updateCockpit();
+}
+
+let editingBudgetId=-1;
+function saveBudgetLine(){
+  const data={cat:document.getElementById('b-cat').value,desc:document.getElementById('b-desc').value||'Dépense',fourn:document.getElementById('b-fourn').value,prevu:parseFloat(document.getElementById('b-prevu').value)||0,reel:parseFloat(document.getElementById('b-reel').value)||0,statut:document.getElementById('b-statut').value,date:document.getElementById('b-date').value,note:document.getElementById('b-note').value};
+  if(editingBudgetId===-1){data.id=S.nextId++;S.budget.lignes.push(data);toast('Ligne ajoutée','s');}
+  else{const l=S.budget.lignes.find(l=>l.id===editingBudgetId);if(l)Object.assign(l,data);toast('Ligne mise à jour','s');editingBudgetId=-1;}
+  closeModal('modal-add-budget');renderBudget();saveStorage();
+}
+
+function editBudgetLine(id){
+  const l=S.budget.lignes.find(l=>l.id===id);if(!l)return;
+  editingBudgetId=id;
+  document.getElementById('budget-modal-title').textContent='Modifier la ligne';
+  document.getElementById('b-save-btn').innerHTML='<i class="fas fa-floppy-disk"></i> Mettre à jour';
+  document.getElementById('b-cat').value=l.cat;document.getElementById('b-desc').value=l.desc;document.getElementById('b-fourn').value=l.fourn||'';document.getElementById('b-prevu').value=l.prevu||0;document.getElementById('b-reel').value=l.reel||0;document.getElementById('b-statut').value=l.statut;document.getElementById('b-date').value=l.date||'';document.getElementById('b-note').value=l.note||'';
+  openModal('modal-add-budget');
+}
+
+function deleteBudgetLine(id){S.budget.lignes=S.budget.lignes.filter(l=>l.id!==id);renderBudget();saveStorage();}
+
+// ═══════════════════════════════════════════
+// MÉTÉO
+// ═══════════════════════════════════════════
+function geolocate(){
+  if(!navigator.geolocation){toast('Géolocalisation non supportée','d');return;}
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const {latitude:lat,longitude:lon}=pos.coords;
+    // Reverse geocode via open-meteo (no key needed)
+    document.getElementById('meteo-city').value='Ma position ('+lat.toFixed(2)+', '+lon.toFixed(2)+')';
+    fetchWeatherByCoords(lat,lon);
+  },()=>toast('Impossible de vous localiser','d'));
+}
+
+async function fetchWeather(){
+  const city=document.getElementById('meteo-city')?.value||'Lyon';
+  // Use open-meteo geocoding (free, no key)
+  try{
+    const geoRes=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=fr`);
+    const geoData=await geoRes.json();
+    if(geoData.results?.length){
+      const {latitude:lat,longitude:lon}=geoData.results[0];
+      await fetchWeatherByCoords(lat,lon);
+    } else {
+      useDemoWeather();
+    }
+  } catch(e){useDemoWeather();}
+}
+
+async function fetchWeatherByCoords(lat,lon){
+  try{
+    const url=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code&hourly=temperature_2m,precipitation_probability,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,weather_code,sunrise,sunset,precipitation_probability_max&wind_speed_unit=kmh&timezone=auto&forecast_days=6`;
+    const res=await fetch(url);
+    const d=await res.json();
+    if(!d.current)throw new Error('No data');
+    const wc=d.current.weather_code;
+    const icon=weatherIcon(wc);
+    const desc=weatherDesc(wc);
+    const temp=Math.round(d.current.temperature_2m);
+    const feels=Math.round(d.current.apparent_temperature);
+    const wind=Math.round(d.current.wind_speed_10m);
+    const hum=d.current.relative_humidity_2m;
+    // Update UI
+    document.getElementById('met-icon').textContent=icon;
+    document.getElementById('met-temp').textContent=temp+'°C';
+    document.getElementById('met-desc').textContent=desc;
+    document.getElementById('met-feels').textContent='Ressenti '+feels+'°C';
+    document.getElementById('met-wind').textContent=wind+' km/h';
+    document.getElementById('met-hum').textContent=hum+'%';
+    // Prévisions horaires
+    const now=new Date();
+    const hourly=d.hourly;
+    const hours=hourly.time.map((t,i)=>({t:new Date(t),temp:Math.round(hourly.temperature_2m[i]),rain:hourly.precipitation_probability[i],wc:hourly.weather_code[i]})).filter(h=>h.t>=now).slice(0,24);
+    document.getElementById('met-hourly').innerHTML=hours.map(h=>`<div class="meteo-hour"><div style="font-size:10px;color:var(--tx3);font-weight:700">${h.t.getHours()}h</div><div style="font-size:18px;margin:4px 0">${weatherIcon(h.wc)}</div><div style="font-family:var(--mono);font-size:12px;font-weight:700">${h.temp}°C</div><div style="font-size:9px;color:var(--info)">${h.rain}%💧</div></div>`).join('');
+    // Prévisions 5 jours
+    const daily=d.daily;
+    document.getElementById('met-days').innerHTML=daily.time.slice(1).map((t,i)=>`<div class="meteo-day"><div style="font-size:11px;font-weight:700;color:var(--tx2)">${new Date(t+'T12:00').toLocaleDateString('fr-FR',{weekday:'short',day:'2-digit',month:'short'})}</div><div style="font-size:28px;margin:6px 0">${weatherIcon(daily.weather_code[i+1])}</div><div style="font-family:var(--mono);font-size:13px;font-weight:700">${Math.round(daily.temperature_2m_max[i+1])}° <span style="color:var(--tx3)">${Math.round(daily.temperature_2m_min[i+1])}°</span></div><div style="font-size:10px;color:var(--info);margin-top:4px">${daily.precipitation_probability_max[i+1]||0}%💧</div></div>`).join('');
+    // Sunrise/sunset
+    if(daily.sunrise){document.getElementById('met-rise').textContent=new Date(daily.sunrise[0]).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});document.getElementById('met-set').textContent=new Date(daily.sunset[0]).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});}
+    // Rain proxy
+    document.getElementById('met-rain').textContent=(daily.precipitation_probability_max[0]||0)+'%';
+    // Alerts
+    const alerts=[];
+    const sv=parseInt(document.getElementById('seuil-vent')?.value||40);
+    const sp=parseInt(document.getElementById('seuil-pluie')?.value||60);
+    if(wind>sv)alerts.push({icon:'💨',msg:`Vent fort: ${wind} km/h — Risque structure / parapluies`,c:'var(--warning)'});
+    if((daily.precipitation_probability_max[0]||0)>sp)alerts.push({icon:'🌧️',msg:`Pluie probable: ${daily.precipitation_probability_max[0]}% — Risque électrique`,c:'var(--danger)'});
+    if(temp<5)alerts.push({icon:'🥶',msg:`Froid: ${temp}°C — Confort public à anticiper`,c:'var(--info)'});
+    document.getElementById('met-alerts').innerHTML=alerts.length?alerts.map(a=>`<div style="display:flex;gap:6px;font-size:11px;color:${a.c};font-weight:600;margin-bottom:4px"><span>${a.icon}</span><span>${a.msg}</span></div>`).join(''):'<div style="font-size:11px;color:var(--tx3);font-style:italic">Aucune alerte météo</div>';
+    // Cockpit mini
+    document.getElementById('cw-meteo-icon').textContent=icon;
+    document.getElementById('cw-meteo-temp').textContent=temp+'°C';
+    document.getElementById('cw-meteo-desc').textContent=desc;
+    document.getElementById('cw-meteo-wind').textContent='Vent: '+wind+' km/h';
+  } catch(e){useDemoWeather();}
+}
+
+function useDemoWeather(){
+  const icons=['☀️','⛅','☁️','🌧️','🌩️'];
+  const descs=['Ensoleillé','Partiellement nuageux','Couvert','Pluie légère','Orage'];
+  const ri=Math.floor(Math.random()*5);
+  const temp=Math.round(8+Math.random()*20);
+  document.getElementById('met-icon').textContent=icons[ri];document.getElementById('met-temp').textContent=temp+'°C';document.getElementById('met-desc').textContent=descs[ri]+' (démo)';document.getElementById('met-feels').textContent='Ressenti '+(temp-3)+'°C';document.getElementById('met-wind').textContent=Math.round(5+Math.random()*35)+' km/h';document.getElementById('met-hum').textContent=Math.round(40+Math.random()*50)+'%';document.getElementById('met-rain').textContent=Math.round(Math.random()*60)+'%';document.getElementById('met-rise').textContent='07:12';document.getElementById('met-set').textContent='20:35';
+  document.getElementById('cw-meteo-icon').textContent=icons[ri];document.getElementById('cw-meteo-temp').textContent=temp+'°C';document.getElementById('cw-meteo-desc').textContent=descs[ri];document.getElementById('cw-meteo-wind').textContent='Vent: '+(Math.round(5+Math.random()*35))+' km/h';
+  document.getElementById('met-hourly').innerHTML=Array.from({length:12},(_,i)=>`<div class="meteo-hour"><div style="font-size:10px;color:var(--tx3);font-weight:700">${8+i}h</div><div style="font-size:18px;margin:4px 0">${icons[Math.floor(Math.random()*5)]}</div><div style="font-family:var(--mono);font-size:12px;font-weight:700">${Math.round(temp-2+Math.random()*6)}°C</div></div>`).join('');
+  document.getElementById('met-days').innerHTML=Array.from({length:5},(_,i)=>{const d=new Date();d.setDate(d.getDate()+i+1);return `<div class="meteo-day"><div style="font-size:11px;font-weight:700;color:var(--tx2)">${d.toLocaleDateString('fr-FR',{weekday:'short',day:'2-digit',month:'short'})}</div><div style="font-size:28px;margin:6px 0">${icons[Math.floor(Math.random()*5)]}</div><div style="font-family:var(--mono);font-size:13px;font-weight:700">${Math.round(10+Math.random()*15)}° <span style="color:var(--tx3)">${Math.round(5+Math.random()*8)}°</span></div></div>`;}).join('');
+}
+
+function weatherIcon(wc){if(wc===0)return'☀️';if(wc<=2)return'⛅';if(wc===3)return'☁️';if(wc<=49)return'🌫️';if(wc<=57)return'🌧️';if(wc<=67)return'🌨️';if(wc<=77)return'❄️';if(wc<=82)return'🌧️';if(wc<=86)return'🌨️';if(wc<=99)return'⛈️';return'☁️';}
+function weatherDesc(wc){if(wc===0)return'Ciel dégagé';if(wc<=2)return'Partiellement nuageux';if(wc===3)return'Couvert';if(wc<=49)return'Brouillard';if(wc<=57)return'Bruine';if(wc<=67)return'Pluie';if(wc<=77)return'Neige';if(wc<=82)return'Averses';if(wc<=86)return'Averses de neige';if(wc<=99)return'Orage';return'Nuageux';}
+
+// ═══════════════════════════════════════════
+// SIGNALÉTIQUE
+// ═══════════════════════════════════════════
+let signDir='haut',signPicto='',signFormat='A4';
+const arrowSVGs={
+  haut:'<polygon points="90,10 170,100 120,100 120,130 60,130 60,100 10,100" fill="#000"/>',
+  bas:'<polygon points="90,130 170,40 120,40 120,10 60,10 60,40 10,40" fill="#000"/>',
+  droite:'<polygon points="170,70 80,10 80,50 10,50 10,90 80,90 80,130" fill="#000"/>',
+  gauche:'<polygon points="10,70 100,10 100,50 170,50 170,90 100,90 100,130" fill="#000"/>',
+};
+
+function setDir(dir,btn){signDir=dir;document.querySelectorAll('[id^="db-"]').forEach(b=>b.classList.remove('btn-primary'));btn.classList.add('btn-primary');updateSign();}
+function setPicto(p,btn){signPicto=p;updateSign();}
+function setFormat(f,btn){signFormat=f;['fmt-a4','fmt-a3'].forEach(id=>document.getElementById(id).classList.remove('btn-primary'));btn.classList.add('btn-primary');}
+
+function updateSign(){
+  document.getElementById('sig-title-out').textContent=document.getElementById('sig-titre').value||'—';
+  document.getElementById('sig-sub-out').textContent=document.getElementById('sig-sub').value||'';
+  document.getElementById('sig-picto-out').textContent=signPicto;
+  document.getElementById('sig-arrow-out').innerHTML=arrowSVGs[signDir]||arrowSVGs.haut;
+}
+
+function saveSign(){
+  const s={id:S.nextId++,titre:document.getElementById('sig-titre').value,sub:document.getElementById('sig-sub').value,dir:signDir,picto:signPicto,format:signFormat,time:new Date().toLocaleTimeString('fr-FR')};
+  S.signHistory.unshift(s);renderSignHistory();saveStorage();toast('Panneau sauvegardé','s');
+}
+
+function renderSignHistory(){
+  const c=document.getElementById('sign-history');
+  if(!S.signHistory.length){c.innerHTML='<div class="empty"><i class="fas fa-print"></i><p>Aucun panneau créé</p></div>';return;}
+  c.innerHTML=S.signHistory.map(s=>`
+    <div class="matos-card" style="text-align:center;cursor:pointer" onclick="loadSign(${s.id})">
+      <svg width="40" height="30" viewBox="0 0 180 140" style="margin:0 auto 4px;display:block">${arrowSVGs[s.dir]||''}</svg>
+      <div style="font-size:11px;font-weight:800;margin:3px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.titre}</div>
+      ${s.sub?`<div style="font-size:9px;color:var(--tx3)">${s.sub}</div>`:''}
+      <div style="font-size:9px;color:var(--tx3);margin-top:4px">${s.time}</div>
+      <div style="display:flex;gap:4px;justify-content:center;margin-top:7px">
+        <button onclick="event.stopPropagation();printSignById(${s.id})" class="btn btn-ghost btn-sm" style="font-size:9px"><i class="fas fa-print"></i></button>
+        <button onclick="event.stopPropagation();deleteSign(${s.id})" class="btn btn-ghost btn-sm" style="font-size:9px"><i class="fas fa-trash" style="color:var(--danger)"></i></button>
+      </div>
+    </div>`).join('');
+}
+
+function loadSign(id){const s=S.signHistory.find(s=>s.id===id);if(!s)return;document.getElementById('sig-titre').value=s.titre;document.getElementById('sig-sub').value=s.sub;signDir=s.dir;signPicto=s.picto;signFormat=s.format;updateSign();}
+function deleteSign(id){S.signHistory=S.signHistory.filter(s=>s.id!==id);renderSignHistory();saveStorage();}
+function clearSign(){document.getElementById('sig-titre').value='';document.getElementById('sig-sub').value='';signDir='haut';signPicto='';updateSign();}
+function clearSignHistory(){if(!confirm('Vider l\'historique ?'))return;S.signHistory=[];renderSignHistory();saveStorage();}
+
+function printSign(){
+  const titre=document.getElementById('sig-titre').value||'—';
+  const sub=document.getElementById('sig-sub').value||'';
+  const arrow=arrowSVGs[signDir]||arrowSVGs.haut;
+  printSignPage(titre,sub,arrow,signPicto,signFormat);
+}
+
+function printSignById(id){
+  const s=S.signHistory.find(s=>s.id===id);if(!s)return;
+  printSignPage(s.titre,s.sub,arrowSVGs[s.dir]||arrowSVGs.haut,s.picto,s.format);
+}
+
+function printSignPage(titre,sub,arrow,picto,format){
+  const w=window.open('','_blank');
+  const size=format==='A3'?'width:420mm;height:297mm;':'width:210mm;min-height:297mm;';
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@900&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',Arial,sans-serif;background:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh}
+    .page{${size}display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px}
+    .picto{font-size:${format==='A3'?'80px':'60px'};margin-bottom:20px;line-height:1}
+    svg{width:${format==='A3'?'320px':'220px'};height:auto;margin-bottom:${format==='A3'?'30px':'20px'}}
+    .title{font-size:${format==='A3'?'120px':'80px'};font-weight:900;text-transform:uppercase;letter-spacing:-3px;line-height:1;color:#000}
+    .sub{font-size:${format==='A3'?'40px':'28px'};font-weight:700;color:#222;margin-top:16px}
+    @media print{body{min-height:auto}}
+  </style></head><body>
+  <div class="page">
+    ${picto?`<div class="picto">${picto}</div>`:''}
+    <svg viewBox="0 0 180 140" xmlns="http://www.w3.org/2000/svg">${arrow}</svg>
+    <div class="title">${titre}</div>
+    ${sub?`<div class="sub">${sub}</div>`:''}
+  </div>
+  <script>window.onload=()=>{window.print();setTimeout(()=>window.close(),1000)}<\/script>
+  </body></html>`);
+  w.document.close();
+}
+
+// ═══════════════════════════════════════════
+// GLOBAL TIMER
+// ═══════════════════════════════════════════
+function gtToggle(){S.globalTimer.running=!S.globalTimer.running;document.getElementById('gt-btn').innerHTML=S.globalTimer.running?'<i class="fas fa-pause"></i>':'<i class="fas fa-play"></i>';}
+function gtReset(){S.globalTimer.running=false;S.globalTimer.elapsed=0;document.getElementById('cw-global-timer').textContent='00:00:00';document.getElementById('gt-btn').innerHTML='<i class="fas fa-play"></i>';}
+
+// ═══════════════════════════════════════════
+// MODALS
+// ═══════════════════════════════════════════
+function openModal(id){
+  document.getElementById(id).classList.add('open');
+  populateCrewSelects();
+  if(id==='modal-canaux-config')openCanauxConfig();
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+// ═══════════════════════════════════════════
+// ACTIVITY + TOAST
+// ═══════════════════════════════════════════
+function addActivity(msg,type='i'){
+  const colors={i:'var(--tx3)',s:'var(--success)',d:'var(--danger)'};
+  const icons={i:'●',s:'✓',d:'⚠'};
+  S.activityFeed.unshift({msg,type,time:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})});
+  if(S.activityFeed.length>20)S.activityFeed.pop();
+  const feed=document.getElementById('cw-activity');
+  if(feed)feed.innerHTML=S.activityFeed.slice(0,5).map(a=>`<div style="display:flex;gap:5px;align-items:flex-start"><span style="color:${colors[a.type]};font-size:10px;flex-shrink:0;margin-top:1px">${icons[a.type]}</span><div style="flex:1"><span style="font-size:11px">${a.msg}</span><span style="font-size:9px;color:var(--tx3);margin-left:5px">${a.time}</span></div></div>`).join('');
+}
+
+function toast(msg,type='i'){
+  const el=document.createElement('div');
+  el.className='toast toast-'+type;
+  const c={s:'var(--success)',d:'var(--danger)',i:'var(--accent)'};
+  el.innerHTML=`<span style="color:${c[type]||'var(--accent)'};font-weight:700">${type==='s'?'✓':type==='d'?'⚠':'ℹ'}</span> ${msg}`;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(()=>el.remove(),3200);
+}
+
+// ═══════════════════════════════════════════
+// SAVE / LOAD
+// ═══════════════════════════════════════════
+function saveStorage(){
+  try{
+    // Save global state (events list, theme)
+    localStorage.setItem('aintercom_global',JSON.stringify({events:S.events,theme:S.theme}));
+    // Save event-specific data
+    if(S.currentEventId){
+      const {events,theme,...eventData}=S;
+      localStorage.setItem('aintercom_event_'+S.currentEventId,JSON.stringify(eventData));
+    }
+    const now=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    const el=document.getElementById('ftr-save');if(el)el.textContent='Sauvegardé à '+now;
+    document.getElementById('save-ind').textContent='● '+now;
+  }catch(e){console.warn('Save error',e);}
+}
+
+function loadStorage(){
+  try{
+    const global=localStorage.getItem('aintercom_global');
+    if(global){const d=JSON.parse(global);S.events=d.events||[];S.theme=d.theme||'dark';}
+    if(S.theme==='light'){document.getElementById('root').className='light';['home-theme-btn','app-theme-btn'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<i class="fas fa-sun"></i>';});}
+  }catch(e){console.warn('Load error',e);}
+}
+
+function saveManual(){saveStorage();toast('Sauvegardé','s');addActivity('Sauvegarde manuelle','i');}
+function startAutoSave(){setInterval(saveStorage,30000);}
+
+// ═══════════════════════════════════════════
+// NOTE RAPIDE
+// ═══════════════════════════════════════════
+function saveNote(){S.note=document.getElementById('quick-note').value;saveStorage();toast('Note sauvegardée','s');}
+
+// ═══════════════════════════════════════════
+// PRINT / EXPORT
+// ═══════════════════════════════════════════
+function doPrint(){
+  // Print current tab
+  const activeTab=document.querySelector('.tab.active');
+  if(!activeTab)return;
+  const w=window.open('','_blank');
+  const ev=S.events.find(e=>e.id===S.currentEventId)||{};
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;900&family=DM+Mono:wght@400;700&display=swap" rel="stylesheet"><style>
+    body{font-family:'DM Sans',Arial,sans-serif;color:#000;background:#fff;padding:30px;font-size:13px}
+    h1{font-size:24px;font-weight:900;letter-spacing:-1px;margin-bottom:4px}
+    h2{font-size:16px;font-weight:800;margin:20px 0 10px;border-bottom:2px solid #000;padding-bottom:4px}
+    .meta{font-size:11px;color:#666;margin-bottom:20px}
+    table{width:100%;border-collapse:collapse;margin-bottom:16px}
+    th{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;border-bottom:2px solid #000;padding:6px 8px;text-align:left}
+    td{padding:6px 8px;border-bottom:1px solid #ddd;font-size:12px}
+    .badge{display:inline-block;padding:1px 6px;border:1px solid #ccc;border-radius:4px;font-size:10px;font-weight:700}
+    @media print{@page{margin:15mm}}
+  </style></head><body>
+    <h1>AINTERCOM PRO</h1>
+    <div class="meta">${ev.nom||'Événement'} · ${ev.lieu||''} · ${ev.date?new Date(ev.date+'T12:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}):''} · Imprimé le ${new Date().toLocaleDateString('fr-FR')}</div>
+    ${activeTab.innerHTML}
+  <script>window.onload=()=>window.print()<\/script></body></html>`);
+  w.document.close();
+}
+
+function printConducteur(){doPrint();}
+function printCrew(){doPrint();}
+function printBudget(){doPrint();}
+
+// ═══════════════════════════════════════════
+// FEEDBACK
+// ═══════════════════════════════════════════
+function submitFeedback(){const t=document.getElementById('fb-text').value;if(!t)return;closeModal('modal-feedback');document.getElementById('fb-text').value='';toast('Merci pour votre suggestion !','s');addActivity('Feedback envoyé','i');}
+
+// ═══════════════════════════════════════════
+// KEYBOARD SHORTCUTS
+// ═══════════════════════════════════════════
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')document.querySelectorAll('.overlay.open').forEach(m=>m.classList.remove('open'));
+  if(e.ctrlKey&&e.key==='s'){e.preventDefault();saveManual();}
+  if(e.ctrlKey&&e.key==='n'){e.preventDefault();nextTop();}
+});
+
+// ═══════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════
+function fmtSec(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function fmtTime(s){return String(Math.floor(s/3600)).padStart(2,'0')+':'+String(Math.floor((s%3600)/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+</script>
+
+<!-- ═══════════════════════════════════════════
+     SUPABASE AUTH — CONNEXION GOOGLE
+     Remplace SUPABASE_URL et SUPABASE_ANON_KEY
+     par tes vraies valeurs depuis supabase.com
+═══════════════════════════════════════════ -->
+<script>
+// ── CONFIG SUPABASE ──
+// Va sur https://supabase.com → ton projet → Settings → API
+// et remplace ces deux valeurs :
+const SUPABASE_URL = 'https://VOTRE_PROJECT_ID.supabase.co';
+const SUPABASE_ANON_KEY = 'VOTRE_ANON_KEY';
+
+let supabase = null;
+let currentUser = null;
+
+// Initialise Supabase seulement si les clés sont configurées
+function initSupabase() {
+  if (SUPABASE_URL.includes('VOTRE_PROJECT_ID')) {
+    console.warn('⚠️ Supabase non configuré — mode local activé');
+    return false;
+  }
+  try {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    return true;
+  } catch(e) {
+    console.warn('Supabase init error:', e);
+    return false;
+  }
+}
+
+// Page de connexion
+function showLoginPage() {
+  document.getElementById('login-page').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+function hideLoginPage() {
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+}
+
+// Connexion via Google
+async function loginWithGoogle() {
+  if (!supabase) { toast('Supabase non configuré — voir console','d'); return; }
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.href }
+  });
+  if (error) toast('Erreur connexion: ' + error.message, 'd');
+}
+
+// Déconnexion
+async function logout() {
+  if (supabase) await supabase.auth.signOut();
+  currentUser = null;
+  showLoginPage();
+  toast('Déconnecté', 'i');
+}
+
+// Vérification auth au chargement
+async function checkAuth() {
+  const supabaseReady = initSupabase();
+
+  if (!supabaseReady) {
+    // Mode local sans auth — on affiche directement l'interface
+    hideLoginPage();
+    updateUserUI({ email: 'Mode local', user_metadata: { name: 'Utilisateur local' } });
+    return;
+  }
+
+  // Vérifier session existante
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session?.user) {
+    currentUser = session.user;
+    hideLoginPage();
+    updateUserUI(currentUser);
+    addActivity('Connecté: ' + (currentUser.user_metadata?.name || currentUser.email), 's');
+  } else {
+    showLoginPage();
+  }
+
+  // Écouter les changements d'auth
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN' && session?.user) {
+      currentUser = session.user;
+      hideLoginPage();
+      updateUserUI(currentUser);
+      addActivity('Connecté: ' + (currentUser.user_metadata?.name || currentUser.email), 's');
+    } else if (event === 'SIGNED_OUT') {
+      currentUser = null;
+      showLoginPage();
+    }
+  });
+}
+
+function updateUserUI(user) {
+  const name = user?.user_metadata?.name || user?.email || 'Utilisateur';
+  const avatar = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  const el = document.getElementById('user-avatar');
+  if (el) { el.textContent = avatar; el.title = name; }
+}
+
+// Override window.onload pour intégrer auth
+const _originalOnload = window.onload;
+window.onload = async () => {
+  // Lancer l'interface
+  if (_originalOnload) _originalOnload();
+  // Vérifier auth
+  await checkAuth();
+};
+</script>
+
+<!-- PAGE DE CONNEXION -->
+<div id="login-page" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:9999;flex-direction:column;align-items:center;justify-content:center;gap:32px">
+  <div style="text-align:center">
+    <div style="font-size:32px;font-weight:900;letter-spacing:-1px;color:var(--accent)">AINTERCOM <span style="color:var(--tx)">PRO</span></div>
+    <div style="font-size:12px;color:var(--tx3);margin-top:6px;letter-spacing:.15em;text-transform:uppercase">Event Control OS</div>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:36px 40px;text-align:center;width:360px;max-width:90vw">
+    <div style="font-size:18px;font-weight:800;margin-bottom:6px">Connexion</div>
+    <div style="font-size:12px;color:var(--tx2);margin-bottom:24px">Connecte-toi pour accéder à ton interface</div>
+    <button onclick="loginWithGoogle()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 20px;background:#fff;color:#1F2328;border:1px solid #D5DAE3;border-radius:var(--r-sm);font-size:13px;font-weight:700;cursor:pointer;transition:var(--tr);font-family:var(--font)">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M47.5 24.6c0-1.6-.1-3.1-.4-4.6H24v8.7h13.1c-.6 3-2.4 5.5-5 7.2v6h8c4.7-4.3 7.4-10.7 7.4-17.3z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-8-6c-2.1 1.4-4.8 2.2-7.9 2.2-6.1 0-11.2-4.1-13-9.6H2.7v6.2C6.7 42.9 14.8 48 24 48z"/><path fill="#FBBC05" d="M11 28.8c-.5-1.4-.7-2.9-.7-4.4s.3-3 .7-4.4v-6.2H2.7C1 17.1 0 20.4 0 24s1 6.9 2.7 9.9l8.3-5.1z"/><path fill="#EA4335" d="M24 9.5c3.4 0 6.5 1.2 8.9 3.5l6.7-6.7C35.9 2.4 30.5 0 24 0 14.8 0 6.7 5.1 2.7 12.6l8.3 5.1C12.8 13.6 17.9 9.5 24 9.5z"/></svg>
+      Continuer avec Google
+    </button>
+    <div style="margin-top:16px;font-size:11px;color:var(--tx3)">Mode local disponible sans connexion</div>
+    <button onclick="hideLoginPage();updateUserUI({email:'Mode local'})" style="margin-top:8px;background:transparent;border:none;font-size:11px;color:var(--tx2);cursor:pointer;text-decoration:underline;font-family:var(--font)">Continuer sans connexion →</button>
+  </div>
+  <div style="font-size:10px;color:var(--tx3);text-align:center">Tes données sont sauvegardées localement<br>La sync en temps réel nécessite Supabase</div>
+</div>
+
+<!-- BOUTON USER DANS LE HEADER (injecté dynamiquement) -->
+<style>
+#user-avatar{width:28px;height:28px;border-radius:7px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;cursor:pointer;flex-shrink:0}
+</style>
+</body>
+</html>

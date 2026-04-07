@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AINTERCOM LIVE — Dashboard Événementiel</title>
+<meta name="description" content="Dashboard professionnel pour la gestion d'événements AINTERCOM. Connexion Google, gestion de projets, interface light/dark mode.">
+<!-- SDK Supabase pour l'authentification Google -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+/* ── VARIABLES ── */
+:root {
+  --blue: #1A6FFF;
+  --sky: #56B4FF;
+  --grad: linear-gradient(135deg, #1A6FFF 0%, #56B4FF 100%);
+  --grad-90: linear-gradient(90deg, #1A6FFF 0%, #56B4FF 100%);
+  --dark: #07070F;
+  --mid: #38384A;
+  --muted: #8A8A9E;
+  --border: rgba(10,10,30,0.08);
+  --border-md: rgba(10,10,30,0.13);
+  --white: #ffffff;
+  --bg: #F5F5FA;
+  --bg2: #EBEBF3;
+  --r-xs: 8px;
+  --r-sm: 12px;
+  --r-md: 20px;
+  --r-lg: 30px;
+  --r-xl: 44px;
+  --nav-h: 68px;
+  /* Grain texture SVG inline */
+  --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+[data-theme="dark"] {
+  --white: #0E0E1A;
+  --bg: #131320;
+  --bg2: #1A1A2E;
+  --dark: #F0F0FA;
+  --mid: #B0B0C8;
+  --muted: #6A6A85;
+  --border: rgba(255,255,255,0.08);
+  --border-md: rgba(255,255,255,0.13);
+}
+
+/* ── RESET ── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--dark);line-height:1.65;overflow-x:hidden;transition:background .3s,color .3s}
+h1,h2,h3,h4,h5{font-family:'Sora',sans-serif;letter-spacing:-0.03em;line-height:1.08}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+.container{max-width:1160px;margin:0 auto;padding:0 36px}
+
+/* ── GRAIN TEXTURE ── */
+.grain-overlay{position:relative}
+.grain-overlay::after{content:'';position:absolute;inset:0;background-image:var(--grain);opacity:.028;pointer-events:none;border-radius:inherit}
+
+/* ── LAYOUT ── */
+#app {display:none}
+#login-screen{min-height:100vh;display:flex;flex-direction:column}
+#dashboard-screen{min-height:100vh;display:none;flex-direction:column}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:500;height:var(--nav-h);display:flex;align-items:center;background:rgba(255,255,255,0.88);backdrop-filter:blur(28px) saturate(1.8);-webkit-backdrop-filter:blur(28px) saturate(1.8);border-bottom:1px solid var(--border);transition:background .3s}
+[data-theme="dark"] nav{background:rgba(14,14,26,0.9)}
+.nav-inner{display:flex;justify-content:space-between;align-items:center;width:100%}
+.logo{font-family:'Sora',sans-serif;font-weight:800;font-size:1.18rem;letter-spacing:-0.05em;color:var(--dark);display:flex;align-items:center;gap:0}
+.logo em{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-controls{display:flex;gap:4px}
+.ctrl-btn{width:34px;height:34px;border-radius:8px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;font-size:0.8rem;color:var(--muted)}
+.ctrl-btn:hover{background:var(--bg2);color:var(--dark)}
+.ctrl-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.user-avatar{width:34px;height:34px;border-radius:8px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;color:#fff;cursor:pointer}
+
+/* ── LOGIN SCREEN ── */
+.login-hero{flex:1;display:flex;align-items:center;justify-content:center;padding:60px 24px;position:relative;overflow:hidden}
+.login-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(4,4,18,0.82) 0%,rgba(4,4,18,0.55) 50%,rgba(10,20,60,0.45) 100%);z-index:0}
+.login-hero-bg{position:absolute;inset:0;z-index:-1}
+.login-hero-bg img{width:100%;height:100%;object-fit:cover;opacity:0.7}
+.login-content{position:relative;z-index:2;text-align:center;color:#fff;max-width:500px;width:100%}
+.login-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);color:#fff;font-family:'Sora',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;padding:7px 16px;border-radius:100px;margin-bottom:28px}
+.login-badge-dot{width:6px;height:6px;background:var(--sky);border-radius:50%;animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(86,180,255,0.5)}50%{box-shadow:0 0 0 4px rgba(86,180,255,0)}}
+.login-title{font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;color:#fff;margin-bottom:16px;line-height:1.05}
+.login-title em{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal}
+.login-sub{font-size:1.08rem;color:rgba(255,255,255,0.7);max-width:400px;margin:0 auto 32px;line-height:1.75}
+.btn-google{display:inline-flex;align-items:center;gap:12px;font-family:'Sora',sans-serif;font-weight:700;font-size:0.95rem;color:#333;background:#fff;padding:16px 28px;border-radius:var(--r-sm);border:none;cursor:pointer;transition:.22s;margin:0 auto;box-shadow:0 8px 24px rgba(0,0,0,0.15)}
+.btn-google:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,0.25)}
+.btn-google img{width:20px;height:20px}
+
+/* ── DASHBOARD SCREEN ── */
+.dashboard-main{padding:48px 0;flex:1}
+.dashboard-header{margin-bottom:40px}
+.dashboard-title{font-size:clamp(1.8rem,3vw,2.5rem);font-weight:800;margin-bottom:8px}
+.dashboard-sub{font-size:1rem;color:var(--muted);line-height:1.75}
+.events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.event-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;transition:.3s;display:flex;flex-direction:column}
+.event-card:hover{transform:translateY(-5px);box-shadow:0 20px 56px rgba(26,111,255,0.1);border-color:rgba(26,111,255,0.2)}
+.event-card-icon{width:52px;height:52px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;margin-bottom:16px}
+.event-card-content{flex:1}
+.event-card-title{font-size:1.18rem;font-weight:700;margin-bottom:8px;color:var(--dark)}
+.event-card-meta{font-size:0.87rem;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.event-card-status{display:inline-flex;align-items:center;gap:6px;font-family:'Sora',sans-serif;font-size:0.7rem;font-weight:700;padding:5px 12px;border-radius:100px;background:var(--bg);color:var(--mid);margin-bottom:16px}
+.event-card-actions{display:flex;gap:8px;margin-top:auto}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;font-family:'Sora',sans-serif;font-weight:700;font-size:0.85rem;color:#fff;background:var(--blue);padding:10px 18px;border-radius:var(--r-sm);border:none;cursor:pointer;transition:.22s;flex:1;justify-content:center}
+.btn-primary:hover{background:var(--grad);transform:translateY(-1px)}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;font-family:'Sora',sans-serif;font-weight:600;font-size:0.85rem;color:var(--mid);background:var(--bg);border:1px solid var(--border);padding:10px 18px;border-radius:var(--r-sm);cursor:pointer;transition:.22s;flex:1;justify-content:center}
+.btn-ghost:hover{background:var(--bg2);color:var(--dark)}
+
+/* Carte spéciale "Créer un nouvel événement" */
+.event-card-create{background:var(--bg);border:2px dashed var(--border-md);display:flex;align-items:center;justify-content:center;min-height:200px;cursor:pointer;transition:.3s}
+.event-card-create:hover{background:var(--bg2);border-color:var(--blue)}
+.event-card-create-content{text-align:center;padding:20px}
+.event-card-create-icon{width:52px;height:52px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;margin:0 auto 16px}
+.event-card-create-title{font-size:1.18rem;font-weight:700;margin-bottom:8px;color:var(--dark)}
+.event-card-create-sub{font-size:0.87rem;color:var(--muted);line-height:1.6}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:60px 24px;color:var(--muted)}
+.empty-state-icon{font-size:48px;margin-bottom:16px;opacity:0.5}
+.empty-state-title{font-size:1.3rem;font-weight:700;margin-bottom:8px;color:var(--dark)}
+.empty-state-sub{font-size:0.95rem;max-width:400px;margin:0 auto}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .container{padding:0 18px}
+  .events-grid{grid-template-columns:1fr}
+  .login-hero{padding:40px 18px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="container nav-inner">
+    <div class="logo">AIN<em>TERCOM</em> <span style="font-size:0.7rem;margin-left:4px;color:var(--muted)">LIVE</span></div>
+    <div class="nav-right">
+      <div class="nav-controls">
+        <div class="ctrl-btn" onclick="toggleDark()" title="Mode sombre/clair" id="theme-btn">
+          <svg viewBox="0 0 24 24" id="dark-icon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </div>
+      </div>
+      <div class="user-avatar" id="user-avatar" onclick="logout()" style="display:none">?</div>
+    </div>
+  </div>
+</nav>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-hero grain-overlay">
+    <div class="login-hero-bg">
+      <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=1200" alt="Événement festival foule">
+    </div>
+    <div class="login-content">
+      <div class="login-badge">
+        <span class="login-badge-dot"></span>
+        <span>Dashboard Événementiel</span>
+      </div>
+      <h1 class="login-title">Gérez vos événements<br><em>en temps réel.</em></h1>
+      <p class="login-sub">Connectez-vous avec Google pour accéder à votre dashboard de gestion d'événements professionnel.</p>
+      <button class="btn-google" onclick="signInWithGoogle()" id="google-login-btn">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google">
+        <span>Connexion avec Google</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD SCREEN -->
+<div id="dashboard-screen">
+  <div class="dashboard-main container">
+    <div class="dashboard-header">
+      <h1 class="dashboard-title">Mes Événements</h1>
+      <p class="dashboard-sub">Gérez et pilotez vos événements depuis un seul endroit</p>
+    </div>
+    
+    <div class="events-grid" id="events-grid">
+      <!-- Les événements seront chargés dynamiquement -->
+      <div class="event-card-create" onclick="createNewEvent()">
+        <div class="event-card-create-content">
+          <div class="event-card-create-icon">
+            <i class="fas fa-plus"></i>
+          </div>
+          <h3 class="event-card-create-title">Créer un nouvel événement</h3>
+          <p class="event-card-create-sub">Lancez un nouveau projet événementiel</p>
+        </div>
+      </div>
+      
+      <!-- Exemple d'événements -->
+      <div class="event-card">
+        <div class="event-card-icon">
+          <i class="fas fa-music"></i>
+        </div>
+        <div class="event-card-content">
+          <div class="event-card-status">
+            <span class="status-dot" style="background:#22c55e"></span>
+            <span>En cours</span>
+          </div>
+          <h3 class="event-card-title">Festival d'été 2024</h3>
+          <p class="event-card-meta">3 jours • 12 équipes • 250 participants</p>
+          <div class="event-card-actions">
+            <button class="btn-primary" onclick="openEvent('festival-ete-2024')">
+              <i class="fas fa-play"></i> Ouvrir
+            </button>
+            <button class="btn-ghost">
+              <i class="fas fa-cog"></i> Config
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="event-card">
+        <div class="event-card-icon">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="event-card-content">
+          <div class="event-card-status">
+            <span class="status-dot" style="background:#f59e0b"></span>
+            <span>Planification</span>
+          </div>
+          <h3 class="event-card-title">Gala de danse</h3>
+          <p class="event-card-meta">1 soirée • 8 équipes • 120 participants</p>
+          <div class="event-card-actions">
+            <button class="btn-primary" onclick="openEvent('gala-danse')">
+              <i class="fas fa-play"></i> Ouvrir
+            </button>
+            <button class="btn-ghost">
+              <i class="fas fa-cog"></i> Config
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="event-card">
+        <div class="event-card-icon">
+          <i class="fas fa-microphone"></i>
+        </div>
+        <div class="event-card-content">
+          <div class="event-card-status">
+            <span class="status-dot" style="background:#8b5cf6"></span>
+            <span>Terminé</span>
+          </div>
+          <h3 class="event-card-title">Conférence Tech</h3>
+          <p class="event-card-meta">2 jours • 6 équipes • 80 participants</p>
+          <div class="event-card-actions">
+            <button class="btn-primary" onclick="openEvent('conference-tech')">
+              <i class="fas fa-chart-bar"></i> Analytics
+            </button>
+            <button class="btn-ghost">
+              <i class="fas fa-download"></i> Export
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- État vide (masqué par défaut) -->
+    <div class="empty-state" id="empty-state" style="display:none">
+      <div class="empty-state-icon">
+        <i class="fas fa-calendar-plus"></i>
+      </div>
+      <h3 class="empty-state-title">Aucun événement pour le moment</h3>
+      <p class="empty-state-sub">Créez votre premier événement pour commencer à utiliser le dashboard.</p>
+      <button class="btn-primary" onclick="createNewEvent()" style="margin-top:20px">
+        <i class="fas fa-plus"></i> Créer un événement
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Configuration Supabase (mêmes clés que le site vitrine)
+const SUPABASE_URL = 'https://wmbyccbyhtjzvsxxrsbe.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_EpUIqIUw_xcbF_M74ht-dg_eUg66XrS';
+
+// Initialiser Supabase
+let supabase = null;
+let currentUser = null;
+
+function initSupabase() {
+  try {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    console.log('✅ Supabase initialisé pour AINTERCOM LIVE');
+    return true;
+  } catch (error) {
+    console.error('❌ Erreur d\'initialisation Supabase:', error);
+    return false;
+  }
+}
+
+// Vérifier l'authentification
+async function checkAuth() {
+  if (!supabase) initSupabase();
+  
+  try {
+    const { data: { session }, error } = await supabase.auth.getSession();
+    
+    if (error) throw error;
+    
+    if (session && session.user) {
+      currentUser = session.user;
+      showDashboard();
+      updateUserAvatar();
+      return true;
+    } else {
+      showLogin();
+      return false;
+    }
+  } catch (error) {
+    console.error('❌ Erreur de vérification d\'authentification:', error);
+    showLogin();
+    return false;
+  }
+}
+
+// Connexion avec Google
+async function signInWithGoogle() {
+  if (!supabase) initSupabase();
+  
+  try {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin
+      }
+    });
+    
+    if (error) throw error;
+  } catch (error) {
+    console.error('❌ Erreur de connexion Google:', error);
+    alert('Erreur de connexion avec Google. Veuillez réessayer.');
+  }
+}
+
+// Déconnexion
+async function logout() {
+  if (!supabase) initSupabase();
+  
+  try {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+    
+    currentUser = null;
+    showLogin();
+    document.getElementById('user-avatar').style.display = 'none';
+  } catch (error) {
+    console.error('❌ Erreur de déconnexion:', error);
+  }
+}
+
+// Mettre à jour l'avatar utilisateur
+function updateUserAvatar() {
+  const avatar = document.getElementById('user-avatar');
+  if (currentUser && currentUser.email) {
+    const initial = currentUser.email[0].toUpperCase();
+    avatar.textContent = initial;
+    avatar.style.display = 'flex';
+    avatar.title = currentUser.email;
+  }
+}
+
+// Afficher l'écran de login
+function showLogin() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('dashboard-screen').style.display = 'none';
+}
+
+// Afficher le dashboard
+function showDashboard() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard-screen').style.display = 'flex';
+  
+  // Charger les événements (pour l'instant exemple statique)
+  loadEvents();
+}
+
+// Charger les événements
+function loadEvents() {
+  // Pour l'instant, afficher les exemples statiques
+  // Plus tard: appeler l'API Supabase pour récupérer les événements de l'utilisateur
+  const eventsGrid = document.getElementById('events-grid');
+  const emptyState = document.getElementById('empty-state');
+  
+  // Simuler des données
+  const hasEvents = true; // À remplacer par une vérification réelle
+  
+  if (hasEvents) {
+    eventsGrid.style.display = 'grid';
+    emptyState.style.display = 'none';
+  } else {
+    eventsGrid.style.display = 'none';
+    emptyState.style.display = 'block';
+  }
+}
+
+// Créer un nouvel événement
+function createNewEvent() {
+  // Rediriger vers l'interface de création (app.html)
+  window.location.href = 'app.html';
+}
+
+// Ouvrir un événement existant
+function openEvent(eventId) {
+  // Pour l'instant, rediriger vers app.html avec l'ID d'événement
+  window.location.href = `app.html?event=${eventId}`;
+}
+
+// Gestion du thème light/dark
+function toggleDark() {
+  const html = document.documentElement;
+  const currentTheme = html.getAttribute('data-theme');
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  
+  html.setAttribute('data-theme', newTheme);
+  localStorage.setItem('aintercom-live-theme', newTheme);
+  
+  // Mettre à jour l'icône
+  updateThemeIcon(newTheme);
+}
+
+function updateThemeIcon(theme) {
+  const icon = document.querySelector('#dark-icon');
+  if (theme === 'dark') {
+    icon.innerHTML = '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>';
+  } else {
+    icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+}
+
+// Restaurer le thème sauvegardé
+function restoreTheme() {
+  const savedTheme = localStorage.getItem('aintercom-live-theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateThemeIcon(savedTheme);
+}
+
+// Initialisation au chargement
+document.addEventListener('DOMContentLoaded', function() {
+  initSupabase();
+  restoreTheme();
+  checkAuth();
+  
+  // Écouter les changements d'authentification
+  if (supabase) {
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN') {
+        currentUser = session.user;
+        showDashboard();
+        updateUserAvatar();
+      } else if (event === 'SIGNED_OUT') {
+        currentUser = null;
+        showLogin();
+        document.getElementById('user-avatar').style.display = 'none';
+      }
+    });
+  }
+});
+</script>
+
+</body>
+</html>
