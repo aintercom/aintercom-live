@@ -2229,13 +2229,53 @@ function updateUserUI(user) {
   if (el) { el.textContent = avatar; el.title = name; }
 }
 
-// Override window.onload pour intégrer auth
+// Récupérer le projet sélectionné depuis localStorage
+function getSelectedProject() {
+  try {
+    const projectData = localStorage.getItem('aintercom-current-project');
+    if (projectData) {
+      const project = JSON.parse(projectData);
+      console.log('✅ Projet sélectionné:', project.name);
+      return project;
+    }
+  } catch (error) {
+    console.error('❌ Erreur de récupération du projet:', error);
+  }
+  return null;
+}
+
+// Afficher les informations du projet dans l'interface
+function displayProjectInfo() {
+  const project = getSelectedProject();
+  if (project) {
+    // Mettre à jour le titre de l'événement dans le cockpit
+    const eventSub = document.getElementById('cockpit-event-sub');
+    if (eventSub) {
+      eventSub.textContent = `${project.name} · ${project.venue || 'Lieu non spécifié'}`;
+    }
+    
+    // Mettre à jour le nom dans le modal d'édition d'événement
+    const eventNameInput = document.getElementById('ee-nom');
+    if (eventNameInput) {
+      eventNameInput.value = project.name;
+    }
+    
+    // Mettre à jour les autres champs si nécessaire
+    console.log(`📋 Projet chargé: ${project.name} (${project.type})`);
+  } else {
+    console.log('⚠️ Aucun projet sélectionné');
+  }
+}
+
+// Override window.onload pour intégrer auth et projet
 const _originalOnload = window.onload;
 window.onload = async () => {
   // Lancer l'interface
   if (_originalOnload) _originalOnload();
   // Vérifier auth
   await checkAuth();
+  // Afficher les infos du projet
+  displayProjectInfo();
 };
 </script>
 
