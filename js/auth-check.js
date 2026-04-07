@@ -6,7 +6,7 @@
 // Configuration Supabase (mêmes clés que dans index.html)
 const SUPABASE_CONFIG = {
     url: 'https://wmbyccbyhtjzvsxxrsbe.supabase.co',
-    key: 'sb_publishable_EpUIqIUw_xcbF_M74ht-dg_eUg66XrS'
+    key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtYnljY2J5aHRqenZzeHhyc2JlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3OTc0NDQsImV4cCI6MjA5MDM3MzQ0NH0.Pb3C36m05SygQcEhidH4fHXJHMvMw2XN7g5iCFkBGaM'
 };
 
 let supabaseClient = null;
