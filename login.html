@@ -87,13 +87,21 @@ html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--t
 const SUPABASE_URL = 'https://wmbyccbyhtjzvsxxrsbe.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtYnljY2J5aHRqenZzeHhyc2JlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3OTc0NDQsImV4cCI6MjA5MDM3MzQ0NH0.Pb3C36m05SygQcEhidH4fHXJHMvMw2XN7g5iCFkBGaM';
 
-// Initialiser Supabase IMMÉDIATEMENT
+// Variable globale pour le client Supabase
+let supabaseClient = null;
+
+// Initialiser Supabase - Attendre que le SDK soit chargé
 function initSupabase() {
   try {
-    // Le SDK Supabase est chargé via CDN et expose globalement 'supabase'
+    // Vérifier si le SDK Supabase est chargé
+    if (typeof supabase === 'undefined') {
+      console.error('❌ SDK Supabase non chargé');
+      return false;
+    }
+    
     // Vérifier si le client est déjà créé
-    if (!window.supabaseClient) {
-      window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    if (!supabaseClient) {
+      supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       console.log('✅ Client Supabase créé pour login');
     }
     return true;
@@ -103,15 +111,43 @@ function initSupabase() {
   }
 }
 
-// Initialiser Supabase dès que possible
-initSupabase();
+// Attendre que le DOM soit chargé avant d'initialiser
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('✅ DOM chargé - Initialisation en cours...');
+  
+  // Initialiser Supabase
+  initSupabase();
+  
+  // Vérifier l'authentification
+  checkAuth();
+  
+  // Restaurer le thème
+  const savedTheme = localStorage.getItem('aintercom-theme') || 'dark';
+  if (savedTheme === 'light') {
+    document.documentElement.classList.add('light');
+  } else {
+    document.documentElement.classList.remove('light');
+  }
+  
+  // Attacher l'écouteur d'événements au bouton Google
+  const googleBtn = document.getElementById('google-login-btn');
+  if (googleBtn) {
+    console.log('✅ Bouton Google trouvé, attachement de l\'écouteur...');
+    googleBtn.addEventListener('click', signInWithGoogle);
+    googleBtn.style.cursor = 'pointer';
+  } else {
+    console.error('❌ Bouton Google non trouvé !');
+  }
+  
+  console.log('✅ JavaScript fonctionne correctement - Page prête');
+});
 
 // Connexion avec Google
 async function signInWithGoogle() {
   alert('✅ Clic détecté ! Lancement de la connexion Google...');
   console.log('DEBUG: Bouton Google cliqué - Fonction signInWithGoogle() appelée');
   
-  if (!window.supabaseClient) {
+  if (!supabaseClient) {
     console.log('DEBUG: Supabase non initialisé, initialisation...');
     initSupabase();
   }
@@ -123,7 +159,7 @@ async function signInWithGoogle() {
   
   try {
     console.log('DEBUG: Tentative de connexion OAuth avec Google...');
-    const { data, error } = await window.supabaseClient.auth.signInWithOAuth({
+    const { data, error } = await supabaseClient.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: 'https://live.aintercom.fr/index.html'
@@ -145,10 +181,10 @@ async function signInWithGoogle() {
 
 // Vérifier si l'utilisateur est déjà connecté
 async function checkAuth() {
-  if (!window.supabaseClient) initSupabase();
+  if (!supabaseClient) initSupabase();
   
   try {
-    const { data: { session }, error } = await window.supabaseClient.auth.getSession();
+    const { data: { session }, error } = await supabaseClient.auth.getSession();
     
     if (error) throw error;
     
@@ -160,35 +196,6 @@ async function checkAuth() {
     console.error('❌ Erreur de vérification d\'authentification:', error);
   }
 }
-
-// Initialisation
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('✅ DOM chargé - Initialisation en cours...');
-  
-  initSupabase();
-  checkAuth();
-  
-  // Restaurer le thème
-  const savedTheme = localStorage.getItem('aintercom-theme') || 'dark';
-  if (savedTheme === 'light') {
-    document.documentElement.classList.add('light');
-  } else {
-    document.documentElement.classList.remove('light');
-  }
-  
-  // Attacher l'écouteur d'événements au bouton Google
-  const googleBtn = document.getElementById('google-login-btn');
-  if (googleBtn) {
-    console.log('✅ Bouton Google trouvé, attachement de l\'écouteur...');
-    googleBtn.addEventListener('click', signInWithGoogle);
-    googleBtn.style.cursor = 'pointer';
-  } else {
-    console.error('❌ Bouton Google non trouvé !');
-  }
-  
-  // Ajouter un test simple pour vérifier que JavaScript fonctionne
-  console.log('✅ JavaScript fonctionne correctement - Page prête');
-});
 </script>
 </body>
 </html>
