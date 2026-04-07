@@ -256,7 +256,24 @@ function updateUserAvatar() {
   if (currentUser && currentUser.email) {
     const initial = currentUser.email[0].toUpperCase();
     avatar.textContent = initial;
-    avatar.title = currentUser.email;
+    avatar.title = `${currentUser.email}\nCliquer pour se déconnecter\nDouble-cliquer pour se reconnecter`;
+    avatar.style.cursor = 'pointer';
+    avatar.style.background = 'var(--accent)';
+    avatar.style.color = '#fff';
+    avatar.style.fontWeight = '700';
+    avatar.style.display = 'flex';
+    avatar.style.alignItems = 'center';
+    avatar.style.justifyContent = 'center';
+    avatar.style.borderRadius = '8px';
+    avatar.style.width = '34px';
+    avatar.style.height = '34px';
+    avatar.style.fontSize = '0.8rem';
+    
+    // Double-clic pour se reconnecter
+    avatar.ondblclick = function(e) {
+      e.stopPropagation();
+      window.location.href = 'login.html';
+    };
   }
 }
 
@@ -469,6 +486,33 @@ function restoreTheme() {
     document.documentElement.classList.add('light');
   } else {
     document.documentElement.classList.remove('light');
+  }
+}
+
+// Vérifier l'authentification
+async function checkAuth() {
+  if (!supabase) initSupabase();
+  
+  try {
+    const { data: { session }, error } = await supabase.auth.getSession();
+    
+    if (error) throw error;
+    
+    if (session && session.user) {
+      // Utilisateur connecté
+      currentUser = session.user;
+      updateUserAvatar();
+      loadProjects();
+      console.log('✅ Utilisateur connecté:', currentUser.email);
+    } else {
+      // Non connecté, rediriger vers login
+      console.log('⚠️ Non connecté, redirection vers login...');
+      window.location.href = 'login.html';
+    }
+  } catch (error) {
+    console.error('❌ Erreur de vérification d\'authentification:', error);
+    // En cas d'erreur, rediriger vers login pour sécurité
+    window.location.href = 'login.html';
   }
 }
 

@@ -89,7 +89,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
 let supabase = null;
 
-// Initialiser Supabase
+// Initialiser Supabase IMMÉDIATEMENT
 function initSupabase() {
   try {
     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -101,9 +101,18 @@ function initSupabase() {
   }
 }
 
+// Initialiser Supabase dès que possible
+initSupabase();
+
 // Connexion avec Google
 async function signInWithGoogle() {
-  if (!supabase) initSupabase();
+  alert('✅ Clic détecté ! Lancement de la connexion Google...');
+  console.log('DEBUG: Bouton Google cliqué - Fonction signInWithGoogle() appelée');
+  
+  if (!supabase) {
+    console.log('DEBUG: Supabase non initialisé, initialisation...');
+    initSupabase();
+  }
   
   // Afficher le loading
   document.getElementById('loading').style.display = 'block';
@@ -111,6 +120,7 @@ async function signInWithGoogle() {
   document.getElementById('error-message').style.display = 'none';
   
   try {
+    console.log('DEBUG: Tentative de connexion OAuth avec Google...');
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -120,6 +130,7 @@ async function signInWithGoogle() {
     
     if (error) throw error;
     
+    console.log('✅ Connexion Google initiée, redirection en cours...');
     // La redirection se fera automatiquement après l'authentification
   } catch (error) {
     console.error('❌ Erreur de connexion Google:', error);

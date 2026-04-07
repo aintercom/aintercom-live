@@ -2226,7 +2226,27 @@ function updateUserUI(user) {
   const name = user?.user_metadata?.name || user?.email || 'Utilisateur';
   const avatar = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
   const el = document.getElementById('user-avatar');
-  if (el) { el.textContent = avatar; el.title = name; }
+  if (el) { 
+    el.textContent = avatar; 
+    el.title = `${name}\nCliquer pour se déconnecter\nDouble-cliquer pour se reconnecter`;
+    el.style.cursor = 'pointer';
+    el.style.background = 'var(--accent)';
+    el.style.color = '#fff';
+    el.style.fontWeight = '800';
+    el.style.display = 'flex';
+    el.style.alignItems = 'center';
+    el.style.justifyContent = 'center';
+    el.style.borderRadius = '7px';
+    el.style.width = '28px';
+    el.style.height = '28px';
+    el.style.fontSize = '11px';
+    
+    // Double-clic pour se reconnecter
+    el.ondblclick = function(e) {
+      e.stopPropagation();
+      window.location.href = 'login.html';
+    };
+  }
 }
 
 // Récupérer le projet sélectionné depuis localStorage
