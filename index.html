@@ -425,7 +425,9 @@ async function saveProject() {
   if (sb && !currentUser?.isLocal) {
     try {
       const { data, error } = await sb.from('projects').insert([project]).select().single();
-      if (!error && data) {
+      if (error) {
+        toast('Erreur Supabase: ' + error.message, 'd');
+      } else if (data) {
         projects.unshift(data);
         localStorage.setItem(localKey(), JSON.stringify(projects));
         toast('Projet créé ☁️', 's');
@@ -433,7 +435,7 @@ async function saveProject() {
         openProject(0);
         return;
       }
-    } catch(e) { console.warn('Supabase save:', e); }
+    } catch(e) { toast('Exception: ' + e.message, 'd'); }
   }
   projects.unshift(project);
   localStorage.setItem(localKey(), JSON.stringify(projects));
