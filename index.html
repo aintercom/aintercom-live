@@ -554,45 +554,7 @@ function closeModal() {
   document.getElementById('modal-new-project').classList.remove('open');
 }
 
-function saveProject() {
-  const name = document.getElementById('p-name').value.trim();
-  if (!name) { toast('Le nom du projet est requis', 'd'); document.getElementById('p-name').focus(); return; }
 
-  const project = {
-    id: 'project_' + Date.now(),
-    name,
-    date: document.getElementById('p-date').value,
-    time: document.getElementById('p-time').value,
-    venue: document.getElementById('p-venue').value.trim(),
-    type: document.getElementById('p-type').value,
-    director: document.getElementById('p-director').value.trim(),
-    notes: document.getElementById('p-notes').value.trim(),
-    createdAt: new Date().toISOString(),
-    createdBy: currentUser?.id || 'local'
-  };
-
-  projects.push(project);
-  localStorage.setItem(localKey(), JSON.stringify(projects));
-  closeModal();
-  toast('Projet créé', 's');
-
-  // Ouvrir directement
-  openProject(projects.length - 1);
-}
-
-function deleteProject(index) {
-  if (!confirm(`Supprimer "${projects[index]?.name}" ?`)) return;
-  // Supprimer aussi les données de l'événement dans app.html
-  const p = projects[index];
-  if (p?.id) {
-    const uid = currentUser?.id || 'local';
-    localStorage.removeItem('aintercom_event_' + uid + '_' + p.id);
-  }
-  projects.splice(index, 1);
-  localStorage.setItem(localKey(), JSON.stringify(projects));
-  renderProjects();
-  toast('Projet supprimé', 'i');
-}
 
 // ═══════════════════════════════════════════
 // TOAST
