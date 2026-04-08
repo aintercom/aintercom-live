@@ -140,7 +140,7 @@ async function signInWithGoogle() {
   showLoading();
   const { error } = await client.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: 'https://live.aintercom.fr/index.html' }
+    options: { redirectTo: 'https://live.aintercom.fr/index.html', queryParams: { prompt: 'select_account' } }
   });
   if (error) showMain('Erreur Google : ' + error.message);
 }
