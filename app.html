@@ -193,14 +193,35 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 .org-branch{display:flex;gap:0;position:relative}
 .org-branch::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:calc(100% - 140px);height:2px;background:var(--border)}
 
-/* ── MATOS CARD ── */
-.matos-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;transition:var(--tr)}
-.matos-card:hover{border-color:var(--accent)}
-.matos-num{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--tx3);margin-bottom:8px}
-.matos-name{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:6px}
-.matos-detail{font-family:var(--mono);font-size:10px;color:var(--tx2);margin-bottom:8px;line-height:1.6}
-.bat-bar{height:3px;background:var(--bg4);border-radius:3px;overflow:hidden;margin-top:4px}
-.bat-fill{height:100%;border-radius:3px}
+/* ── MATOS CARD V2 ── */
+.matos-card-v2{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px;transition:var(--tr);position:relative;cursor:default}
+.matos-card-v2.libre{opacity:.45;border-style:dashed}
+.matos-card-v2:hover{border-color:var(--border2)}
+.matos-card-v2.assigned{border-left:3px solid var(--accent)}
+.mc-device{font-size:11px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
+.mc-canal{font-size:11px;font-weight:700;color:var(--accent);margin-bottom:12px}
+.mc-divider{height:1px;background:var(--border);margin-bottom:12px}
+.mc-name{font-size:20px;font-weight:800;color:var(--tx);letter-spacing:-.3px;line-height:1.1;margin-bottom:4px;min-height:28px}
+.mc-poste{font-size:13px;font-weight:600;color:var(--tx2);margin-bottom:12px;min-height:20px}
+.mc-libre-label{font-size:14px;font-weight:700;color:var(--tx3);margin-bottom:12px;min-height:48px;display:flex;align-items:center}
+.mc-select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;font-family:var(--font);font-size:13px;font-weight:600;color:var(--tx);cursor:pointer;transition:var(--tr)}
+.mc-select:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-glow)}
+/* ── POSTE CARD ── */
+.poste-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;display:flex;align-items:center;gap:12px;transition:var(--tr)}
+.poste-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0}
+.poste-nom{font-size:15px;font-weight:800;flex:1;color:var(--tx)}
+.poste-count{font-size:11px;font-weight:700;color:var(--tx3)}
+/* ── STAFF CARD ── */
+.staff-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;transition:var(--tr)}
+.staff-card:hover{border-color:var(--border2)}
+.staff-avatar{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
+.staff-name{font-size:16px;font-weight:800;color:var(--tx);letter-spacing:-.2px}
+.staff-poste{font-size:12px;font-weight:600;margin-top:3px}
+.staff-matos{font-size:11px;color:var(--tx3);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+/* ── MATOS STATS ── */
+.matos-stat{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;text-align:center}
+.matos-stat-num{font-family:var(--mono);font-size:28px;font-weight:700;line-height:1}
+.matos-stat-label{font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
 
 /* ── SIGN PREVIEW ── */
 .sign-preview{background:#fff;color:#000;border-radius:var(--r);padding:40px 30px;text-align:center;font-family:'DM Sans',sans-serif}
@@ -341,7 +362,8 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
       <div class="nav-section">Navigation</div>
       <button class="nav-btn active" onclick="switchTab('cockpit',this)"><i class="fas fa-gauge-high"></i>Cockpit</button>
       <button class="nav-btn" onclick="switchTab('conducteur',this)"><i class="fas fa-film"></i>Conducteur</button>
-      <button class="nav-btn" onclick="switchTab('crew',this)"><i class="fas fa-users"></i>Crew</button>
+      <button class="nav-btn" onclick="switchTab('postes',this)"><i class="fas fa-tags"></i>Postes</button>
+      <button class="nav-btn" onclick="switchTab('staff',this)"><i class="fas fa-users"></i>Staff</button>
       <button class="nav-btn" onclick="switchTab('matos',this)"><i class="fas fa-walkie-talkie"></i>Matos</button>
       <div class="nav-section">Outils</div>
       <button class="nav-btn" onclick="switchTab('meteo',this)"><i class="fas fa-cloud-sun"></i>Météo</button>
@@ -484,60 +506,72 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
         </div>
       </section>
 
-      <!-- ══ CREW ══ -->
-      <section class="tab" id="tab-crew">
+      <!-- ══ POSTES ══ -->
+      <section class="tab" id="tab-postes">
         <div class="sec-hdr">
-          <div><div class="sec-title">👥 Crew</div><div class="sec-sub">Organigramme · Fiches · Accréditations</div></div>
+          <div><div class="sec-title">🏷️ Postes</div><div class="sec-sub">Configurez les rôles de votre équipe</div></div>
           <div class="sec-actions">
-            <input type="text" id="crew-search" placeholder="Rechercher..." style="width:150px" oninput="renderCrew()">
-            <select id="crew-filter" style="width:120px" onchange="renderCrew()">
-              <option value="">Tous</option><option>Technique</option><option>Accueil</option><option>Sécurité</option><option>Staff</option>
-            </select>
-            <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-crew')"><i class="fas fa-plus"></i> Ajouter</button>
-            <button class="btn btn-ghost btn-sm" onclick="printCrew()"><i class="fas fa-print"></i></button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-poste')"><i class="fas fa-plus"></i> Nouveau poste</button>
           </div>
         </div>
-        <!-- Organigramme -->
-        <div class="card" style="margin-bottom:14px;overflow-x:auto">
-          <div class="card-title">Organigramme</div>
-          <div id="org-chart"></div>
+        <div id="postes-grid" class="g-auto"></div>
+      </section>
+
+      <!-- ══ STAFF ══ -->
+      <section class="tab" id="tab-staff">
+        <div class="sec-hdr">
+          <div><div class="sec-title">👤 Staff</div><div class="sec-sub">Liste du personnel · Assignation matos</div></div>
+          <div class="sec-actions">
+            <input type="text" id="staff-search" placeholder="Rechercher..." style="width:150px" oninput="renderStaff()">
+            <select id="staff-filter-poste" style="width:130px" onchange="renderStaff()">
+              <option value="">Tous les postes</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-staff')"><i class="fas fa-plus"></i> Ajouter</button>
+          </div>
         </div>
-        <!-- Liste filtrable -->
-        <div id="crew-list" class="g-auto"></div>
+        <div id="staff-grid" class="g-auto"></div>
       </section>
 
       <!-- ══ MATOS ══ -->
       <section class="tab" id="tab-matos">
         <div class="sec-hdr">
-          <div><div class="sec-title">📦 Matos</div><div class="sec-sub">Motorola · Hollyland · Mégaphone · Équipements</div></div>
+          <div><div class="sec-title">📡 Matos</div><div class="sec-sub">Dashboard 360 — Vue complète du matériel</div></div>
           <div class="sec-actions">
-            <button class="btn btn-ghost btn-sm" onclick="openModal('modal-canaux-config')"><i class="fas fa-sliders"></i> Config canaux</button>
-            <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-matos')"><i class="fas fa-plus"></i> Équipement</button>
+            <button class="btn btn-ghost btn-sm" onclick="openModal('modal-add-matos')"><i class="fas fa-plus"></i> Équipement</button>
           </div>
         </div>
 
-        <!-- Motorola -->
-        <div class="card" style="margin-bottom:14px">
-          <div class="card-title">📻 Motorola XT420 — 12 Talkies · 15 canaux</div>
-          <div class="g-auto" id="motorola-grid"></div>
+        <!-- STATS RAPIDES -->
+        <div class="g4" style="margin-bottom:20px" id="matos-stats"></div>
+
+        <!-- TALKIES -->
+        <div style="margin-bottom:24px">
+          <div style="font-size:13px;font-weight:800;color:var(--tx2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+            <span style="font-size:16px">📻</span> Motorola XT420 — 12 Talkies
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px" id="motorola-grid"></div>
         </div>
 
-        <!-- Hollyland -->
-        <div class="card" style="margin-bottom:14px">
-          <div class="card-title">🎧 Hollyland Solidcom SE Pro 6S — 1 Master + 5 casques</div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px" id="hollyland-grid"></div>
+        <!-- HOLLYLAND -->
+        <div style="margin-bottom:24px">
+          <div style="font-size:13px;font-weight:800;color:var(--tx2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+            <span style="font-size:16px">🎧</span> Hollyland Solidcom — 1 Master + 5 Casques
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px" id="hollyland-grid"></div>
         </div>
 
-        <!-- Megaphone -->
-        <div class="card" style="margin-bottom:14px">
-          <div class="card-title">📢 Mégaphone VONYX MEG065</div>
-          <div id="mega-card"></div>
+        <!-- MEGAPHONE -->
+        <div style="margin-bottom:24px">
+          <div style="font-size:13px;font-weight:800;color:var(--tx2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+            <span style="font-size:16px">📢</span> Mégaphone VONYX
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px" id="mega-card"></div>
         </div>
 
-        <!-- Autres -->
-        <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-            <div class="card-title" style="margin-bottom:0">Équipements additionnels</div>
+        <!-- AUTRES -->
+        <div>
+          <div style="font-size:13px;font-weight:800;color:var(--tx2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">
+            <span>📦 Équipements additionnels</span>
             <button class="btn btn-ghost btn-sm" onclick="openModal('modal-add-matos')"><i class="fas fa-plus"></i></button>
           </div>
           <div id="extra-matos-list"></div>
@@ -926,6 +960,49 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
   </div>
 </div>
 
+<!-- ADD POSTE -->
+<div class="overlay" id="modal-add-poste">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title" id="poste-modal-title">Nouveau poste</div><button class="modal-close" onclick="closeModal('modal-add-poste')">✕</button></div>
+    <div class="fg"><label>Nom du poste</label><input type="text" id="poste-nom" placeholder="Ex: Sécurité, Artiste, Staff..."></div>
+    <div class="fg"><label>Couleur</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="poste-colors">
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#DC2626')"><input type="radio" name="pcolor" value="#DC2626" checked style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#DC2626;display:inline-block;border:2px solid transparent"></span>Rouge</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#2563EB')"><input type="radio" name="pcolor" value="#2563EB" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#2563EB;display:inline-block;border:2px solid transparent"></span>Bleu</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#16A34A')"><input type="radio" name="pcolor" value="#16A34A" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#16A34A;display:inline-block;border:2px solid transparent"></span>Vert</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#D97706')"><input type="radio" name="pcolor" value="#D97706" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#D97706;display:inline-block;border:2px solid transparent"></span>Orange</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#7C3AED')"><input type="radio" name="pcolor" value="#7C3AED" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#7C3AED;display:inline-block;border:2px solid transparent"></span>Violet</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#0891B2')"><input type="radio" name="pcolor" value="#0891B2" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#0891B2;display:inline-block;border:2px solid transparent"></span>Cyan</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#475569')"><input type="radio" name="pcolor" value="#475569" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#475569;display:inline-block;border:2px solid transparent"></span>Gris</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-add-poste')">Annuler</button>
+      <button class="btn btn-primary" id="poste-save-btn" onclick="savePoste()"><i class="fas fa-plus"></i> Créer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD STAFF -->
+<div class="overlay" id="modal-add-staff">
+  <div class="modal modal-lg">
+    <div class="modal-hdr"><div class="modal-title" id="staff-modal-title">Ajouter un membre</div><button class="modal-close" onclick="closeModal('modal-add-staff')">✕</button></div>
+    <div class="fg-row">
+      <div class="fg"><label>Prénom</label><input type="text" id="st-prenom" placeholder="Jean"></div>
+      <div class="fg"><label>Nom</label><input type="text" id="st-nom" placeholder="Dupont"></div>
+    </div>
+    <div class="fg-row">
+      <div class="fg"><label>Poste</label><select id="st-poste"><option value="">— Choisir un poste —</option></select></div>
+      <div class="fg"><label>Téléphone</label><input type="tel" id="st-tel" placeholder="+33 6 00 00 00 00"></div>
+    </div>
+    <div class="fg"><label>Notes</label><input type="text" id="st-notes" placeholder="Optionnel"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-add-staff')">Annuler</button>
+      <button class="btn btn-primary" id="staff-save-btn" onclick="saveStaff()"><i class="fas fa-plus"></i> Ajouter</button>
+    </div>
+  </div>
+</div>
+
 <!-- ADD CREW -->
 <div class="overlay" id="modal-add-crew">
   <div class="modal modal-lg">
@@ -1046,6 +1123,14 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 // STATE
 // ═══════════════════════════════════════════
 let S = {
+  postes: [
+    {id:1,nom:'Sécurité',color:'#DC2626'},
+    {id:2,nom:'Staff',color:'#2563EB'},
+    {id:3,nom:'Technique',color:'#D97706'},
+    {id:4,nom:'Artiste',color:'#7C3AED'},
+    {id:5,nom:'Accueil',color:'#16A34A'},
+  ],
+  staff: [],
   events: [],
   currentEventId: null,
   theme: 'dark',
@@ -1259,7 +1344,8 @@ function saveEventEdit(){
 // ═══════════════════════════════════════════
 function renderAll(){
   renderRun();
-  renderCrew();
+  renderPostes();
+  renderStaff();
   renderMatorola();
   renderHollyland();
   renderMegaphone();
@@ -1270,8 +1356,10 @@ function renderAll(){
   renderIncidents();
   renderElec();
   renderSignHistory();
+  updateMatosStats();
   updateCockpit();
-  populateCrewSelects();
+  populatePosteSelects();
+  populateAllStaffSelects();
 }
 
 // ═══════════════════════════════════════════
@@ -1463,38 +1551,212 @@ function openSeqDetail(ri){
 function openPrompter(s){document.getElementById('pt-label').textContent=s.title;document.getElementById('pt-text').textContent=s.script;openModal('modal-prompteur');}
 
 // ═══════════════════════════════════════════
-// CREW
+// POSTES
 // ═══════════════════════════════════════════
-function renderCrew(){
-  renderOrgChart();
-  const search=(document.getElementById('crew-search')?.value||'').toLowerCase();
-  const filter=document.getElementById('crew-filter')?.value||'';
-  const filtered=S.crew.filter(c=>(c.prenom+' '+c.nom+' '+c.role).toLowerCase().includes(search)&&(!filter||c.metier===filter));
-  const grid=document.getElementById('crew-list');
-  if(!filtered.length){grid.innerHTML='<div class="empty"><i class="fas fa-users"></i><p>Aucun membre trouvé</p></div>';return;}
-  const metierColors={Technique:'var(--accent)',Accueil:'var(--warning)',Sécurité:'var(--danger)',Staff:'var(--success)'};
-  const statutColors={'En poste':'var(--success)','En pause':'var(--warning)','Off':'var(--tx3)','Injoignable':'var(--danger)'};
-  grid.innerHTML=filtered.map(c=>`
-    <div class="matos-card" onclick="openCrewDetail(${c.id})" style="cursor:pointer">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-        <div style="width:36px;height:36px;border-radius:8px;background:${metierColors[c.metier]||'var(--accent)'};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0">${(c.prenom[0]||'?')+(c.nom[0]||'')}</div>
-        <div>
-          <div style="font-size:13px;font-weight:700">${c.prenom} ${c.nom}</div>
-          <div style="font-size:11px;color:var(--tx2)">${c.role}</div>
+let editingPosteId = -1;
+let selectedPosteColor = '#DC2626';
+
+function selectPosteColor(label, color) {
+  selectedPosteColor = color;
+  document.querySelectorAll('#poste-colors span').forEach(s => s.style.border = '2px solid transparent');
+  label.querySelector('span').style.border = '2px solid var(--tx)';
+}
+
+function renderPostes() {
+  const grid = document.getElementById('postes-grid');
+  if (!S.postes || !S.postes.length) {
+    grid.innerHTML = '<div class="empty"><i class="fas fa-tags"></i><p>Aucun poste — Créez vos premiers postes (Sécurité, Artiste, Staff...)</p></div>';
+    return;
+  }
+  grid.innerHTML = S.postes.map(p => {
+    const count = (S.staff || []).filter(s => s.posteId === p.id).length;
+    return `<div class="poste-card">
+      <div class="poste-dot" style="background:${p.color}"></div>
+      <div class="poste-nom">${p.nom}</div>
+      <div class="poste-count">${count} membre${count > 1 ? 's' : ''}</div>
+      <div style="display:flex;gap:4px">
+        <button onclick="editPoste(${p.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-pen" style="font-size:10px"></i></button>
+        <button onclick="deletePoste(${p.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+  populatePosteSelects();
+}
+
+function savePoste() {
+  const nom = document.getElementById('poste-nom').value.trim();
+  if (!nom) return;
+  if (!S.postes) S.postes = [];
+  if (editingPosteId === -1) {
+    S.postes.push({ id: S.nextId++, nom, color: selectedPosteColor });
+    toast('Poste créé', 's');
+  } else {
+    const p = S.postes.find(p => p.id === editingPosteId);
+    if (p) { p.nom = nom; p.color = selectedPosteColor; }
+    toast('Poste mis à jour', 's');
+    editingPosteId = -1;
+  }
+  closeModal('modal-add-poste');
+  renderPostes(); renderStaff(); saveStorage();
+}
+
+function editPoste(id) {
+  const p = S.postes.find(p => p.id === id); if (!p) return;
+  editingPosteId = id;
+  document.getElementById('poste-nom').value = p.nom;
+  selectedPosteColor = p.color;
+  document.querySelectorAll('#poste-colors span').forEach(s => s.style.border = '2px solid transparent');
+  document.querySelectorAll('#poste-colors input').forEach(inp => {
+    if (inp.value === p.color) { inp.checked = true; inp.closest('label').querySelector('span').style.border = '2px solid var(--tx)'; }
+  });
+  document.getElementById('poste-modal-title').textContent = 'Modifier le poste';
+  document.getElementById('poste-save-btn').innerHTML = '<i class="fas fa-floppy-disk"></i> Mettre à jour';
+  openModal('modal-add-poste');
+}
+
+function deletePoste(id) {
+  if (!confirm('Supprimer ce poste ?')) return;
+  S.postes = S.postes.filter(p => p.id !== id);
+  (S.staff || []).forEach(s => { if (s.posteId === id) s.posteId = null; });
+  renderPostes(); renderStaff(); saveStorage(); toast('Poste supprimé', 'i');
+}
+
+function populatePosteSelects() {
+  if (!S.postes) return;
+  const opts = '<option value="">— Poste —</option>' + S.postes.map(p => `<option value="${p.id}">${p.nom}</option>`).join('');
+  const el = document.getElementById('st-poste');
+  if (el) el.innerHTML = opts;
+  const filterEl = document.getElementById('staff-filter-poste');
+  if (filterEl) filterEl.innerHTML = '<option value="">Tous les postes</option>' + S.postes.map(p => `<option value="${p.id}">${p.nom}</option>`).join('');
+}
+
+// ═══════════════════════════════════════════
+// STAFF
+// ═══════════════════════════════════════════
+let editingStaffId = -1;
+
+function renderStaff() {
+  if (!S.staff) S.staff = [];
+  const search = (document.getElementById('staff-search')?.value || '').toLowerCase();
+  const filterPoste = document.getElementById('staff-filter-poste')?.value || '';
+  const filtered = S.staff.filter(s => {
+    const name = (s.prenom + ' ' + s.nom).toLowerCase();
+    const matchSearch = name.includes(search);
+    const matchPoste = !filterPoste || String(s.posteId) === String(filterPoste);
+    return matchSearch && matchPoste;
+  });
+  const grid = document.getElementById('staff-grid');
+  if (!grid) return;
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty"><i class="fas fa-user-plus"></i><p>Aucun membre — Ajoutez votre équipe</p></div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(s => {
+    const poste = (S.postes || []).find(p => p.id === s.posteId);
+    const initials = ((s.prenom[0] || '') + (s.nom[0] || '')).toUpperCase();
+    const color = poste ? poste.color : '#475569';
+    const matos = getMatosForStaff(s.prenom + ' ' + s.nom);
+    return `<div class="staff-card">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+        <div class="staff-avatar" style="background:${color}">${initials}</div>
+        <div style="flex:1;min-width:0">
+          <div class="staff-name">${s.prenom} ${s.nom}</div>
+          <div class="staff-poste" style="color:${color}">${poste ? poste.nom : '—'}</div>
+        </div>
+        <div style="display:flex;gap:4px">
+          ${s.tel ? `<button onclick="window.open('tel:${s.tel}')" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-phone" style="font-size:10px;color:var(--success)"></i></button>` : ''}
+          <button onclick="editStaff(${s.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-pen" style="font-size:10px"></i></button>
+          <button onclick="deleteStaff(${s.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
         </div>
       </div>
-      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px">
-        <span class="badge b-neutral" style="font-size:9px">${c.metier}</span>
-        <span style="font-size:10px;font-weight:700;color:${statutColors[c.statut]||'var(--tx3)'}">● ${c.statut||'En poste'}</span>
-      </div>
-      <div style="font-size:10px;color:var(--tx3)">${c.zone||''}</div>
-      <div style="display:flex;gap:5px;margin-top:8px">
-        ${c.tel?`<button onclick="event.stopPropagation();window.open('tel:${c.tel}')" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-phone" style="font-size:10px;color:var(--success)"></i></button><button onclick="event.stopPropagation();window.open('https://wa.me/${c.tel.replace(/\s/g,'').replace('+','')}','_blank')" class="btn btn-ghost btn-sm btn-icon"><i class="fab fa-whatsapp" style="font-size:10px;color:var(--success)"></i></button>`:''}
-        <button onclick="event.stopPropagation();deleteCrew(${c.id})" class="btn btn-ghost btn-sm btn-icon" style="margin-left:auto"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
-      </div>
-    </div>`).join('');
-  updateCockpit();
+      ${matos ? `<div class="staff-matos"><i class="fas fa-walkie-talkie" style="font-size:9px;margin-right:4px"></i>${matos}</div>` : ''}
+    </div>`;
+  }).join('');
+  populateAllStaffSelects();
 }
+
+function getMatosForStaff(name) {
+  const mots = S.motorola.filter(m => m.assigneA === name).map(m => `Talkie #${m.id} CH${m.canal}`);
+  const hols = S.hollyland.filter(h => h.assigneA === name).map(h => h.label);
+  const meg = S.megaphone.assigneA === name ? ['Mégaphone'] : [];
+  return [...mots, ...hols, ...meg].join(' · ');
+}
+
+function saveStaff() {
+  if (!S.staff) S.staff = [];
+  const data = {
+    prenom: document.getElementById('st-prenom').value.trim() || 'Prénom',
+    nom: document.getElementById('st-nom').value.trim() || 'Nom',
+    posteId: parseInt(document.getElementById('st-poste').value) || null,
+    tel: document.getElementById('st-tel').value.trim(),
+    notes: document.getElementById('st-notes').value.trim(),
+  };
+  if (editingStaffId === -1) {
+    data.id = S.nextId++;
+    S.staff.push(data);
+    toast('Membre ajouté', 's');
+  } else {
+    const s = S.staff.find(s => s.id === editingStaffId);
+    if (s) Object.assign(s, data);
+    toast('Membre mis à jour', 's');
+    editingStaffId = -1;
+  }
+  closeModal('modal-add-staff');
+  renderStaff(); renderPostes(); renderMatorola(); renderHollyland(); renderMegaphone(); updateMatosStats(); saveStorage();
+}
+
+function editStaff(id) {
+  const s = S.staff.find(s => s.id === id); if (!s) return;
+  editingStaffId = id;
+  document.getElementById('st-prenom').value = s.prenom;
+  document.getElementById('st-nom').value = s.nom;
+  populatePosteSelects();
+  document.getElementById('st-poste').value = s.posteId || '';
+  document.getElementById('st-tel').value = s.tel || '';
+  document.getElementById('st-notes').value = s.notes || '';
+  document.getElementById('staff-modal-title').textContent = 'Modifier le membre';
+  document.getElementById('staff-save-btn').innerHTML = '<i class="fas fa-floppy-disk"></i> Mettre à jour';
+  openModal('modal-add-staff');
+}
+
+function deleteStaff(id) {
+  if (!confirm('Supprimer ce membre ?')) return;
+  const s = S.staff.find(s => s.id === id);
+  if (s) {
+    const name = s.prenom + ' ' + s.nom;
+    S.motorola.forEach(m => { if (m.assigneA === name) m.assigneA = ''; });
+    S.hollyland.forEach(h => { if (h.assigneA === name) h.assigneA = ''; });
+    if (S.megaphone.assigneA === name) S.megaphone.assigneA = '';
+  }
+  S.staff = S.staff.filter(s => s.id !== id);
+  renderStaff(); renderPostes(); renderMatorola(); renderHollyland(); renderMegaphone(); updateMatosStats(); saveStorage();
+  toast('Membre supprimé', 'i');
+}
+
+function populateAllStaffSelects() {
+  if (!S.staff) return;
+  const opts = '<option value="">— Libre —</option>' + S.staff.map(s => {
+    const poste = (S.postes || []).find(p => p.id === s.posteId);
+    return `<option value="${s.prenom} ${s.nom}">${s.prenom} ${s.nom}${poste ? ' · ' + poste.nom : ''}</option>`;
+  }).join('');
+  document.querySelectorAll('.mc-select').forEach(sel => {
+    const current = sel.getAttribute('data-current');
+    sel.innerHTML = opts;
+    if (current) sel.value = current;
+  });
+  // Also update old selects for seq/inc
+  const seqOpts = '<option value="">—</option>' + (S.staff || []).map(s => `<option>${s.prenom} ${s.nom}</option>`).join('');
+  ['seq-resp', 'inc-assign'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = seqOpts; });
+}
+
+// ═══════════════════════════════════════════
+// CREW (legacy — garde compatibilité cockpit)
+// ═══════════════════════════════════════════
+function renderCrew() { renderStaff(); renderPostes(); }
+function addCrew() {}
+function printCrew() {}
+function populateCrewSelects() { populateAllStaffSelects(); }
+function getMatos(name) { return getMatosForStaff(name); }
 
 function renderOrgChart(){
   const org=document.getElementById('org-chart');
@@ -1578,33 +1840,55 @@ function populateCrewSelects(){
 }
 
 // ═══════════════════════════════════════════
+// MATOS STATS
+// ═══════════════════════════════════════════
+function updateMatosStats() {
+  const total = S.motorola.length + S.hollyland.length + 1;
+  const assigned = S.motorola.filter(m => m.assigneA).length + S.hollyland.filter(h => h.assigneA).length + (S.megaphone.assigneA ? 1 : 0);
+  const libre = total - assigned;
+  const el = document.getElementById('matos-stats');
+  if (!el) return;
+  el.innerHTML = `
+    <div class="matos-stat"><div class="matos-stat-num">${total}</div><div class="matos-stat-label">Total appareils</div></div>
+    <div class="matos-stat"><div class="matos-stat-num" style="color:var(--success)">${assigned}</div><div class="matos-stat-label">Assignés</div></div>
+    <div class="matos-stat"><div class="matos-stat-num" style="color:var(--tx3)">${libre}</div><div class="matos-stat-label">Libres</div></div>
+    <div class="matos-stat"><div class="matos-stat-num">${S.staff ? S.staff.length : 0}</div><div class="matos-stat-label">Membres staff</div></div>`;
+}
+
+// ═══════════════════════════════════════════
 // MATOS — MOTOROLA
 // ═══════════════════════════════════════════
 function renderMatorola(){
   const grid=document.getElementById('motorola-grid');
-  grid.innerHTML=S.motorola.map((m,i)=>{
-    const ch=S.canaux[m.canal-1]||{};
-    const bc=m.bat<20?'var(--danger)':m.bat<50?'var(--warning)':'var(--success)';
-    const crewOpts='<option value="">Libre</option>'+S.crew.map(c=>`<option value="${c.prenom} ${c.nom}" ${m.assigneA===c.prenom+' '+c.nom?'selected':''}>${c.prenom} ${c.nom}</option>`).join('');
-    return `<div class="matos-card">
-      <div class="matos-num">TALKIE #${m.id}</div>
-      <div class="matos-detail">Canal <strong>${m.canal}</strong> · ${ch.freq||'—'} MHz<br>Code CTCSS: <strong>${ch.code||'—'}</strong></div>
-      <div class="fg" style="margin-bottom:8px"><label style="font-size:9px">Assigné à</label><select onchange="S.motorola[${i}].assigneA=this.value;saveStorage();renderCrew()">${crewOpts}</select></div>
-      <div class="fg" style="margin-bottom:8px"><label style="font-size:9px">Zone</label><input type="text" value="${m.zone}" onchange="S.motorola[${i}].zone=this.value;saveStorage()" placeholder="Zone..."></div>
-      <div><div style="display:flex;justify-content:space-between;font-size:10px;color:var(--tx3);margin-bottom:3px"><span>Batterie</span><span style="color:${bc};font-weight:700">${m.bat}%</span></div><div class="bat-bar"><div class="bat-fill" style="width:${m.bat}%;background:${bc}"></div></div></div>
-      <div style="display:flex;gap:4px;margin-top:8px">
-        <select onchange="S.motorola[${i}].canal=parseInt(this.value);renderMatorola();saveStorage()" style="flex:1;font-size:10px">
+  if (!grid) return;
+  const staffOpts = '<option value="">— Libre —</option>' + (S.staff || []).map(s => {
+    const poste = (S.postes || []).find(p => p.id === s.posteId);
+    return `<option value="${s.prenom} ${s.nom}">${s.prenom} ${s.nom}${poste ? ' · ' + poste.nom : ''}</option>`;
+  }).join('');
+  grid.innerHTML = S.motorola.map((m, i) => {
+    const assigned = !!m.assigneA;
+    const staffMember = (S.staff || []).find(s => s.prenom + ' ' + s.nom === m.assigneA);
+    const poste = staffMember ? (S.postes || []).find(p => p.id === staffMember.posteId) : null;
+    return `<div class="matos-card-v2 ${assigned ? 'assigned' : 'libre'}" style="${poste ? 'border-left-color:' + poste.color : ''}">
+      <div class="mc-device">Talkie #${m.id}</div>
+      <div class="mc-canal">Canal ${m.canal}</div>
+      <div class="mc-divider"></div>
+      ${assigned
+        ? `<div class="mc-name">${m.assigneA}</div>
+           <div class="mc-poste" style="${poste ? 'color:' + poste.color : ''}">${poste ? poste.nom : '—'}</div>`
+        : `<div class="mc-libre-label">Libre</div>`
+      }
+      <select class="mc-select" data-current="${m.assigneA}" onchange="S.motorola[${i}].assigneA=this.value;renderMatorola();renderStaff();updateMatosStats();saveStorage()">
+        ${staffOpts.replace(`value="${m.assigneA}"`, `value="${m.assigneA}" selected`)}
+      </select>
+      <div style="display:flex;gap:5px;margin-top:10px">
+        <select onchange="S.motorola[${i}].canal=parseInt(this.value);renderMatorola();saveStorage()" style="flex:1;font-size:12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:5px 8px;color:var(--tx);font-family:var(--font)">
           ${Array.from({length:15},(_,j)=>`<option value="${j+1}" ${m.canal===j+1?'selected':''}>CH ${j+1}</option>`).join('')}
-        </select>
-        <button onclick="S.motorola[${i}].bat=100;renderMatorola();saveStorage()" class="btn btn-ghost btn-sm btn-icon" title="Batterie pleine"><i class="fas fa-battery-full" style="font-size:10px;color:var(--success)"></i></button>
-        <select onchange="S.motorola[${i}].statut=this.value;saveStorage()" style="width:90px;font-size:10px">
-          <option ${m.statut==='Disponible'?'selected':''}>Disponible</option>
-          <option ${m.statut==='En service'?'selected':''}>En service</option>
-          <option ${m.statut==='Hs'?'selected':''}>Hs</option>
         </select>
       </div>
     </div>`;
   }).join('');
+  updateMatosStats();
 }
 
 function openCanauxConfig(){
@@ -1628,18 +1912,28 @@ function saveCanaux(){
 // ═══════════════════════════════════════════
 function renderHollyland(){
   const grid=document.getElementById('hollyland-grid');
-  grid.innerHTML=S.hollyland.map((h,i)=>{
-    const bc=h.bat<20?'var(--danger)':h.bat<50?'var(--warning)':'var(--success)';
-    const crewOpts='<option value="">Libre</option>'+S.crew.map(c=>`<option value="${c.prenom} ${c.nom}" ${h.assigneA===c.prenom+' '+c.nom?'selected':''}>${c.prenom} ${c.nom}</option>`).join('');
-    return `<div class="matos-card" style="${h.id==='master'?'border-color:var(--accent)':''}">
-      <div class="matos-num">${h.label}</div>
-      <div class="fg" style="margin-bottom:8px"><label style="font-size:9px">Assigné à</label><select onchange="S.hollyland[${i}].assigneA=this.value;saveStorage();renderCrew()">${crewOpts}</select></div>
-      <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:10px;color:var(--tx3)">Batterie</span><span style="font-size:10px;color:${bc};font-weight:700">${h.bat}%</span></div>
-      <div class="bat-bar"><div class="bat-fill" style="width:${h.bat}%;background:${bc}"></div></div>
-      <div style="display:flex;gap:4px;margin-top:8px">
-        <select onchange="S.hollyland[${i}].statut=this.value;saveStorage()" style="flex:1;font-size:10px"><option ${h.statut==='OK'?'selected':''}>OK</option><option ${h.statut==='Déconnecté'?'selected':''}>Déconnecté</option><option ${h.statut==='Erreur'?'selected':''}>Erreur</option></select>
-        <button onclick="S.hollyland[${i}].bat=100;renderHollyland();saveStorage()" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-battery-full" style="font-size:10px;color:var(--success)"></i></button>
-      </div>
+  if (!grid) return;
+  const staffOpts = '<option value="">— Libre —</option>' + (S.staff || []).map(s => {
+    const poste = (S.postes || []).find(p => p.id === s.posteId);
+    return `<option value="${s.prenom} ${s.nom}">${s.prenom} ${s.nom}${poste ? ' · ' + poste.nom : ''}</option>`;
+  }).join('');
+  grid.innerHTML = S.hollyland.map((h, i) => {
+    const assigned = !!h.assigneA;
+    const isMaster = h.id === 'master';
+    const staffMember = (S.staff || []).find(s => s.prenom + ' ' + s.nom === h.assigneA);
+    const poste = staffMember ? (S.postes || []).find(p => p.id === staffMember.posteId) : null;
+    return `<div class="matos-card-v2 ${assigned ? 'assigned' : 'libre'}" style="${isMaster ? 'border-left-color:var(--accent)' : poste ? 'border-left-color:' + poste.color : ''}">
+      <div class="mc-device">${isMaster ? '🎧 Master' : 'Casque #' + i}</div>
+      <div class="mc-canal">${isMaster ? 'Hollyland Solidcom' : 'Hollyland'}</div>
+      <div class="mc-divider"></div>
+      ${assigned
+        ? `<div class="mc-name">${h.assigneA}</div>
+           <div class="mc-poste" style="${poste ? 'color:' + poste.color : ''}">${poste ? poste.nom : '—'}</div>`
+        : `<div class="mc-libre-label">Libre</div>`
+      }
+      <select class="mc-select" data-current="${h.assigneA}" onchange="S.hollyland[${i}].assigneA=this.value;renderHollyland();renderStaff();updateMatosStats();saveStorage()">
+        ${staffOpts.replace(`value="${h.assigneA}"`, `value="${h.assigneA}" selected`)}
+      </select>
     </div>`;
   }).join('');
 }
@@ -1648,16 +1942,28 @@ function renderHollyland(){
 // MEGAPHONE
 // ═══════════════════════════════════════════
 function renderMegaphone(){
-  const crewOpts='<option value="">Libre</option>'+S.crew.map(c=>`<option value="${c.prenom} ${c.nom}" ${S.megaphone.assigneA===c.prenom+' '+c.nom?'selected':''}>${c.prenom} ${c.nom}</option>`).join('');
-  document.getElementById('mega-card').innerHTML=`
-    <div style="display:flex;gap:16px;align-items:flex-start">
-      <div style="font-size:42px">📢</div>
-      <div style="flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
-        <div class="fg" style="margin-bottom:0"><label>Assigné à</label><select onchange="S.megaphone.assigneA=this.value;saveStorage();renderCrew()">${crewOpts}</select></div>
-        <div class="fg" style="margin-bottom:0"><label>Zone</label><input type="text" value="${S.megaphone.zone}" onchange="S.megaphone.zone=this.value;saveStorage()" placeholder="Zone d'utilisation"></div>
-        <div class="fg" style="margin-bottom:0"><label>Statut</label><select onchange="S.megaphone.statut=this.value;saveStorage()"><option ${S.megaphone.statut==='Disponible'?'selected':''}>Disponible</option><option ${S.megaphone.statut==='En service'?'selected':''}>En service</option></select></div>
-      </div>
-    </div>`;
+  const el = document.getElementById('mega-card');
+  if (!el) return;
+  const assigned = !!S.megaphone.assigneA;
+  const staffMember = (S.staff || []).find(s => s.prenom + ' ' + s.nom === S.megaphone.assigneA);
+  const poste = staffMember ? (S.postes || []).find(p => p.id === staffMember.posteId) : null;
+  const staffOpts = '<option value="">— Libre —</option>' + (S.staff || []).map(s => {
+    const p = (S.postes || []).find(p => p.id === s.posteId);
+    return `<option value="${s.prenom} ${s.nom}" ${S.megaphone.assigneA === s.prenom + ' ' + s.nom ? 'selected' : ''}>${s.prenom} ${s.nom}${p ? ' · ' + p.nom : ''}</option>`;
+  }).join('');
+  el.innerHTML = `<div class="matos-card-v2 ${assigned ? 'assigned' : 'libre'}" style="max-width:220px;${poste ? 'border-left-color:' + poste.color : ''}">
+    <div class="mc-device">📢 Mégaphone</div>
+    <div class="mc-canal">VONYX MEG065</div>
+    <div class="mc-divider"></div>
+    ${assigned
+      ? `<div class="mc-name">${S.megaphone.assigneA}</div>
+         <div class="mc-poste" style="${poste ? 'color:' + poste.color : ''}">${poste ? poste.nom : '—'}</div>`
+      : `<div class="mc-libre-label">Libre</div>`
+    }
+    <select class="mc-select" onchange="S.megaphone.assigneA=this.value;renderMegaphone();renderStaff();updateMatosStats();saveStorage()">
+      ${staffOpts}
+    </select>
+  </div>`;
 }
 
 // ═══════════════════════════════════════════
