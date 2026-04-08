@@ -1,893 +1,563 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AINTERCOM LIVE — Sélection de Projet</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #2563EB;
-            --primary-dark: #1D4ED8;
-            --success: #16A34A;
-            --danger: #DC2626;
-            --warning: #D97706;
-            --bg-dark: #0F172A;
-            --bg-card: #1E293B;
-            --text: #F1F5F9;
-            --text-light: #94A3B8;
-            --border: #334155;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-dark);
-            color: var(--text);
-            min-height: 100vh;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 3rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--primary);
-        }
-        
-        .logo span {
-            color: var(--text);
-        }
-        
-        .status-bar {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            padding: 0.5rem 1rem;
-            background: rgba(37, 99, 235, 0.1);
-            border: 1px solid var(--primary);
-            border-radius: 20px;
-        }
-        
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--success);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        .main-title {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--primary), var(--success));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .subtitle {
-            color: var(--text-light);
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-        }
-        
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-        
-        .project-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .project-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.2);
-        }
-        
-        .project-card.new {
-            border: 2px dashed var(--border);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 200px;
-            background: transparent;
-        }
-        
-        .project-card.new:hover {
-            border-color: var(--primary);
-            background: rgba(37, 99, 235, 0.05);
-        }
-        
-        .new-project-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .project-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-        
-        .project-badge {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.75rem;
-            background: rgba(37, 99, 235, 0.2);
-            border-radius: 20px;
-            color: var(--primary);
-            font-weight: 600;
-        }
-        
-        .project-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .action-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-light);
-            cursor: pointer;
-            padding: 0.25rem;
-            border-radius: 4px;
-            transition: color 0.2s;
-        }
-        
-        .action-btn:hover {
-            color: var(--text);
-        }
-        
-        .project-name {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        
-        .project-details {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-        
-        .project-meta {
-            display: flex;
-            gap: 1rem;
-            font-size: 0.85rem;
-            color: var(--text-light);
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--text-light);
-        }
-        
-        .empty-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-        
-        .stats-section {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .stats-title {
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-            color: var(--text-light);
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-        
-        .stat-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1rem;
-            border-radius: 8px;
-        }
-        
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-        
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal.active {
-            display: flex;
-        }
-        
-        .modal-content {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 2rem;
-            width: 90%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-        
-        .modal-close {
-            background: transparent;
-            border: none;
-            color: var(--text-light);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-light);
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 0.75rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 1rem;
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-        
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: var(--primary-dark);
-        }
-        
-        .btn-secondary {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text);
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-        }
-        
-        .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 1rem 1.5rem;
-            background: var(--bg-card);
-            border-left: 4px solid var(--primary);
-            border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-            animation: slideIn 0.3s ease;
-            z-index: 1001;
-        }
-        
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            .header {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: flex-start;
-            }
-            
-            .status-bar {
-                width: 100%;
-                justify-content: space-between;
-            }
-            
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AINTERCOM LIVE — Mes Projets</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+:root {
+  --accent:#2563EB; --accent2:#1D4ED8; --accent-glow:rgba(37,99,235,.12);
+  --danger:#DC2626; --danger-bg:rgba(220,38,38,.08);
+  --success:#16A34A; --success-bg:rgba(22,163,74,.08);
+  --warning:#D97706;
+  --font:'DM Sans',sans-serif; --mono:'DM Mono',monospace;
+  --r:10px; --r-sm:6px; --r-lg:16px; --tr:.15s ease;
+  --bg:#07090E; --bg2:#0E1117; --bg3:#151A23; --bg4:#1C2230;
+  --border:#1E2535; --border2:#2A3347;
+  --tx:#E8EDF5; --tx2:#8B96A8; --tx3:#4A5568;
+}
+html.light {
+  --bg:#F4F6F9; --bg2:#FFFFFF; --bg3:#EEF1F5; --bg4:#E4E8EE;
+  --border:#D5DAE3; --border2:#C0C8D4;
+  --tx:#111827; --tx2:#4B5563; --tx3:#9CA3AF;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--tx);font-size:14px;-webkit-font-smoothing:antialiased}
+
+/* ── HEADER ── */
+#hdr{height:52px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;padding:0 20px;position:sticky;top:0;z-index:100}
+.hdr-logo{font-size:16px;font-weight:900;letter-spacing:-.5px;color:var(--accent)}
+.hdr-logo span{color:var(--tx)}
+.hdr-sep{width:1px;height:28px;background:var(--border);flex-shrink:0}
+.hdr-spacer{flex:1}
+
+/* ── USER MENU ── */
+.user-zone{position:relative}
+.user-btn{display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:5px 10px;cursor:pointer;transition:var(--tr)}
+.user-btn:hover{border-color:var(--border2)}
+.user-avatar{width:24px;height:24px;border-radius:5px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}
+.user-name{font-size:12px;font-weight:600;color:var(--tx);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-caret{font-size:9px;color:var(--tx3)}
+
+.user-dropdown{display:none;position:absolute;top:calc(100% + 6px);right:0;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);min-width:200px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.3);z-index:200}
+.user-dropdown.open{display:block}
+.user-dd-header{padding:12px 14px;border-bottom:1px solid var(--border)}
+.user-dd-email{font-size:11px;color:var(--tx3);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-dd-item{display:flex;align-items:center;gap:9px;padding:9px 14px;font-size:12px;font-weight:600;color:var(--tx2);cursor:pointer;transition:var(--tr)}
+.user-dd-item:hover{background:var(--bg3);color:var(--tx)}
+.user-dd-item i{width:14px;font-size:11px;text-align:center}
+.user-dd-item.danger{color:#FCA5A5}.user-dd-item.danger:hover{background:var(--danger-bg);color:var(--danger)}
+.user-dd-divider{height:1px;background:var(--border);margin:4px 0}
+
+/* ── MAIN CONTENT ── */
+#page{max-width:1100px;margin:0 auto;padding:32px 20px}
+
+.page-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:32px;gap:16px}
+.page-title{font-size:26px;font-weight:900;letter-spacing:-.5px}
+.page-sub{font-size:12px;color:var(--tx2);margin-top:4px}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--r-sm);font-size:12px;font-weight:700;letter-spacing:.02em;border:none;cursor:pointer;transition:var(--tr);font-family:var(--font);white-space:nowrap}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent2)}
+.btn-ghost{background:var(--bg3);color:var(--tx2);border:1px solid var(--border)}.btn-ghost:hover{color:var(--tx);background:var(--bg4)}
+.btn-danger{background:var(--danger);color:#fff}.btn-danger:hover{opacity:.85}
+.btn-sm{padding:5px 11px;font-size:11px}
+.btn-lg{padding:10px 22px;font-size:13px}
+.btn-icon{padding:7px 9px}
+
+/* ── PROJECT GRID ── */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:32px}
+
+.project-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px;cursor:pointer;transition:var(--tr);position:relative}
+.project-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,99,235,.12)}
+.project-card-new{background:transparent;border:2px dashed var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:160px;color:var(--tx3)}
+.project-card-new:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-glow)}
+.project-card-new i{font-size:24px}
+.project-card-new .new-label{font-size:13px;font-weight:700}
+
+.project-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--accent-glow);color:var(--accent);margin-bottom:10px}
+.project-name{font-size:15px;font-weight:800;color:var(--tx);margin-bottom:5px;line-height:1.3}
+.project-meta{font-size:11px;color:var(--tx2);display:flex;flex-direction:column;gap:3px}
+.project-meta span{display:flex;align-items:center;gap:5px}
+.project-meta i{width:12px;font-size:10px;color:var(--tx3)}
+
+.project-actions{position:absolute;top:14px;right:14px;display:flex;gap:4px;opacity:0;transition:var(--tr)}
+.project-card:hover .project-actions{opacity:1}
+
+/* ── EMPTY STATE ── */
+.empty{text-align:center;padding:60px 20px;color:var(--tx3)}
+.empty i{font-size:36px;margin-bottom:14px;display:block;opacity:.4}
+.empty h3{font-size:16px;font-weight:800;color:var(--tx2);margin-bottom:6px}
+.empty p{font-size:12px;line-height:1.6}
+
+/* ── STATS ── */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px}
+.stat-val{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--tx);line-height:1}
+.stat-lbl{font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+
+/* ── MODAL ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;width:520px;max-width:95vw;max-height:90vh;overflow-y:auto}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.modal-title{font-size:16px;font-weight:800}
+.modal-close{background:var(--bg3);border:1px solid var(--border);border-radius:5px;width:26px;height:26px;cursor:pointer;color:var(--tx2);font-size:12px;display:flex;align-items:center;justify-content:center;font-family:var(--font)}
+.modal-close:hover{color:var(--tx)}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.fg{margin-bottom:12px}
+.fg-row{display:flex;gap:10px}.fg-row>.fg{flex:1}
+label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px}
+input,select,textarea{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;font-family:var(--font);font-size:12px;color:var(--tx);width:100%;outline:none;transition:var(--tr)}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+
+/* ── TOAST ── */
+#toasts{position:fixed;top:60px;right:16px;z-index:2000;display:flex;flex-direction:column;gap:6px}
+.toast{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:8px;min-width:220px;animation:toastIn .2s ease;box-shadow:0 4px 20px rgba(0,0,0,.25)}
+.toast-s{border-left:3px solid var(--success)}.toast-d{border-left:3px solid var(--danger)}.toast-i{border-left:3px solid var(--accent)}
+@keyframes toastIn{from{transform:translateX(16px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* ── LOADING ── */
+#loading-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:16px}
+.ls-logo{font-size:24px;font-weight:900;color:var(--accent)}.ls-logo span{color:var(--tx)}
+.ls-spin{width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:640px){
+  .projects-grid{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:1fr}
+  .page-hdr{flex-direction:column}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <div class="logo">AINTERCOM <span>LIVE</span></div>
-            <div class="status-bar">
-                <div class="status-indicator">
-                    <div class="status-dot"></div>
-                    <span>Connecté</span>
-                </div>
-                <div class="user-avatar" id="userAvatar">U</div>
-            </div>
-        </header>
-        
-        <main>
-            <h1 class="main-title">Mes Projets</h1>
-            <p class="subtitle">Sélectionnez un projet existant ou créez-en un nouveau pour commencer</p>
-            
-            <div class="projects-grid" id="projectsGrid">
-                <!-- Les projets seront chargés ici -->
-                <div class="project-card new" onclick="openNewProjectModal()">
-                    <div class="new-project-icon">
-                        <i class="fas fa-plus"></i>
-                    </div>
-                    <h3>Créer un nouveau projet</h3>
-                    <p>Lancez un nouveau projet événementiel</p>
-                </div>
-            </div>
-            
-            <div class="empty-state" id="emptyState" style="display: none;">
-                <div class="empty-icon">
-                    <i class="fas fa-calendar-plus"></i>
-                </div>
-                <h3>Aucun projet pour le moment</h3>
-                <p>Créez votre premier projet pour commencer à utiliser AINTERCOM LIVE.</p>
-                <button class="btn btn-primary" onclick="openNewProjectModal()" style="margin-top: 1rem;">
-                    <i class="fas fa-plus"></i> Créer un projet
-                </button>
-            </div>
-            
-            <div class="stats-section" id="statsSection" style="display: none;">
-                <h3 class="stats-title">📊 Statistiques</h3>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-value" id="statActive">0</div>
-                        <div class="stat-label">Projets actifs</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="statLast">—</div>
-                        <div class="stat-label">Dernier projet</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="statStorage">Local</div>
-                        <div class="stat-label">Stockage</div>
-                    </div>
-                </div>
-            </div>
-        </main>
+
+<!-- LOADING SCREEN -->
+<div id="loading-screen">
+  <div class="ls-logo">AINTERCOM <span>LIVE</span></div>
+  <div class="ls-spin"></div>
+</div>
+
+<!-- HEADER -->
+<header id="hdr" style="display:none">
+  <div class="hdr-logo">AINTERCOM <span>LIVE</span></div>
+  <div class="hdr-sep"></div>
+  <div style="font-size:11px;color:var(--tx3);font-weight:600">Mes Projets</div>
+  <div class="hdr-spacer"></div>
+  <button class="btn btn-ghost btn-icon btn-sm" onclick="toggleTheme()" id="theme-btn" title="Thème"><i class="fas fa-moon"></i></button>
+  <div class="user-zone">
+    <div class="user-btn" onclick="toggleUserMenu()">
+      <div class="user-avatar" id="user-avatar">?</div>
+      <div class="user-name" id="user-name">Chargement…</div>
+      <i class="fas fa-chevron-down user-caret" id="user-caret"></i>
     </div>
-    
-    <!-- Modal Nouveau Projet -->
-    <div class="modal" id="newProjectModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Créer un projet</h2>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Nom du projet *</label>
-                <input type="text" class="form-input" id="projectName" placeholder="Ex: Gala Annuel 2026" required>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label">Date</label>
-                    <input type="date" class="form-input" id="projectDate">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Heure début</label>
-                    <input type="time" class="form-input" id="projectTime" value="20:00">
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Lieu</label>
-                <input type="text" class="form-input" id="projectVenue" placeholder="Ex: Groupama Stadium, Lyon">
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label">Type</label>
-                    <select class="form-input" id="projectType">
-                        <option value="concert">Concert</option>
-                        <option value="conference">Conférence</option>
-                        <option value="festival">Festival</option>
-                        <option value="sport">Événement sportif</option>
-                        <option value="private">Soirée privée</option>
-                        <option value="other">Autre</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Directeur</label>
-                    <input type="text" class="form-input" id="projectDirector" placeholder="Nom du directeur">
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Notes (optionnel)</label>
-                <textarea class="form-input" id="projectNotes" rows="3" placeholder="Informations supplémentaires..."></textarea>
-            </div>
-            
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
-                <button class="btn btn-primary" onclick="saveProject()">
-                    <i class="fas fa-plus"></i> Créer
-                </button>
-            </div>
+    <div class="user-dropdown" id="user-dropdown">
+      <div class="user-dd-header">
+        <div style="font-size:13px;font-weight:700" id="dd-name">—</div>
+        <div class="user-dd-email" id="dd-email">—</div>
+      </div>
+      <div class="user-dd-item" onclick="saveManual()"><i class="fas fa-floppy-disk"></i> Sauvegarder</div>
+      <div class="user-dd-divider"></div>
+      <div class="user-dd-item danger" onclick="logout()"><i class="fas fa-right-from-bracket"></i> Se déconnecter</div>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN PAGE -->
+<div id="page" style="display:none">
+  <div class="page-hdr">
+    <div>
+      <div class="page-title">Mes Projets</div>
+      <div class="page-sub" id="page-sub">Sélectionnez un projet ou créez-en un nouveau</div>
+    </div>
+    <button class="btn btn-primary btn-lg" onclick="openModal()">
+      <i class="fas fa-plus"></i> Nouveau projet
+    </button>
+  </div>
+
+  <div class="projects-grid" id="projects-grid">
+    <!-- chargé dynamiquement -->
+  </div>
+
+  <div class="empty" id="empty-state" style="display:none">
+    <i class="fas fa-calendar-plus"></i>
+    <h3>Aucun projet pour le moment</h3>
+    <p>Créez votre premier projet pour commencer<br>à piloter vos événements avec AINTERCOM.</p>
+    <button class="btn btn-primary" onclick="openModal()" style="margin-top:16px"><i class="fas fa-plus"></i> Créer un projet</button>
+  </div>
+
+  <div class="stats-row" id="stats-row" style="display:none">
+    <div class="stat-card">
+      <div class="stat-val" id="stat-total">0</div>
+      <div class="stat-lbl">Projets</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="stat-last">—</div>
+      <div class="stat-lbl">Dernier projet</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="stat-storage">Local</div>
+      <div class="stat-lbl">Stockage</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toasts"></div>
+
+<!-- MODAL NOUVEAU PROJET -->
+<div class="overlay" id="modal-new-project">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-title">Créer un projet</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="fg"><label>Nom du projet *</label><input type="text" id="p-name" placeholder="Ex : Gala Annuel 2026" autofocus></div>
+    <div class="fg-row">
+      <div class="fg"><label>Date</label><input type="date" id="p-date"></div>
+      <div class="fg"><label>Heure début</label><input type="time" id="p-time" value="20:00"></div>
+    </div>
+    <div class="fg"><label>Lieu</label><input type="text" id="p-venue" placeholder="Ex : Groupama Stadium, Lyon"></div>
+    <div class="fg-row">
+      <div class="fg"><label>Type</label>
+        <select id="p-type">
+          <option value="Soirée privée">Soirée privée</option>
+          <option value="Conférence / Séminaire">Conférence / Séminaire</option>
+          <option value="Concert / Festival">Concert / Festival</option>
+          <option value="Événement sportif">Événement sportif</option>
+          <option value="Stade / Arena">Stade / Arena</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+      <div class="fg"><label>Directeur</label><input type="text" id="p-director" placeholder="Nom du directeur"></div>
+    </div>
+    <div class="fg"><label>Notes (optionnel)</label><textarea id="p-notes" rows="2" placeholder="Infos supplémentaires…"></textarea></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Annuler</button>
+      <button class="btn btn-primary" onclick="saveProject()"><i class="fas fa-plus"></i> Créer et ouvrir</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════
+const SUPABASE_URL = 'https://wmbyccbyhtjzvsxxrsbe.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtYnljY2J5aHRqenZzeHhyc2JlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3OTc0NDQsImV4cCI6MjA5MDM3MzQ0NH0.Pb3C36m05SygQcEhidH4fHXJHMvMw2XN7g5iCFkBGaM';
+
+let sb = null;
+let currentUser = null;
+let projects = [];
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', async () => {
+  // Restaurer thème
+  const theme = localStorage.getItem('aintercom_theme') || 'dark';
+  if (theme === 'light') applyTheme('light');
+
+  // Init Supabase
+  try { sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) {}
+
+  // Récupérer session
+  await resolveUser();
+});
+
+async function resolveUser() {
+  // 1. Essayer session Supabase
+  if (sb) {
+    try {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session?.user) {
+        currentUser = buildUser(session.user);
+        setupAuthListener();
+        boot();
+        return;
+      }
+    } catch(e) {}
+  }
+
+  // 2. Essayer session locale (mode local)
+  const local = localStorage.getItem('aintercom_session');
+  if (local) {
+    try {
+      currentUser = JSON.parse(local);
+      boot();
+      return;
+    } catch(e) {}
+  }
+
+  // 3. Pas de session → redirect login
+  window.location.href = 'login.html';
+}
+
+function buildUser(supaUser) {
+  const meta = supaUser.user_metadata || {};
+  const name = meta.full_name || meta.name || supaUser.email?.split('@')[0] || 'Utilisateur';
+  const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  return {
+    id: supaUser.id,
+    email: supaUser.email,
+    name,
+    initials,
+    isLocal: false
+  };
+}
+
+function setupAuthListener() {
+  if (!sb) return;
+  sb.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_OUT') {
+      localStorage.removeItem('aintercom_session');
+      window.location.href = 'login.html';
+    }
+  });
+}
+
+function boot() {
+  updateUserUI();
+  loadProjects();
+  renderProjects();
+  hideLoading();
+}
+
+function hideLoading() {
+  document.getElementById('loading-screen').style.display = 'none';
+  document.getElementById('hdr').style.display = 'flex';
+  document.getElementById('page').style.display = 'block';
+}
+
+// ═══════════════════════════════════════════
+// USER UI
+// ═══════════════════════════════════════════
+function updateUserUI() {
+  if (!currentUser) return;
+  const initials = currentUser.initials || currentUser.name?.[0]?.toUpperCase() || '?';
+  document.getElementById('user-avatar').textContent = initials;
+  document.getElementById('user-name').textContent = currentUser.name || currentUser.email;
+  document.getElementById('dd-name').textContent = currentUser.name || 'Utilisateur';
+  document.getElementById('dd-email').textContent = currentUser.email || 'Mode local';
+  document.getElementById('page-sub').textContent = `Bonjour ${currentUser.name?.split(' ')[0] || ''} — sélectionnez ou créez un projet`;
+  document.getElementById('stat-storage').textContent = currentUser.isLocal ? 'Local' : 'Cloud';
+}
+
+function toggleUserMenu() {
+  const dd = document.getElementById('user-dropdown');
+  const caret = document.getElementById('user-caret');
+  dd.classList.toggle('open');
+  caret.style.transform = dd.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+
+// Fermer dropdown en cliquant ailleurs
+document.addEventListener('click', e => {
+  if (!e.target.closest('.user-zone')) {
+    document.getElementById('user-dropdown').classList.remove('open');
+    document.getElementById('user-caret').style.transform = '';
+  }
+});
+
+async function logout() {
+  if (sb && !currentUser?.isLocal) {
+    await sb.auth.signOut();
+  }
+  localStorage.removeItem('aintercom_session');
+  window.location.href = 'login.html';
+}
+
+// ═══════════════════════════════════════════
+// THEME
+// ═══════════════════════════════════════════
+function toggleTheme() {
+  const isLight = document.documentElement.classList.contains('light');
+  applyTheme(isLight ? 'dark' : 'light');
+}
+function applyTheme(t) {
+  document.documentElement.classList.toggle('light', t === 'light');
+  const btn = document.getElementById('theme-btn');
+  if (btn) btn.innerHTML = t === 'light' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+  localStorage.setItem('aintercom_theme', t);
+}
+
+// ═══════════════════════════════════════════
+// PROJECTS — clé isolée par UID utilisateur
+// ═══════════════════════════════════════════
+function storageKey() {
+  return 'aintercom_projects_' + (currentUser?.id || 'local');
+}
+
+function loadProjects() {
+  try {
+    const raw = localStorage.getItem(storageKey());
+    projects = raw ? JSON.parse(raw) : [];
+  } catch(e) { projects = []; }
+}
+
+function saveProjects() {
+  try {
+    localStorage.setItem(storageKey(), JSON.stringify(projects));
+  } catch(e) {}
+}
+
+function saveManual() {
+  saveProjects();
+  toast('Projets sauvegardés', 's');
+}
+
+// ═══════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════
+function renderProjects() {
+  const grid = document.getElementById('projects-grid');
+  const empty = document.getElementById('empty-state');
+  const stats = document.getElementById('stats-row');
+
+  // Carte "nouveau projet" toujours en premier
+  const newCard = `
+    <div class="project-card project-card-new" onclick="openModal()">
+      <i class="fas fa-plus"></i>
+      <div class="new-label">Nouveau projet</div>
+    </div>`;
+
+  if (!projects.length) {
+    grid.innerHTML = newCard;
+    empty.style.display = 'block';
+    stats.style.display = 'none';
+    return;
+  }
+
+  empty.style.display = 'none';
+  stats.style.display = 'grid';
+
+  const typeIcon = { 'Concert / Festival': '🎵', 'Conférence / Séminaire': '🎤', 'Événement sportif': '🏆', 'Stade / Arena': '🏟️', 'Soirée privée': '🥂', 'Autre': '🎉' };
+
+  const cards = projects.map((p, i) => {
+    const date = p.date ? new Date(p.date + 'T12:00').toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' }) : 'Date non définie';
+    const icon = typeIcon[p.type] || '🎉';
+    return `
+      <div class="project-card" onclick="openProject(${i})">
+        <div class="project-actions">
+          <button class="btn btn-ghost btn-sm btn-icon" onclick="event.stopPropagation();deleteProject(${i})" title="Supprimer"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
         </div>
-    </div>
-    
-    <script>
-        // Configuration
-        const STORAGE_KEY = 'aintercom_projects';
-        const USER_KEY = 'aintercom_user';
-        
-        // État global
-        let projects = [];
-        let currentUser = null;
-        
-        // Initialisation
-        document.addEventListener('DOMContentLoaded', function() {
-            loadUser();
-            loadProjects();
-            updateUI();
-            setupEventListeners();
-        });
-        
-        // Charger l'utilisateur
-        function loadUser() {
-            const userData = localStorage.getItem(USER_KEY);
-            if (userData) {
-                currentUser = JSON.parse(userData);
-                updateUserAvatar();
-            } else {
-                // Simuler un utilisateur pour le moment
-                currentUser = {
-                    id: 'user_' + Date.now(),
-                    name: 'Utilisateur',
-                    email: 'user@example.com',
-                    initials: 'U'
-                };
-                localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
-                updateUserAvatar();
-            }
-        }
-        
-        function updateUserAvatar() {
-            const avatar = document.getElementById('userAvatar');
-            if (avatar && currentUser) {
-                avatar.textContent = currentUser.initials || 'U';
-            }
-        }
-        
-        // Charger les projets
-        function loadProjects() {
-            const projectsData = localStorage.getItem(STORAGE_KEY);
-            if (projectsData) {
-                projects = JSON.parse(projectsData);
-            } else {
-                projects = [];
-            }
-        }
-        
-        // Sauvegarder les projets
-        function saveProjects() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
-        }
-        
-        // Mettre à jour l'interface
-        function updateUI() {
-            const projectsGrid = document.getElementById('projectsGrid');
-            const emptyState = document.getElementById('emptyState');
-            const statsSection = document.getElementById('statsSection');
-            
-            // Nettoyer la grille (garder seulement la carte "nouveau projet")
-            while (projectsGrid.children.length > 1) {
-                projectsGrid.removeChild(projectsGrid.lastChild);
-            }
-            
-            // Ajouter les projets existants
-            if (projects.length > 0) {
-                emptyState.style.display = 'none';
-                statsSection.style.display = 'block';
-                
-                projects.forEach((project, index) => {
-                    const projectCard = createProjectCard(project, index);
-                    projectsGrid.appendChild(projectCard);
-                });
-                
-                updateStats();
-            } else {
-                emptyState.style.display = 'block';
-                statsSection.style.display = 'none';
-            }
-        }
-        
-        // Créer une carte de projet
-        function createProjectCard(project, index) {
-            const card = document.createElement('div');
-            card.className = 'project-card';
-            card.dataset.index = index;
-            
-            const date = project.date ? new Date(project.date).toLocaleDateString('fr-FR') : 'Non défini';
-            const time = project.time || '20:00';
-            
-            card.innerHTML = `
-                <div class="project-header">
-                    <span class="project-badge">${project.type || 'Événement'}</span>
-                    <div class="project-actions">
-                        <button class="action-btn" onclick="deleteProject(${index}, event)">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-                <h3 class="project-name">${project.name}</h3>
-                <p class="project-details">${project.venue || 'Lieu non spécifié'}</p>
-                <div class="project-meta">
-                    <span><i class="far fa-calendar"></i> ${date}</span>
-                    <span><i class="far fa-clock"></i> ${time}</span>
-                </div>
-            `;
-            
-            card.addEventListener('click', (e) => {
-                if (!e.target.closest('.action-btn')) {
-                    openProject(index);
-                }
-            });
-            
-            return card;
-        }
-        
-        // Mettre à jour les statistiques
-        function updateStats() {
-            if (projects.length === 0) return;
-            
-            document.getElementById('statActive').textContent = projects.length;
-            
-            // Dernier projet
-            const lastProject = projects[projects.length - 1];
-            const lastDate = lastProject.date ? new Date(lastProject.date).toLocaleDateString('fr-FR') : '—';
-            document.getElementById('statLast').textContent = lastDate;
-            
-            // Stockage
-            const storageType = localStorage.getItem(STORAGE_KEY) ? 'Local' : 'Cloud';
-            document.getElementById('statStorage').textContent = storageType;
-        }
-        
-        // Ouvrir un projet
-        function openProject(index) {
-            if (index >= 0 && index < projects.length) {
-                const project = projects[index];
-                
-                // Sauvegarder le projet sélectionné
-                localStorage.setItem('aintercom_current_project', JSON.stringify(project));
-                
-                // Rediriger vers app.html
-                window.location.href = 'app.html';
-            }
-        }
-        
-        // Supprimer un projet
-        function deleteProject(index, event) {
-            event.stopPropagation();
-            
-            if (confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')) {
-                projects.splice(index, 1);
-                saveProjects();
-                updateUI();
-                showToast('Projet supprimé avec succès');
-            }
-        }
-        
-        // Gestion du modal
-        function openNewProjectModal() {
-            document.getElementById('newProjectModal').classList.add('active');
-            document.getElementById('projectName').focus();
-            
-            // Définir la date par défaut à aujourd'hui
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('projectDate').value = today;
-        }
-        
-        function closeModal() {
-            document.getElementById('newProjectModal').classList.remove('active');
-            clearForm();
-        }
-        
-        function clearForm() {
-            document.getElementById('projectName').value = '';
-            document.getElementById('projectDate').value = '';
-            document.getElementById('projectTime').value = '20:00';
-            document.getElementById('projectVenue').value = '';
-            document.getElementById('projectType').value = 'concert';
-            document.getElementById('projectDirector').value = '';
-            document.getElementById('projectNotes').value = '';
-        }
-        
-        // Sauvegarder un projet
-        function saveProject() {
-            const name = document.getElementById('projectName').value.trim();
-            if (!name) {
-                alert('Veuillez saisir un nom pour le projet');
-                return;
-            }
-            
-            const project = {
-                id: 'project_' + Date.now(),
-                name: name,
-                date: document.getElementById('projectDate').value,
-                time: document.getElementById('projectTime').value,
-                venue: document.getElementById('projectVenue').value.trim(),
-                type: document.getElementById('projectType').value,
-                director: document.getElementById('projectDirector').value.trim(),
-                notes: document.getElementById('projectNotes').value.trim(),
-                createdAt: new Date().toISOString(),
-                createdBy: currentUser.id
-            };
-            
-            projects.push(project);
-            saveProjects();
-            updateUI();
-            closeModal();
-            showToast('Projet créé avec succès');
-        }
-        
-        // Afficher une notification
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = message;
-            
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(100%)';
-                setTimeout(() => {
-                    if (toast.parentNode) {
-                        toast.parentNode.removeChild(toast);
-                    }
-                }, 300);
-            }, 3000);
-        }
-        
-        // Configurer les écouteurs d'événements
-        function setupEventListeners() {
-            // Fermer le modal avec ESC
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    closeModal();
-                }
-            });
-            
-            // Fermer le modal en cliquant à l'extérieur
-            document.getElementById('newProjectModal').addEventListener('click', (e) => {
-                if (e.target.id === 'newProjectModal') {
-                    closeModal();
-                }
-            });
-            
-            // Soumission du formulaire avec Entrée
-            document.getElementById('projectName').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    saveProject();
-                }
-            });
-        }
-        
-        // Exposer les fonctions globales
-        window.openNewProjectModal = openNewProjectModal;
-        window.closeModal = closeModal;
-        window.saveProject = saveProject;
-        window.deleteProject = deleteProject;
-        
-        // Fonctionnalités "vivantes"
-        function startLiveUpdates() {
-            // Mettre à jour l'heure en temps réel
-            updateLiveTime();
-            setInterval(updateLiveTime, 60000); // Toutes les minutes
-            
-            // Vérifier les mises à jour de projets
-            setInterval(checkForUpdates, 30000); // Toutes les 30 secondes
-            
-            // Animer l'indicateur de statut
-            animateStatusIndicator();
-            
-            console.log('✅ Fonctionnalités "vivantes" activées');
-        }
-        
-        function updateLiveTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('fr-FR', { 
-                hour: '2-digit', 
-                minute: '2-digit',
-                hour12: false 
-            });
-            const dateString = now.toLocaleDateString('fr-FR', {
-                weekday: 'long',
-                day: 'numeric',
-                month: 'long'
-            });
-            
-            // Mettre à jour l'indicateur de statut si présent
-            const statusIndicator = document.querySelector('.status-indicator span');
-            if (statusIndicator && statusIndicator.textContent === 'Connecté') {
-                statusIndicator.textContent = `Connecté • ${timeString}`;
-            }
-            
-            // Mettre à jour le titre de la page avec l'heure
-            document.title = `AINTERCOM LIVE (${timeString}) — Sélection de Projet`;
-        }
-        
-        function animateStatusIndicator() {
-            const statusDot = document.querySelector('.status-dot');
-            if (statusDot) {
-                // Alterner entre différentes couleurs pour simuler l'activité
-                const colors = ['#16A34A', '#D97706', '#2563EB'];
-                let colorIndex = 0;
-                
-                setInterval(() => {
-                    statusDot.style.backgroundColor = colors[colorIndex];
-                    colorIndex = (colorIndex + 1) % colors.length;
-                }, 3000);
-            }
-        }
-        
-        function checkForUpdates() {
-            // Simuler la vérification de mises à jour
-            const hasUpdates = Math.random() > 0.7; // 30% de chance d'avoir des mises à jour
-            
-            if (hasUpdates && projects.length > 0) {
-                showToast('🔄 Mise à jour des projets...');
-                // Recharger les projets (simulé)
-                loadProjects();
-                updateUI();
-            }
-        }
-        
-        // Démarrer les fonctionnalités vivantes après le chargement
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(startLiveUpdates, 1000); // Démarrer après 1 seconde
-        });
-    </script>
+        <div class="project-badge">${icon} ${p.type || 'Événement'}</div>
+        <div class="project-name">${p.name}</div>
+        <div class="project-meta">
+          ${p.venue ? `<span><i class="fas fa-location-dot"></i>${p.venue}</span>` : ''}
+          <span><i class="fas fa-calendar"></i>${date}${p.time ? ' · ' + p.time : ''}</span>
+          ${p.director ? `<span><i class="fas fa-user"></i>${p.director}</span>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+
+  grid.innerHTML = newCard + cards;
+
+  // Stats
+  document.getElementById('stat-total').textContent = projects.length;
+  const last = projects[projects.length - 1];
+  document.getElementById('stat-last').textContent = last?.name?.slice(0, 14) || '—';
+}
+
+// ═══════════════════════════════════════════
+// OPEN PROJECT → app.html
+// ═══════════════════════════════════════════
+function openProject(index) {
+  const project = projects[index];
+  if (!project) return;
+  // Clé unifiée utilisée aussi par app.html
+  localStorage.setItem('aintercom_current_project', JSON.stringify({
+    ...project,
+    _uid: currentUser?.id || 'local',
+    _index: index
+  }));
+  window.location.href = 'app.html';
+}
+
+// ═══════════════════════════════════════════
+// CRUD PROJECTS
+// ═══════════════════════════════════════════
+function openModal() {
+  // Reset form
+  ['p-name','p-date','p-venue','p-director','p-notes'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('p-time').value = '20:00';
+  document.getElementById('p-type').value = 'Soirée privée';
+  // Default date = today
+  document.getElementById('p-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('modal-new-project').classList.add('open');
+  setTimeout(() => document.getElementById('p-name').focus(), 50);
+}
+
+function closeModal() {
+  document.getElementById('modal-new-project').classList.remove('open');
+}
+
+function saveProject() {
+  const name = document.getElementById('p-name').value.trim();
+  if (!name) { toast('Le nom du projet est requis', 'd'); document.getElementById('p-name').focus(); return; }
+
+  const project = {
+    id: 'project_' + Date.now(),
+    name,
+    date: document.getElementById('p-date').value,
+    time: document.getElementById('p-time').value,
+    venue: document.getElementById('p-venue').value.trim(),
+    type: document.getElementById('p-type').value,
+    director: document.getElementById('p-director').value.trim(),
+    notes: document.getElementById('p-notes').value.trim(),
+    createdAt: new Date().toISOString(),
+    createdBy: currentUser?.id || 'local'
+  };
+
+  projects.push(project);
+  saveProjects();
+  closeModal();
+  toast('Projet créé', 's');
+
+  // Ouvrir directement
+  openProject(projects.length - 1);
+}
+
+function deleteProject(index) {
+  if (!confirm(`Supprimer "${projects[index]?.name}" ?`)) return;
+  // Supprimer aussi les données de l'événement dans app.html
+  const p = projects[index];
+  if (p?.id) {
+    const uid = currentUser?.id || 'local';
+    localStorage.removeItem('aintercom_event_' + uid + '_' + p.id);
+  }
+  projects.splice(index, 1);
+  saveProjects();
+  renderProjects();
+  toast('Projet supprimé', 'i');
+}
+
+// ═══════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════
+function toast(msg, type = 'i') {
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  const icons = { s: '✓', d: '✕', i: 'ℹ' };
+  el.innerHTML = `<span style="font-size:13px">${icons[type]||'ℹ'}</span> ${msg}`;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(() => el.remove(), 3200);
+}
+
+// ═══════════════════════════════════════════
+// KEYBOARD
+// ═══════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveManual(); }
+});
+
+// Fermer modal en cliquant overlay
+document.getElementById('modal-new-project').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeModal();
+});
+</script>
+</body>
+</html>

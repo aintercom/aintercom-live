@@ -309,9 +309,28 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
       <button class="btn btn-next btn-sm" onclick="nextTop()"><i class="fas fa-forward-step"></i> NEXT TOP</button>
       <div class="hdr-sep"></div>
       <button class="btn btn-ghost btn-icon btn-sm" onclick="toggleTheme()" id="app-theme-btn" title="Thème"><i class="fas fa-moon"></i></button>
-      <button class="btn btn-ghost btn-icon btn-sm" onclick="saveManual()" title="Sauvegarder"><i class="fas fa-floppy-disk"></i></button>
+      <button class="btn btn-ghost btn-icon btn-sm" onclick="saveManual()" title="Ctrl+S — Sauvegarder"><i class="fas fa-floppy-disk"></i></button>
       <button class="btn btn-ghost btn-icon btn-sm" onclick="doPrint()" title="Imprimer / Export"><i class="fas fa-print"></i></button>
-      <div id="user-avatar" onclick="logout()" title="Se déconnecter">?</div>
+      <div class="hdr-sep"></div>
+      <div id="app-user-zone">
+        <div id="app-user-btn" onclick="toggleUserMenu()">
+          <div id="user-avatar">?</div>
+          <span id="app-user-name" style="font-size:11px;font-weight:600;color:var(--tx);max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">…</span>
+          <i class="fas fa-chevron-down" style="font-size:9px;color:var(--tx3)"></i>
+        </div>
+        <div id="app-user-dropdown">
+          <div class="app-dd-hdr">
+            <div class="app-dd-name" id="app-dd-name">—</div>
+            <div class="app-dd-email" id="app-dd-email">—</div>
+          </div>
+          <button class="app-dd-item back" onclick="goBackToProjects()"><i class="fas fa-arrow-left"></i> Mes projets</button>
+          <div class="app-dd-sep"></div>
+          <button class="app-dd-item" onclick="saveManual();toggleUserMenu()"><i class="fas fa-floppy-disk"></i> Sauvegarder</button>
+          <button class="app-dd-item" onclick="toggleTheme();toggleUserMenu()"><i class="fas fa-circle-half-stroke"></i> Changer le thème</button>
+          <div class="app-dd-sep"></div>
+          <button class="app-dd-item danger" onclick="logout()"><i class="fas fa-right-from-bracket"></i> Se déconnecter</button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -1151,7 +1170,7 @@ function openEvent(id){
   if(!ev)return;
   S.currentEventId=id;
   // Charger les données spécifiques à l'événement sans écraser events/theme/currentEventId
-  const saved=localStorage.getItem('aintercom_event_'+id);
+  const saved=localStorage.getItem('aintercom_event_'+(currentUser?.id||'local')+'_'+id);
   if(saved){
     try{
       const d=JSON.parse(saved);
@@ -1182,15 +1201,17 @@ function openEvent(id){
 }
 
 function goHome(){
-  document.getElementById('app').style.display='none';
-  document.getElementById('page-home').style.display='flex';
-  renderHomeEvents();
+  window.location.href = 'index.html';
+}
+
+function goBackToProjects(){
+  window.location.href = 'index.html';
 }
 
 function deleteEvent(id){
   if(!confirm('Supprimer cet événement ?'))return;
   S.events=S.events.filter(e=>e.id!==id);
-  localStorage.removeItem('aintercom_event_'+id);
+  localStorage.removeItem('aintercom_event_'+(currentUser?.id||'local')+'_'+id);
   saveStorage();
   renderHomeEvents();
   toast('Événement supprimé','i');
@@ -2042,32 +2063,39 @@ function toast(msg,type='i'){
 }
 
 // ═══════════════════════════════════════════
-// SAVE / LOAD
+// SAVE / LOAD — isolé par UID utilisateur
 // ═══════════════════════════════════════════
+function storagePrefix(){return 'aintercom_' + (currentUser?.id || 'local') + '_';}
+
 function saveStorage(){
   try{
-    // Save global state (events list, theme)
-    localStorage.setItem('aintercom_global',JSON.stringify({events:S.events,theme:S.theme}));
-    // Save event-specific data
+    const uid = currentUser?.id || 'local';
+    // Sauvegarde globale (events, theme) par user
+    localStorage.setItem('aintercom_global_' + uid, JSON.stringify({events:S.events,theme:S.theme}));
+    // Sauvegarde données spécifiques à l'événement
     if(S.currentEventId){
       const {events,theme,...eventData}=S;
-      localStorage.setItem('aintercom_event_'+S.currentEventId,JSON.stringify(eventData));
+      localStorage.setItem('aintercom_event_' + uid + '_' + S.currentEventId, JSON.stringify(eventData));
     }
     const now=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
     const el=document.getElementById('ftr-save');if(el)el.textContent='Sauvegardé à '+now;
-    document.getElementById('save-ind').textContent='● '+now;
+    const si=document.getElementById('save-ind');if(si)si.textContent='● '+now;
   }catch(e){console.warn('Save error',e);}
 }
 
 function loadStorage(){
   try{
-    const global=localStorage.getItem('aintercom_global');
+    const uid = currentUser?.id || 'local';
+    const global=localStorage.getItem('aintercom_global_' + uid);
     if(global){const d=JSON.parse(global);S.events=d.events||[];S.theme=d.theme||'dark';}
     if(S.theme==='light'){document.getElementById('root').className='light';['home-theme-btn','app-theme-btn'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<i class="fas fa-sun"></i>';});}
   }catch(e){console.warn('Load error',e);}
 }
 
-function saveManual(){saveStorage();toast('Sauvegardé','s');addActivity('Sauvegarde manuelle','i');}
+// Override openEvent pour utiliser la clé user-aware
+const _origOpenEvent = window.openEvent;
+
+function saveManual(){saveStorage();toast('Sauvegardé ✓','s');addActivity('Sauvegarde manuelle','i');}
 function startAutoSave(){setInterval(saveStorage,30000);}
 
 // ═══════════════════════════════════════════
@@ -2128,199 +2156,168 @@ function fmtTime(s){return String(Math.floor(s/3600)).padStart(2,'0')+':'+String
 </script>
 
 <!-- ═══════════════════════════════════════════
-     SUPABASE AUTH — CONNEXION GOOGLE
-     Remplace SUPABASE_URL et SUPABASE_ANON_KEY
-     par tes vraies valeurs depuis supabase.com
+     AUTH & SESSION MANAGER — AINTERCOM LIVE
 ═══════════════════════════════════════════ -->
 <script>
-// ── CONFIG SUPABASE ──
-// Va sur https://supabase.com → ton projet → Settings → API
-// et remplace ces deux valeurs :
 const SUPABASE_URL = 'https://wmbyccbyhtjzvsxxrsbe.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtYnljY2J5aHRqenZzeHhyc2JlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3OTc0NDQsImV4cCI6MjA5MDM3MzQ0NH0.Pb3C36m05SygQcEhidH4fHXJHMvMw2XN7g5iCFkBGaM';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtYnljY2J5aHRqenZzeHhyc2JlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3OTc0NDQsImV4cCI6MjA5MDM3MzQ0NH0.Pb3C36m05SygQcEhidH4fHXJHMvMw2XN7g5iCFkBGaM';
 
-let supabase = null;
+let sb = null;
 let currentUser = null;
 
-// Initialise Supabase seulement si les clés sont configurées
-function initSupabase() {
-  if (SUPABASE_URL.includes('VOTRE_PROJECT_ID')) {
-    console.warn('⚠️ Supabase non configuré — mode local activé');
-    return false;
+// ── USER DROPDOWN STATE ──
+let userMenuOpen = false;
+
+function toggleUserMenu() {
+  userMenuOpen = !userMenuOpen;
+  const dd = document.getElementById('app-user-dropdown');
+  if (dd) dd.classList.toggle('open', userMenuOpen);
+}
+
+// Fermer en cliquant ailleurs
+document.addEventListener('click', e => {
+  if (!e.target.closest('#app-user-zone')) {
+    userMenuOpen = false;
+    const dd = document.getElementById('app-user-dropdown');
+    if (dd) dd.classList.remove('open');
   }
+});
+
+// ── INIT AUTH ──
+async function initAuth() {
+  // Essayer Supabase
   try {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    return true;
-  } catch(e) {
-    console.warn('Supabase init error:', e);
-    return false;
-  }
-}
-
-// Page de connexion
-function showLoginPage() {
-  document.getElementById('login-page').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
-}
-
-function hideLoginPage() {
-  document.getElementById('login-page').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-}
-
-// Connexion via Google
-async function loginWithGoogle() {
-  if (!supabase) { toast('Supabase non configuré — voir console','d'); return; }
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: window.location.href }
-  });
-  if (error) toast('Erreur connexion: ' + error.message, 'd');
-}
-
-// Déconnexion
-async function logout() {
-  if (supabase) await supabase.auth.signOut();
-  currentUser = null;
-  showLoginPage();
-  toast('Déconnecté', 'i');
-}
-
-// Vérification auth au chargement
-async function checkAuth() {
-  const supabaseReady = initSupabase();
-
-  if (!supabaseReady) {
-    // Mode local sans auth — on affiche directement l'interface
-    hideLoginPage();
-    updateUserUI({ email: 'Mode local', user_metadata: { name: 'Utilisateur local' } });
-    return;
-  }
-
-  // Vérifier session existante
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session?.user) {
-    currentUser = session.user;
-    hideLoginPage();
-    updateUserUI(currentUser);
-    addActivity('Connecté: ' + (currentUser.user_metadata?.name || currentUser.email), 's');
-  } else {
-    showLoginPage();
-  }
-
-  // Écouter les changements d'auth
-  supabase.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_IN' && session?.user) {
-      currentUser = session.user;
-      hideLoginPage();
-      updateUserUI(currentUser);
-      addActivity('Connecté: ' + (currentUser.user_metadata?.name || currentUser.email), 's');
-    } else if (event === 'SIGNED_OUT') {
-      currentUser = null;
-      showLoginPage();
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const { data: { session } } = await sb.auth.getSession();
+    if (session?.user) {
+      currentUser = buildUser(session.user);
+      sb.auth.onAuthStateChange((event) => {
+        if (event === 'SIGNED_OUT') { window.location.href = 'login.html'; }
+      });
+      return true;
     }
-  });
+  } catch(e) { console.warn('Supabase:', e); }
+
+  // Fallback session locale (mode local depuis login.html)
+  const local = localStorage.getItem('aintercom_session');
+  if (local) {
+    try { currentUser = JSON.parse(local); return true; } catch(e) {}
+  }
+
+  // Pas de session → redirect login
+  window.location.href = 'login.html';
+  return false;
 }
 
-function updateUserUI(user) {
-  const name = user?.user_metadata?.name || user?.email || 'Utilisateur';
-  const avatar = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+function buildUser(u) {
+  const meta = u.user_metadata || {};
+  const name = meta.full_name || meta.name || u.email?.split('@')[0] || 'Utilisateur';
+  const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  return { id: u.id, email: u.email, name, initials, isLocal: false };
+}
+
+// ── UPDATE HEADER USER UI ──
+function updateUserUI() {
+  if (!currentUser) return;
+  const initials = currentUser.initials || currentUser.name?.[0]?.toUpperCase() || '?';
   const el = document.getElementById('user-avatar');
-  if (el) { 
-    el.textContent = avatar; 
-    el.title = `${name}\nCliquer pour se déconnecter\nDouble-cliquer pour se reconnecter`;
-    el.style.cursor = 'pointer';
-    el.style.background = 'var(--accent)';
-    el.style.color = '#fff';
-    el.style.fontWeight = '800';
-    el.style.display = 'flex';
-    el.style.alignItems = 'center';
-    el.style.justifyContent = 'center';
-    el.style.borderRadius = '7px';
-    el.style.width = '28px';
-    el.style.height = '28px';
-    el.style.fontSize = '11px';
-    
-    // Double-clic pour se reconnecter
-    el.ondblclick = function(e) {
-      e.stopPropagation();
-      window.location.href = 'login.html';
-    };
-  }
+  if (el) el.textContent = initials;
+  const nameEl = document.getElementById('app-user-name');
+  if (nameEl) nameEl.textContent = currentUser.name || currentUser.email;
+  const ddName = document.getElementById('app-dd-name');
+  if (ddName) ddName.textContent = currentUser.name || 'Utilisateur';
+  const ddEmail = document.getElementById('app-dd-email');
+  if (ddEmail) ddEmail.textContent = currentUser.email || 'Mode local';
 }
 
-// Récupérer le projet sélectionné depuis localStorage
-function getSelectedProject() {
+// ── LOGOUT ──
+async function logout() {
+  if (sb && !currentUser?.isLocal) { try { await sb.auth.signOut(); } catch(e) {} }
+  localStorage.removeItem('aintercom_session');
+  window.location.href = 'login.html';
+}
+
+// ── LOAD PROJECT FROM INDEX.HTML ──
+function loadProjectFromSession() {
   try {
-    const projectData = localStorage.getItem('aintercom-current-project');
-    if (projectData) {
-      const project = JSON.parse(projectData);
-      console.log('✅ Projet sélectionné:', project.name);
-      return project;
+    const raw = localStorage.getItem('aintercom_current_project');
+    if (!raw) return;
+    const project = JSON.parse(raw);
+    // Pré-remplir le sous-titre du cockpit
+    const sub = document.getElementById('cockpit-event-sub');
+    if (sub) sub.textContent = project.name + (project.venue ? ' · ' + project.venue : '') + (project.date ? ' · ' + new Date(project.date + 'T12:00').toLocaleDateString('fr-FR', {day:'2-digit',month:'long',year:'numeric'}) : '');
+    // Pré-remplir modal édition événement
+    ['ee-nom','ee-lieu','ee-adresse','ee-wifi','ee-code'].forEach(id => {
+      const field = document.getElementById(id);
+      if (!field) return;
+      if (id === 'ee-nom') field.value = project.name || '';
+      if (id === 'ee-lieu') field.value = project.venue || '';
+    });
+    const eeDate = document.getElementById('ee-date'); if (eeDate) eeDate.value = project.date || '';
+    const eeTime = document.getElementById('ee-heure'); if (eeTime) eeTime.value = project.time || '';
+    if (project.type) { const eeType = document.getElementById('ee-type'); if (eeType) eeType.value = project.type; }
+    // Créer ou retrouver l'événement dans S.events
+    let ev = S.events.find(e => e.id === project.id);
+    if (!ev) {
+      ev = { id: project.id, nom: project.name, date: project.date, heure: project.time, lieu: project.venue, type: project.type, statut: 'Préparation', created: Date.now() };
+      S.events.push(ev);
+      saveStorage();
     }
-  } catch (error) {
-    console.error('❌ Erreur de récupération du projet:', error);
-  }
-  return null;
+    S.currentEventId = project.id;
+    // Charger les données sauvegardées de cet événement
+    const uid = currentUser?.id || 'local';
+    const saved = localStorage.getItem('aintercom_event_' + uid + '_' + project.id);
+    if (saved) {
+      try { const d = JSON.parse(saved); const {events,theme,...evData} = d; Object.assign(S, evData); } catch(e) {}
+    }
+    renderAll();
+    addActivity('Projet chargé : ' + project.name, 's');
+  } catch(e) { console.warn('loadProjectFromSession:', e); }
 }
 
-// Afficher les informations du projet dans l'interface
-function displayProjectInfo() {
-  const project = getSelectedProject();
-  if (project) {
-    // Mettre à jour le titre de l'événement dans le cockpit
-    const eventSub = document.getElementById('cockpit-event-sub');
-    if (eventSub) {
-      eventSub.textContent = `${project.name} · ${project.venue || 'Lieu non spécifié'}`;
-    }
-    
-    // Mettre à jour le nom dans le modal d'édition d'événement
-    const eventNameInput = document.getElementById('ee-nom');
-    if (eventNameInput) {
-      eventNameInput.value = project.name;
-    }
-    
-    // Mettre à jour les autres champs si nécessaire
-    console.log(`📋 Projet chargé: ${project.name} (${project.type})`);
-  } else {
-    console.log('⚠️ Aucun projet sélectionné');
-  }
-}
-
-// Override window.onload pour intégrer auth et projet
+// ── OVERRIDE WINDOW.ONLOAD ──
 const _originalOnload = window.onload;
 window.onload = async () => {
-  // Lancer l'interface
+  // Auth first (bloque si pas de session)
+  const ok = await initAuth();
+  if (!ok) return;
+
+  // Lancer l'interface originale
   if (_originalOnload) _originalOnload();
-  // Vérifier auth
-  await checkAuth();
-  // Afficher les infos du projet
-  displayProjectInfo();
+
+  // Appliquer UI utilisateur
+  updateUserUI();
+
+  // Charger le projet sélectionné depuis index.html
+  loadProjectFromSession();
+
+  // Masquer la page home, afficher app directement
+  document.getElementById('page-home').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+
+  // Activité
+  addActivity('Connecté : ' + (currentUser?.name || currentUser?.email || ''), 's');
 };
 </script>
 
-<!-- PAGE DE CONNEXION -->
-<div id="login-page" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:9999;flex-direction:column;align-items:center;justify-content:center;gap:32px">
-  <div style="text-align:center">
-    <div style="font-size:32px;font-weight:900;letter-spacing:-1px;color:var(--accent)">AINTERCOM <span style="color:var(--tx)">PRO</span></div>
-    <div style="font-size:12px;color:var(--tx3);margin-top:6px;letter-spacing:.15em;text-transform:uppercase">Event Control OS</div>
-  </div>
-  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:36px 40px;text-align:center;width:360px;max-width:90vw">
-    <div style="font-size:18px;font-weight:800;margin-bottom:6px">Connexion</div>
-    <div style="font-size:12px;color:var(--tx2);margin-bottom:24px">Connecte-toi pour accéder à ton interface</div>
-    <button onclick="loginWithGoogle()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 20px;background:#fff;color:#1F2328;border:1px solid #D5DAE3;border-radius:var(--r-sm);font-size:13px;font-weight:700;cursor:pointer;transition:var(--tr);font-family:var(--font)">
-      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M47.5 24.6c0-1.6-.1-3.1-.4-4.6H24v8.7h13.1c-.6 3-2.4 5.5-5 7.2v6h8c4.7-4.3 7.4-10.7 7.4-17.3z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-8-6c-2.1 1.4-4.8 2.2-7.9 2.2-6.1 0-11.2-4.1-13-9.6H2.7v6.2C6.7 42.9 14.8 48 24 48z"/><path fill="#FBBC05" d="M11 28.8c-.5-1.4-.7-2.9-.7-4.4s.3-3 .7-4.4v-6.2H2.7C1 17.1 0 20.4 0 24s1 6.9 2.7 9.9l8.3-5.1z"/><path fill="#EA4335" d="M24 9.5c3.4 0 6.5 1.2 8.9 3.5l6.7-6.7C35.9 2.4 30.5 0 24 0 14.8 0 6.7 5.1 2.7 12.6l8.3 5.1C12.8 13.6 17.9 9.5 24 9.5z"/></svg>
-      Continuer avec Google
-    </button>
-    <div style="margin-top:16px;font-size:11px;color:var(--tx3)">Mode local disponible sans connexion</div>
-    <button onclick="hideLoginPage();updateUserUI({email:'Mode local'})" style="margin-top:8px;background:transparent;border:none;font-size:11px;color:var(--tx2);cursor:pointer;text-decoration:underline;font-family:var(--font)">Continuer sans connexion →</button>
-  </div>
-  <div style="font-size:10px;color:var(--tx3);text-align:center">Tes données sont sauvegardées localement<br>La sync en temps réel nécessite Supabase</div>
-</div>
-
-<!-- BOUTON USER DANS LE HEADER (injecté dynamiquement) -->
+<!-- USER DROPDOWN STYLES -->
 <style>
-#user-avatar{width:28px;height:28px;border-radius:7px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;cursor:pointer;flex-shrink:0}
+#app-user-zone{position:relative}
+#app-user-btn{display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:4px 9px;cursor:pointer;transition:var(--tr)}
+#app-user-btn:hover{border-color:var(--border2)}
+#app-user-name{font-size:11px;font-weight:600;color:var(--tx);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#user-avatar{width:24px;height:24px;border-radius:5px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}
+#app-user-dropdown{display:none;position:absolute;top:calc(100% + 6px);right:0;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);min-width:200px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.35);z-index:500}
+#app-user-dropdown.open{display:block}
+.app-dd-hdr{padding:11px 14px;border-bottom:1px solid var(--border)}
+.app-dd-name{font-size:12px;font-weight:700;color:var(--tx)}
+.app-dd-email{font-size:10px;color:var(--tx3);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.app-dd-item{display:flex;align-items:center;gap:9px;padding:9px 14px;font-size:12px;font-weight:600;color:var(--tx2);cursor:pointer;transition:var(--tr);border:none;background:transparent;width:100%;text-align:left;font-family:var(--font)}
+.app-dd-item:hover{background:var(--bg3);color:var(--tx)}
+.app-dd-item i{width:13px;font-size:11px;text-align:center}
+.app-dd-item.danger{color:#FCA5A5}.app-dd-item.danger:hover{background:var(--danger-bg);color:var(--danger)}
+.app-dd-sep{height:1px;background:var(--border);margin:3px 0}
+.app-dd-item.back{color:var(--tx3)}.app-dd-item.back:hover{background:var(--bg3);color:var(--tx)}
 </style>
 </body>
 </html>
