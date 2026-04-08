@@ -572,7 +572,7 @@ function saveProject() {
   };
 
   projects.push(project);
-  saveProjects();
+  localStorage.setItem(localKey(), JSON.stringify(projects));
   closeModal();
   toast('Projet créé', 's');
 
@@ -589,7 +589,7 @@ function deleteProject(index) {
     localStorage.removeItem('aintercom_event_' + uid + '_' + p.id);
   }
   projects.splice(index, 1);
-  saveProjects();
+  localStorage.setItem(localKey(), JSON.stringify(projects));
   renderProjects();
   toast('Projet supprimé', 'i');
 }
