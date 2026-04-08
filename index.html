@@ -319,9 +319,9 @@ function setupAuthListener() {
   });
 }
 
-function boot() {
+async function boot() {
   updateUserUI();
-  loadProjects();
+  await loadProjects();
   renderProjects();
   hideLoading();
 }
@@ -386,26 +386,86 @@ function applyTheme(t) {
 // ═══════════════════════════════════════════
 // PROJECTS — clé isolée par UID utilisateur
 // ═══════════════════════════════════════════
-function storageKey() {
-  return 'aintercom_projects_' + (currentUser?.id || 'local');
-}
+function localKey() { return 'aintercom_projects_' + (currentUser?.id || 'local'); }
 
-function loadProjects() {
+async function loadProjects() {
+  if (sb && !currentUser?.isLocal) {
+    try {
+      const { data, error } = await sb.from('projects').select('*').order('created_at', { ascending: false });
+      if (!error && data) {
+        projects = data;
+        localStorage.setItem(localKey(), JSON.stringify(projects));
+        document.getElementById('stat-storage').textContent = '☁️ Cloud';
+        return;
+      }
+    } catch(e) { console.warn('Supabase load:', e); }
+  }
   try {
-    const raw = localStorage.getItem(storageKey());
+    const raw = localStorage.getItem(localKey());
     projects = raw ? JSON.parse(raw) : [];
   } catch(e) { projects = []; }
 }
 
-function saveProjects() {
-  try {
-    localStorage.setItem(storageKey(), JSON.stringify(projects));
-  } catch(e) {}
+async function saveProject() {
+  const name = document.getElementById('p-name').value.trim();
+  if (!name) { toast('Le nom du projet est requis', 'd'); document.getElementById('p-name').focus(); return; }
+  const project = {
+    id: 'project_' + Date.now(),
+    name,
+    date: document.getElementById('p-date').value,
+    time: document.getElementById('p-time').value,
+    venue: document.getElementById('p-venue').value.trim(),
+    type: document.getElementById('p-type').value,
+    director: document.getElementById('p-director').value.trim(),
+    notes: document.getElementById('p-notes').value.trim(),
+    created_at: new Date().toISOString(),
+    user_id: currentUser?.id || null
+  };
+  closeModal();
+  if (sb && !currentUser?.isLocal) {
+    try {
+      const { data, error } = await sb.from('projects').insert([project]).select().single();
+      if (!error && data) {
+        projects.unshift(data);
+        localStorage.setItem(localKey(), JSON.stringify(projects));
+        toast('Projet créé ☁️', 's');
+        renderProjects();
+        openProject(0);
+        return;
+      }
+    } catch(e) { console.warn('Supabase save:', e); }
+  }
+  projects.unshift(project);
+  localStorage.setItem(localKey(), JSON.stringify(projects));
+  toast('Projet créé (local)', 's');
+  renderProjects();
+  openProject(0);
 }
 
-function saveManual() {
-  saveProjects();
-  toast('Projets sauvegardés', 's');
+async function deleteProject(index) {
+  const p = projects[index];
+  if (!p || !confirm(`Supprimer "${p.name}" ?`)) return;
+  if (sb && !currentUser?.isLocal && p.id) {
+    try { await sb.from('projects').delete().eq('id', p.id); } catch(e) {}
+  }
+  const uid = currentUser?.id || 'local';
+  localStorage.removeItem('aintercom_event_' + uid + '_' + p.id);
+  projects.splice(index, 1);
+  localStorage.setItem(localKey(), JSON.stringify(projects));
+  renderProjects();
+  toast('Projet supprimé', 'i');
+}
+
+async function saveManual() {
+  if (sb && !currentUser?.isLocal) {
+    toast('Sync cloud…', 'i');
+    await loadProjects();
+    renderProjects();
+    toast('Sync OK ☁️', 's');
+  } else {
+    localStorage.setItem(localKey(), JSON.stringify(projects));
+    toast('Sauvegardé localement', 's');
+  }
 }
 
 // ═══════════════════════════════════════════
