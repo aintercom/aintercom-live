@@ -34,9 +34,29 @@ html.light { --bg:#F4F6F9; --bg2:#FFFFFF; --bg3:#EEF1F5; --bg4:#E4E8EE;
   --tx:#111827; --tx2:#4B5563; --tx3:#9CA3AF; }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--tx);font-size:14px;-webkit-font-smoothing:antialiased}
-::-webkit-scrollbar{width:3px;height:3px}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--tx);font-size:var(--base-fs,16px);-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+
+/* ── MODE TERRAIN ── */
+html.terrain{--base-fs:20px;--terrain-btn-h:56px}
+html.terrain .nav-btn{font-size:16px!important;padding:12px 10px!important;min-height:48px}
+html.terrain .nav-btn i{font-size:16px!important;width:20px!important}
+html.terrain .btn{min-height:44px;font-size:14px!important;padding:10px 18px!important}
+html.terrain .btn-sm{min-height:40px;font-size:13px!important;padding:9px 16px!important}
+html.terrain .btn-icon{min-height:44px;min-width:44px;padding:10px!important}
+html.terrain td,html.terrain th{font-size:15px!important;padding:13px 14px!important}
+html.terrain .cw-now-timer{font-size:56px!important}
+html.terrain .cw-now-title{font-size:26px!important}
+html.terrain .sec-title{font-size:26px!important}
+html.terrain input,html.terrain select,html.terrain textarea{font-size:16px!important;padding:12px 14px!important;min-height:48px}
+html.terrain .hdr-clock{font-size:32px!important}
+html.terrain #hdr{height:64px}
+html.terrain .mc-name{font-size:26px!important}
+html.terrain .staff-name{font-size:20px!important}
+html.terrain .badge{font-size:13px!important;padding:5px 12px!important}
+html.terrain .run-row>div{font-size:15px!important}
+html.terrain #live-overlay-mode .live-action-btn{font-size:22px!important;min-height:80px!important}
 
 /* ── LAYOUT ── */
 #page-home{display:none!important}
@@ -66,27 +86,33 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .hdr-spacer{flex:1}
 
 /* ── BUTTONS ── */
-.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:var(--r-sm);font-size:11px;font-weight:700;letter-spacing:.02em;border:none;cursor:pointer;transition:var(--tr);white-space:nowrap;font-family:var(--font)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--r-sm);font-size:13px;font-weight:700;letter-spacing:.02em;border:none;cursor:pointer;transition:var(--tr);white-space:nowrap;font-family:var(--font);min-height:36px}
 .btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent2)}
 .btn-danger{background:var(--danger);color:#fff}.btn-danger:hover{opacity:.85}
 .btn-success{background:var(--success);color:#fff}
 .btn-warning{background:var(--warning);color:#fff}
 .btn-ghost{background:var(--bg3);color:var(--tx2);border:1px solid var(--border)}.btn-ghost:hover{color:var(--tx);background:var(--bg4)}
-.btn-icon{padding:6px 9px}
-.btn-sm{padding:4px 10px;font-size:10px}
-.btn-lg{padding:10px 22px;font-size:13px}
-.btn-next{background:var(--accent);color:#fff;padding:6px 16px;font-size:12px;font-weight:800;letter-spacing:.05em}
-.btn-sos{background:var(--danger);color:#fff;padding:6px 14px;font-size:11px;font-weight:800;letter-spacing:.05em;animation:none}
+.btn-icon{padding:8px 10px;min-width:36px;justify-content:center}
+.btn-sm{padding:6px 12px;font-size:12px;min-height:32px}
+.btn-lg{padding:12px 26px;font-size:15px;min-height:46px}
+.btn-xl{padding:16px 32px;font-size:17px;font-weight:800;min-height:56px;border-radius:var(--r)}
+.btn-next{background:var(--accent);color:#fff;padding:8px 18px;font-size:13px;font-weight:800;letter-spacing:.05em}
+.btn-sos{background:var(--danger);color:#fff;padding:8px 16px;font-size:13px;font-weight:800;letter-spacing:.05em;animation:none}
 .btn-sos:hover{animation:shake .3s}
+.btn-live{background:linear-gradient(135deg,#DC2626,#991B1B);color:#fff;font-size:13px;font-weight:800;letter-spacing:.06em;padding:8px 18px;box-shadow:0 0 12px rgba(220,38,38,.35)}
+.btn-live.active{animation:livePulse 2s infinite}
+@keyframes livePulse{0%,100%{box-shadow:0 0 12px rgba(220,38,38,.35)}50%{box-shadow:0 0 24px rgba(220,38,38,.7)}}
+.btn-terrain{background:var(--warning);color:#fff;font-size:13px;font-weight:800}
+.btn-terrain.active{background:#065F46;color:#fff}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
 
 /* ── NAV ── */
 .nav-section{font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.12em;padding:8px 8px 4px;margin-top:6px}
-.nav-btn{display:flex;align-items:center;gap:9px;padding:7px 8px;border-radius:var(--r-sm);font-size:12px;font-weight:600;color:var(--tx2);cursor:pointer;transition:var(--tr);background:transparent;border:none;width:100%;text-align:left;font-family:var(--font)}
+.nav-btn{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:var(--r-sm);font-size:13px;font-weight:600;color:var(--tx2);cursor:pointer;transition:var(--tr);background:transparent;border:none;width:100%;text-align:left;font-family:var(--font);min-height:38px}
 .nav-btn:hover{background:var(--bg3);color:var(--tx)}
-.nav-btn.active{background:var(--accent-glow);color:var(--accent);font-weight:700;border-left:2px solid var(--accent);padding-left:6px}
-.nav-btn i{width:14px;text-align:center;font-size:11px}
-.nav-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:8px;min-width:16px;text-align:center}
+.nav-btn.active{background:var(--accent-glow);color:var(--accent);font-weight:700;border-left:2px solid var(--accent);padding-left:8px}
+.nav-btn i{width:16px;text-align:center;font-size:13px}
+.nav-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:8px;min-width:18px;text-align:center}
 
 /* ── TABS ── */
 .tab{display:none;padding:20px;min-height:100%}
@@ -113,8 +139,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 /* ── TABLE ── */
 .tbl-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
 table{width:100%;border-collapse:collapse}
-th{font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;padding:9px 12px;background:var(--bg3);text-align:left;border-bottom:1px solid var(--border)}
-td{padding:9px 12px;font-size:12px;font-weight:500;border-bottom:1px solid var(--border);color:var(--tx);vertical-align:middle}
+th{font-size:11px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;padding:10px 14px;background:var(--bg3);text-align:left;border-bottom:1px solid var(--border)}
+td{padding:11px 14px;font-size:14px;font-weight:500;border-bottom:1px solid var(--border);color:var(--tx);vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:var(--bg3)}
 
@@ -128,10 +154,10 @@ tbody tr:hover td{background:var(--bg3)}
 .b-neutral{background:var(--bg3);color:var(--tx2);border:1px solid var(--border)}
 
 /* ── INPUTS ── */
-input,select,textarea{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:7px 10px;font-family:var(--font);font-size:12px;color:var(--tx);width:100%;transition:var(--tr);outline:none}
+input,select,textarea{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 12px;font-family:var(--font);font-size:14px;color:var(--tx);width:100%;transition:var(--tr);outline:none;min-height:38px}
 input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
-label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px}
-.fg{margin-bottom:12px}
+label{font-size:11px;font-weight:700;color:var(--tx2);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px}
+.fg{margin-bottom:14px}
 .fg-row{display:flex;gap:10px}.fg-row>.fg{flex:1}
 
 /* ── PROGRESS ── */
@@ -272,6 +298,48 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 .notif-dot{position:absolute;top:-2px;right:-2px;width:7px;height:7px;border-radius:50%;background:var(--danger);border:2px solid var(--bg2)}
 .proc-step{display:flex;gap:10px;align-items:flex-start;padding:5px 0}
 .proc-num{width:22px;height:22px;border-radius:50%;background:var(--danger);color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+
+/* ── MODE LIVE OVERLAY ── */
+#live-overlay-mode{display:none;position:fixed;inset:0;background:#07090E;z-index:800;flex-direction:column;overflow:hidden}
+#live-overlay-mode.open{display:flex}
+.live-ov-hdr{background:#0E1117;border-bottom:2px solid var(--danger);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.live-ov-title{font-size:14px;font-weight:800;color:var(--danger);text-transform:uppercase;letter-spacing:.1em;display:flex;align-items:center;gap:8px}
+.live-ov-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;overflow-y:auto}
+.live-seq-now{background:#0E1117;border:2px solid var(--accent);border-radius:16px;padding:24px 32px;text-align:center;width:100%;max-width:700px}
+.live-seq-name{font-size:36px;font-weight:900;color:#fff;letter-spacing:-.5px;line-height:1.1;margin-bottom:10px}
+.live-seq-timer{font-family:var(--mono);font-size:72px;font-weight:700;color:var(--accent);letter-spacing:-4px;line-height:1}
+.live-seq-next{background:#111827;border:1px solid var(--border2);border-radius:10px;padding:12px 24px;text-align:center;font-size:18px;font-weight:700;color:var(--tx2);width:100%;max-width:700px}
+.live-action-btn{flex:1;min-height:64px;font-size:18px!important;font-weight:800;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:12px!important;min-width:120px}
+.live-action-btn i{font-size:22px}
+.live-action-btn small{font-size:11px;font-weight:700;opacity:.7;letter-spacing:.04em;text-transform:uppercase}
+.live-actions-row{display:flex;gap:10px;width:100%;max-width:700px;flex-wrap:wrap}
+
+/* ── ZOOM CONTROL ── */
+#zoom-bar{display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:2px 4px}
+#zoom-level-label{font-size:11px;font-weight:700;color:var(--tx2);min-width:32px;text-align:center;font-family:var(--mono)}
+
+/* ── MATOS SEARCH BAR ── */
+.matos-toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px;padding:12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)}
+.matos-filter-tag{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--bg3);color:var(--tx2);transition:var(--tr)}
+.matos-filter-tag.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.matos-status-ok{border-left:3px solid var(--success)!important}
+.matos-status-missing{border-left:3px solid var(--danger)!important;background:rgba(220,38,38,.05)!important}
+.matos-status-problem{border-left:3px solid var(--warning)!important;background:rgba(217,119,6,.05)!important}
+
+/* ── COCKPIT QUICK ACTIONS ── */
+.cockpit-quick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:16px}
+.cockpit-qa{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:var(--tr);text-align:center}
+.cockpit-qa:hover{border-color:var(--accent);background:var(--accent-glow)}
+.cockpit-qa i{font-size:20px}
+.cockpit-qa span{font-size:12px;font-weight:700;color:var(--tx2)}
+.cockpit-event-banner{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:var(--r-lg);padding:16px 20px;margin-bottom:16px;display:flex;align-items:center;gap:16px}
+.cockpit-event-name{font-size:22px;font-weight:900;letter-spacing:-.5px;color:var(--tx)}
+.cockpit-event-meta{font-size:13px;color:var(--tx2);margin-top:3px;display:flex;gap:14px;flex-wrap:wrap}
+.cockpit-event-meta span{display:flex;align-items:center;gap:5px}
+.cockpit-status-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:800}
+.cockpit-status-ok{background:var(--success-bg);color:var(--success);border:1px solid rgba(22,163,74,.25)}
+.cockpit-status-late{background:var(--danger-bg);color:var(--danger);border:1px solid rgba(220,38,38,.25);animation:blink 1.5s infinite}
+.cockpit-status-warn{background:var(--warning-bg);color:var(--warning);border:1px solid rgba(217,119,6,.25)}
 </style>
 </head>
 <body>
@@ -325,13 +393,20 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
     <div class="hdr-phase" id="hdr-phase">MONTAGE</div>
     <div class="hdr-retard ok" id="hdr-retard">À l'heure</div>
     <div class="hdr-spacer"></div>
-    <div style="display:flex;gap:6px;align-items:center">
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
       <button class="btn btn-sos btn-sm" onclick="openModal('modal-incident')"><i class="fas fa-triangle-exclamation"></i> SOS</button>
-      <button class="btn btn-next btn-sm" onclick="nextTop()"><i class="fas fa-forward-step"></i> NEXT TOP</button>
+      <button class="btn btn-live btn-sm" id="btn-mode-live" onclick="toggleLiveMode()"><i class="fas fa-circle-dot"></i> MODE LIVE</button>
+      <button class="btn btn-terrain btn-sm" id="btn-terrain" onclick="toggleTerrain()"><i class="fas fa-mountain-sun"></i> TERRAIN</button>
+      <button class="btn btn-next btn-sm" onclick="nextTop()"><i class="fas fa-forward-step"></i> NEXT</button>
+      <div class="hdr-sep"></div>
+      <div id="zoom-bar">
+        <button class="btn btn-ghost btn-icon btn-sm" onclick="adjustZoom(-1)" title="Zoom -"><i class="fas fa-minus" style="font-size:10px"></i></button>
+        <span id="zoom-level-label">100%</span>
+        <button class="btn btn-ghost btn-icon btn-sm" onclick="adjustZoom(1)" title="Zoom +"><i class="fas fa-plus" style="font-size:10px"></i></button>
+      </div>
       <div class="hdr-sep"></div>
       <button class="btn btn-ghost btn-icon btn-sm" onclick="toggleTheme()" id="app-theme-btn" title="Thème"><i class="fas fa-moon"></i></button>
       <button class="btn btn-ghost btn-icon btn-sm" onclick="saveManual()" title="Ctrl+S — Sauvegarder"><i class="fas fa-floppy-disk"></i></button>
-      <button class="btn btn-ghost btn-icon btn-sm" onclick="doPrint()" title="Imprimer / Export"><i class="fas fa-print"></i></button>
       <div class="hdr-sep"></div>
       <div id="app-user-zone">
         <div id="app-user-btn" onclick="toggleUserMenu()">
@@ -348,6 +423,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
           <div class="app-dd-sep"></div>
           <button class="app-dd-item" onclick="saveManual();toggleUserMenu()"><i class="fas fa-floppy-disk"></i> Sauvegarder</button>
           <button class="app-dd-item" onclick="toggleTheme();toggleUserMenu()"><i class="fas fa-circle-half-stroke"></i> Changer le thème</button>
+          <button class="app-dd-item" onclick="resetDisplay();toggleUserMenu()"><i class="fas fa-rotate-left"></i> Reset affichage</button>
           <div class="app-dd-sep"></div>
           <button class="app-dd-item danger" onclick="logout()"><i class="fas fa-right-from-bracket"></i> Se déconnecter</button>
         </div>
@@ -359,18 +435,19 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
   <div id="body">
     <!-- NAV -->
     <nav id="nav">
-      <div class="nav-section">Navigation</div>
+      <div class="nav-section">Principal</div>
       <button class="nav-btn active" onclick="switchTab('cockpit',this)"><i class="fas fa-gauge-high"></i>Cockpit</button>
       <button class="nav-btn" onclick="switchTab('conducteur',this)"><i class="fas fa-film"></i>Conducteur</button>
+      <button class="nav-btn" onclick="switchTab('matos',this)"><i class="fas fa-walkie-talkie"></i>Matos<span class="nav-badge" id="nav-matos-badge" style="display:none">!</span></button>
+      <div class="nav-section">Équipe</div>
       <button class="nav-btn" onclick="switchTab('postes',this)"><i class="fas fa-tags"></i>Postes</button>
       <button class="nav-btn" onclick="switchTab('staff',this)"><i class="fas fa-users"></i>Staff</button>
-      <button class="nav-btn" onclick="switchTab('matos',this)"><i class="fas fa-walkie-talkie"></i>Matos</button>
+      <button class="nav-btn" onclick="switchTab('contacts',this)"><i class="fas fa-address-book"></i>Contacts</button>
       <div class="nav-section">Outils</div>
       <button class="nav-btn" onclick="switchTab('meteo',this)"><i class="fas fa-cloud-sun"></i>Météo</button>
       <button class="nav-btn" onclick="switchTab('budget',this)"><i class="fas fa-euro-sign"></i>Budget</button>
       <button class="nav-btn" onclick="switchTab('tech',this)" style="position:relative"><i class="fas fa-shield-halved"></i>Tech & Sécu<span class="nav-badge" id="nav-inc-badge" style="display:none">0</span></button>
-      <button class="nav-btn" onclick="switchTab('sign',this)"><i class="fas fa-sign"></i>Signalétique</button>
-      <div class="nav-section" style="margin-top:auto">Phase</div>
+      <div class="nav-section" style="margin-top:auto">Phase event</div>
       <div style="padding:6px">
         <div class="phase-sel">
           <button class="phase-btn active" onclick="setPhase('montage',this)">Mont.</button>
@@ -389,10 +466,23 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 
       <!-- ══ COCKPIT ══ -->
       <section class="tab active" id="tab-cockpit">
-        <div class="sec-hdr">
-          <div><div class="sec-title">🎛️ Cockpit</div><div class="sec-sub" id="cockpit-event-sub">Vision globale en temps réel</div></div>
-          <div class="sec-actions">
-            <button class="btn btn-ghost btn-sm" onclick="openModal('modal-event-edit')"><i class="fas fa-pen"></i> Modifier événement</button>
+
+        <!-- EVENT BANNER -->
+        <div class="cockpit-event-banner">
+          <div style="width:48px;height:48px;border-radius:12px;background:var(--accent-glow);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🎛️</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <div class="cockpit-event-name" id="cockpit-event-name">Événement</div>
+              <div class="cockpit-status-chip cockpit-status-ok" id="cockpit-global-status"><i class="fas fa-circle-check"></i> OK</div>
+            </div>
+            <div class="cockpit-event-meta" id="cockpit-event-sub">Vision globale en temps réel</div>
+          </div>
+          <div style="display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap">
+            <button class="btn btn-ghost btn-sm" onclick="openModal('modal-event-edit')"><i class="fas fa-pen"></i> Modifier</button>
+            <button class="btn btn-ghost btn-sm" onclick="switchTab('conducteur',navBtnByTab('conducteur'))"><i class="fas fa-film"></i> Conducteur</button>
+            <button class="btn btn-ghost btn-sm" onclick="switchTab('matos',navBtnByTab('matos'))"><i class="fas fa-walkie-talkie"></i> Matos</button>
+            <button class="btn btn-ghost btn-sm" onclick="switchTab('contacts',navBtnByTab('contacts'))"><i class="fas fa-address-book"></i> Contacts</button>
+            <button class="btn btn-danger btn-sm" onclick="openModal('modal-incident')"><i class="fas fa-triangle-exclamation"></i> Problème</button>
           </div>
         </div>
 
@@ -402,14 +492,14 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
             <div class="cw-label"><span class="live-dot" id="live-dot-label">EN ATTENTE</span></div>
             <div class="cw-now-title" id="cw-now-title">Prêt au démarrage</div>
             <div class="cw-now-timer" id="cw-now-timer">00:00</div>
-            <div style="margin-top:8px;display:flex;gap:6px;align-items:center">
+            <div style="margin-top:8px;display:flex;gap:6px;align-items:center;flex-wrap:wrap">
               <span class="badge b-neutral" id="cw-now-resp">—</span>
               <span class="badge b-neutral" id="cw-now-cues" style="font-size:9px">—</span>
             </div>
           </div>
           <div class="cw">
             <div class="cw-label"><i class="fas fa-forward" style="color:var(--tx3)"></i> Séquence suivante</div>
-            <div style="font-size:15px;font-weight:700;color:var(--tx2);margin-bottom:6px" id="cw-next-title">—</div>
+            <div style="font-size:16px;font-weight:700;color:var(--tx2);margin-bottom:6px" id="cw-next-title">—</div>
             <div style="display:flex;gap:6px;flex-wrap:wrap">
               <span class="badge b-neutral" id="cw-next-time">—</span>
               <span class="badge b-neutral" id="cw-next-resp">—</span>
@@ -421,6 +511,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
             <div style="display:flex;gap:5px;margin-top:10px">
               <button class="btn btn-ghost btn-sm" id="gt-btn" onclick="gtToggle()"><i class="fas fa-play"></i></button>
               <button class="btn btn-ghost btn-sm" onclick="gtReset()"><i class="fas fa-rotate-left"></i></button>
+              <button class="btn btn-primary btn-sm" onclick="toggleLiveMode()" style="margin-left:auto"><i class="fas fa-circle-dot"></i> LIVE</button>
             </div>
           </div>
         </div>
@@ -431,46 +522,63 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
             <div class="cw-label">⚡ Power Load</div>
             <div style="font-family:var(--mono);font-size:22px;font-weight:700" id="cw-elec">0 W</div>
             <div class="prog"><div class="prog-fill" id="cw-elec-bar" style="width:0%;background:var(--success)"></div></div>
-            <div style="font-size:10px;color:var(--tx3);margin-top:4px" id="cw-amp">0.0 A mono</div>
+            <div style="font-size:11px;color:var(--tx3);margin-top:4px" id="cw-amp">0.0 A mono</div>
           </div>
           <div class="cw" style="cursor:pointer" onclick="switchTab('tech',navBtnByTab('tech'))">
             <div class="cw-label">🚨 Incidents</div>
             <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--danger)" id="cw-inc">0</div>
-            <div style="font-size:10px;color:var(--tx3);margin-top:4px">actifs</div>
+            <div style="font-size:11px;color:var(--tx3);margin-top:4px">actifs</div>
           </div>
-          <div class="cw" style="cursor:pointer" onclick="switchTab('crew',navBtnByTab('crew'))">
-            <div class="cw-label">👥 Crew</div>
+          <div class="cw" style="cursor:pointer" onclick="switchTab('staff',navBtnByTab('staff'))">
+            <div class="cw-label">👥 Staff</div>
             <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--success)" id="cw-crew">0</div>
-            <div style="font-size:10px;color:var(--tx3);margin-top:4px" id="cw-crew-total">/ 0 total</div>
+            <div style="font-size:11px;color:var(--tx3);margin-top:4px" id="cw-crew-total">/ 0 total</div>
           </div>
-          <div class="cw" id="cw-budget-widget">
+          <div class="cw" id="cw-budget-widget" style="cursor:pointer" onclick="switchTab('budget',navBtnByTab('budget'))">
             <div class="cw-label">💰 Budget restant</div>
             <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--success)" id="cw-budget">—</div>
-            <div style="font-size:10px;color:var(--tx3);margin-top:4px" id="cw-budget-sub">Admin uniquement</div>
+            <div style="font-size:11px;color:var(--tx3);margin-top:4px" id="cw-budget-sub">Admin uniquement</div>
           </div>
         </div>
 
-        <!-- ROW 3: METEO + NOTE + FLUX -->
-        <div class="g3">
-          <div class="cw">
-            <div class="cw-label">🌤 Météo</div>
-            <div style="display:flex;align-items:center;gap:10px">
-              <div style="font-size:36px" id="cw-meteo-icon">—</div>
-              <div>
-                <div style="font-size:22px;font-weight:800;letter-spacing:-1px" id="cw-meteo-temp">--°C</div>
-                <div style="font-size:11px;color:var(--tx2)" id="cw-meteo-desc">—</div>
-                <div style="font-size:10px;color:var(--tx3)" id="cw-meteo-wind">Vent: -- km/h</div>
-              </div>
+        <!-- ROW 3: MATOS RAPIDE + NOTE + ACTIVITÉ -->
+        <div class="g3" style="margin-bottom:14px">
+          <!-- MATOS RÉSUMÉ -->
+          <div class="cw" style="cursor:pointer" onclick="switchTab('matos',navBtnByTab('matos'))">
+            <div class="cw-label" style="display:flex;justify-content:space-between;align-items:center">
+              📡 Matos rapide
+              <span class="badge b-neutral" id="cw-matos-status">—</span>
+            </div>
+            <div id="cw-matos-quick" style="display:flex;flex-direction:column;gap:5px;max-height:130px;overflow-y:auto;margin-top:6px">
+              <div style="font-size:12px;color:var(--tx3)">Cliquez pour voir le matos</div>
             </div>
           </div>
+
+          <!-- NOTE + MÉTÉO -->
           <div class="cw">
+            <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center">
+              <div style="flex:1">
+                <div class="cw-label">🌤 Météo</div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div style="font-size:28px" id="cw-meteo-icon">—</div>
+                  <div>
+                    <div style="font-size:20px;font-weight:800;letter-spacing:-1px" id="cw-meteo-temp">--°C</div>
+                    <div style="font-size:11px;color:var(--tx2)" id="cw-meteo-desc">—</div>
+                    <div style="font-size:10px;color:var(--tx3)" id="cw-meteo-wind">—</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="divider"></div>
             <div class="cw-label" style="display:flex;justify-content:space-between">📝 Note rapide<button class="btn btn-ghost btn-sm" onclick="saveNote()" style="margin-top:-2px"><i class="fas fa-check" style="font-size:9px"></i></button></div>
-            <textarea id="quick-note" rows="3" placeholder="Mémo permanent..." style="font-size:12px;resize:none"></textarea>
+            <textarea id="quick-note" rows="2" placeholder="Mémo permanent..." style="font-size:13px;resize:none"></textarea>
           </div>
+
+          <!-- ACTIVITÉ -->
           <div class="cw">
             <div class="cw-label">📋 Activité récente</div>
-            <div id="cw-activity" style="display:flex;flex-direction:column;gap:5px;max-height:110px;overflow-y:auto">
-              <div style="font-size:11px;color:var(--tx3);font-style:italic">Aucune activité</div>
+            <div id="cw-activity" style="display:flex;flex-direction:column;gap:5px;max-height:150px;overflow-y:auto">
+              <div style="font-size:12px;color:var(--tx3);font-style:italic">Aucune activité</div>
             </div>
           </div>
         </div>
@@ -538,7 +646,21 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
           <div><div class="sec-title">📡 Matos</div><div class="sec-sub">Dashboard 360 — Vue complète du matériel</div></div>
           <div class="sec-actions">
             <button class="btn btn-ghost btn-sm" onclick="openModal('modal-add-matos')"><i class="fas fa-plus"></i> Équipement</button>
+            <button class="btn btn-ghost btn-sm" id="btn-matos-vue" onclick="toggleMatosVue()"><i class="fas fa-grip"></i> Grille</button>
           </div>
+        </div>
+
+        <!-- TOOLBAR SEARCH + FILTRES -->
+        <div class="matos-toolbar">
+          <input type="text" id="matos-search" placeholder="🔍 Rechercher un équipement..." style="width:220px;flex-shrink:0" oninput="filterMatos()">
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="matos-filter-tag active" data-filter="all" onclick="setMatosFilter('all',this)">Tous</button>
+            <button class="matos-filter-tag" data-filter="ok" onclick="setMatosFilter('ok',this)"><i class="fas fa-circle-check" style="color:var(--success)"></i> OK</button>
+            <button class="matos-filter-tag" data-filter="assigned" onclick="setMatosFilter('assigned',this)"><i class="fas fa-user" style="color:var(--accent)"></i> Assigné</button>
+            <button class="matos-filter-tag" data-filter="libre" onclick="setMatosFilter('libre',this)"><i class="fas fa-circle" style="color:var(--tx3)"></i> Libre</button>
+            <button class="matos-filter-tag" data-filter="problem" onclick="setMatosFilter('problem',this)"><i class="fas fa-triangle-exclamation" style="color:var(--danger)"></i> Problème</button>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="renderAll()" style="margin-left:auto"><i class="fas fa-rotate"></i> Actualiser</button>
         </div>
 
         <!-- STATS RAPIDES -->
@@ -546,33 +668,37 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 
         <!-- TALKIES -->
         <div style="margin-bottom:24px">
-          <div style="font-size:13px;font-weight:800;color:var(--tx2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;gap:8px">
-            <span style="font-size:16px">📻</span> Motorola XT420 — 12 Talkies
+          <div style="font-size:14px;font-weight:800;color:var(--tx2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;gap:8px;justify-content:space-between">
+            <span><span style="font-size:18px">📻</span> Motorola XT420 — 12 Talkies</span>
+            <div style="display:flex;gap:6px">
+              <button class="btn btn-ghost btn-sm" onclick="assignAllMotorola()"><i class="fas fa-users"></i> Assigner tous</button>
+              <button class="btn btn-ghost btn-sm" onclick="openModal('modal-canaux-config')"><i class="fas fa-sliders"></i> Canaux</button>
+            </div>
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px" id="motorola-grid"></div>
         </div>
 
         <!-- HOLLYLAND -->
         <div style="margin-bottom:24px">
-          <div style="font-size:13px;font-weight:800;color:var(--tx2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;gap:8px">
-            <span style="font-size:16px">🎧</span> Hollyland Solidcom — 1 Master + 5 Casques
+          <div style="font-size:14px;font-weight:800;color:var(--tx2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+            <span><span style="font-size:18px">🎧</span> Hollyland Solidcom — 1 Master + 5 Casques</span>
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px" id="hollyland-grid"></div>
         </div>
 
         <!-- MEGAPHONE -->
         <div style="margin-bottom:24px">
-          <div style="font-size:13px;font-weight:800;color:var(--tx2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;gap:8px">
-            <span style="font-size:16px">📢</span> Mégaphone VONYX
+          <div style="font-size:14px;font-weight:800;color:var(--tx2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+            <span><span style="font-size:18px">📢</span> Mégaphone VONYX</span>
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px" id="mega-card"></div>
         </div>
 
         <!-- AUTRES -->
         <div>
-          <div style="font-size:13px;font-weight:800;color:var(--tx2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:14px;font-weight:800;color:var(--tx2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">
             <span>📦 Équipements additionnels</span>
-            <button class="btn btn-ghost btn-sm" onclick="openModal('modal-add-matos')"><i class="fas fa-plus"></i></button>
+            <button class="btn btn-ghost btn-sm" onclick="openModal('modal-add-matos')"><i class="fas fa-plus"></i> Ajouter</button>
           </div>
           <div id="extra-matos-list"></div>
         </div>
@@ -772,6 +898,44 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
         </div>
       </section>
 
+      <!-- ══ CONTACTS (onglet dédié) ══ -->
+      <section class="tab" id="tab-contacts">
+        <div class="sec-hdr">
+          <div><div class="sec-title">📞 Contacts Clés</div><div class="sec-sub">Numéros essentiels · Appel direct en 1 clic</div></div>
+          <div class="sec-actions">
+            <input type="text" id="ct-search-main" placeholder="Rechercher..." style="width:160px" oninput="renderContactsMain()">
+            <select id="ct-filter-cat" style="width:140px" onchange="renderContactsMain()">
+              <option value="">Toutes catégories</option>
+              <option>Production</option>
+              <option>Régie</option>
+              <option>Sécurité</option>
+              <option>Technique</option>
+              <option>Prestataire</option>
+              <option>Artiste</option>
+              <option>Urgence</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-contact')"><i class="fas fa-plus"></i> Ajouter</button>
+          </div>
+        </div>
+
+        <!-- URGENCES RAPIDES -->
+        <div class="card" style="margin-bottom:16px;background:var(--danger-bg);border-color:rgba(220,38,38,.25)">
+          <div style="font-size:13px;font-weight:800;color:var(--danger);margin-bottom:10px">🚨 Numéros d'urgence</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <a href="tel:15" class="btn btn-danger btn-sm"><i class="fas fa-phone"></i> 15 · SAMU</a>
+            <a href="tel:17" class="btn btn-danger btn-sm"><i class="fas fa-phone"></i> 17 · Police</a>
+            <a href="tel:18" class="btn btn-danger btn-sm"><i class="fas fa-phone"></i> 18 · Pompiers</a>
+            <a href="tel:112" class="btn btn-danger btn-sm"><i class="fas fa-phone"></i> 112 · Europe</a>
+            <a href="tel:114" class="btn btn-ghost btn-sm"><i class="fas fa-phone"></i> 114 · Sourds</a>
+            <a href="tel:115" class="btn btn-ghost btn-sm"><i class="fas fa-phone"></i> 115 · Social</a>
+          </div>
+        </div>
+
+        <!-- CONTACTS LIST -->
+        <div id="contacts-main-grid" class="g3"></div>
+        <div id="contacts-main-empty" class="empty" style="display:none"><i class="fas fa-address-book"></i><p>Aucun contact — Ajoutez vos contacts clés</p></div>
+      </section>
+
       <!-- ══ SIGNALÉTIQUE ══ -->
       <section class="tab" id="tab-sign">
         <div class="sec-hdr">
@@ -835,8 +999,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
             <div style="font-size:14px;font-weight:800">Panneaux créés cette session</div>
             <button class="btn btn-ghost btn-sm" onclick="clearSignHistory()"><i class="fas fa-trash"></i></button>
           </div>
-          <div id="sign-history" class="g-auto"></div>
-        </div>
+      <!-- ══ SIGNALÉTIQUE (masqué) ══ -->
       </section>
 
     </main>
@@ -849,9 +1012,70 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
       <span style="font-size:10px;color:var(--tx3)">Cette interface vous aide ?</span>
       <button class="btn btn-ghost btn-sm" onclick="toast('Merci ! 👍','s')" style="padding:2px 7px">👍</button>
       <button class="btn btn-ghost btn-sm" onclick="openModal('modal-feedback')" style="padding:2px 7px">👎</button>
-      <button class="btn btn-ghost btn-sm" onclick="openModal('modal-feedback')"><i class="fas fa-comment" style="font-size:9px"></i> Suggérer</button>
     </div>
   </footer>
+</div>
+
+<!-- ══════════════════════════════════════
+     MODE LIVE OVERLAY (plein écran)
+══════════════════════════════════════ -->
+<div id="live-overlay-mode">
+  <div class="live-ov-hdr">
+    <div class="live-ov-title">
+      <span style="width:10px;height:10px;border-radius:50%;background:var(--danger);animation:blink .8s infinite;display:inline-block"></span>
+      MODE LIVE — <span id="lo-event-name" style="color:var(--tx);font-weight:600">Événement</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="font-family:var(--mono);font-size:24px;font-weight:700;color:var(--tx)" id="lo-clock">00:00:00</div>
+      <button class="btn btn-ghost btn-sm" onclick="toggleLiveMode()"><i class="fas fa-compress"></i> Réduire</button>
+    </div>
+  </div>
+
+  <div class="live-ov-body">
+    <!-- SÉQUENCE EN COURS -->
+    <div class="live-seq-now">
+      <div style="font-size:13px;font-weight:800;color:var(--danger);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px" id="lo-live-label">EN ATTENTE</div>
+      <div class="live-seq-name" id="lo-seq-name">Prêt au démarrage</div>
+      <div class="live-seq-timer" id="lo-seq-timer">00:00</div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap">
+        <span class="badge b-neutral" style="font-size:14px;padding:6px 14px" id="lo-seq-resp">—</span>
+        <span class="badge b-neutral" style="font-size:12px;padding:5px 12px" id="lo-seq-cues">—</span>
+      </div>
+    </div>
+
+    <!-- SÉQUENCE SUIVANTE -->
+    <div class="live-seq-next">
+      <span style="font-size:12px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em">Suivant → </span>
+      <span id="lo-next-name">—</span>
+      <span class="badge b-neutral" style="margin-left:8px" id="lo-next-time">—</span>
+    </div>
+
+    <!-- BOUTONS D'ACTION -->
+    <div class="live-actions-row">
+      <button class="btn btn-ghost live-action-btn" onclick="livePrev()">
+        <i class="fas fa-backward-step"></i>
+        <small>Précédent</small>
+      </button>
+      <button class="btn live-action-btn" id="lo-pause-btn" onclick="liveTogglePause()" style="background:var(--warning);color:#fff">
+        <i class="fas fa-pause" id="lo-pause-icon"></i>
+        <small id="lo-pause-label">Pause</small>
+      </button>
+      <button class="btn btn-primary live-action-btn" onclick="liveNext()">
+        <i class="fas fa-forward-step"></i>
+        <small>Suivant</small>
+      </button>
+      <button class="btn btn-danger live-action-btn" onclick="openModal('modal-incident');toggleLiveMode()" style="min-width:100px">
+        <i class="fas fa-triangle-exclamation"></i>
+        <small>Urgence</small>
+      </button>
+    </div>
+
+    <!-- CONTACTS RAPIDES -->
+    <div style="width:100%;max-width:700px">
+      <div style="font-size:11px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Contacts clés</div>
+      <div id="lo-contacts" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+    </div>
+  </div>
 </div>
 
 <!-- ═══════════════════════════════ MODALS ═══════════════════════════════ -->
@@ -1267,7 +1491,7 @@ function openEvent(id){
   document.getElementById('page-home').style.display='none';
   document.getElementById('app').style.display='flex';
   // Update header
-  document.getElementById('cockpit-event-sub').textContent=ev.nom+' · '+(ev.lieu||'')+(ev.date?' · '+new Date(ev.date+'T12:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}):'');
+  updateCockpitBanner();
   // Populate event edit modal
   document.getElementById('ee-nom').value=ev.nom;
   document.getElementById('ee-date').value=ev.date;
@@ -1334,7 +1558,7 @@ function saveEventEdit(){
   ev.wifi=document.getElementById('ee-wifi').value;
   ev.code=document.getElementById('ee-code').value;
   closeModal('modal-event-edit');
-  document.getElementById('cockpit-event-sub').textContent=ev.nom+' · '+(ev.lieu||'')+(ev.date?' · '+new Date(ev.date+'T12:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}):'');
+  updateCockpitBanner();
   saveStorage();
   toast('Événement mis à jour','s');
 }
@@ -1352,6 +1576,7 @@ function renderAll(){
   renderExtraMatos();
   renderConform();
   renderContacts();
+  renderContactsMain();
   renderBudget();
   renderIncidents();
   renderElec();
@@ -1371,6 +1596,282 @@ function toggleTheme(){
   ['home-theme-btn','app-theme-btn'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=S.theme==='light'?'<i class="fas fa-sun"></i>':'<i class="fas fa-moon"></i>';});
   saveStorage();
 }
+
+// ═══════════════════════════════════════════
+// MODE TERRAIN
+// ═══════════════════════════════════════════
+let terrainMode = false;
+function toggleTerrain(){
+  terrainMode = !terrainMode;
+  const root = document.getElementById('root');
+  const btn = document.getElementById('btn-terrain');
+  if(terrainMode){
+    // Préserver la classe light si active
+    const isLight = root.classList.contains('light');
+    root.className = (isLight ? 'light ' : '') + 'terrain';
+    btn.innerHTML = '<i class="fas fa-mountain-sun"></i> TERRAIN ON';
+    btn.classList.add('active');
+    toast('Mode terrain activé — Grande typo','s');
+  } else {
+    const isLight = root.classList.contains('light');
+    root.className = isLight ? 'light' : '';
+    btn.innerHTML = '<i class="fas fa-mountain-sun"></i> TERRAIN';
+    btn.classList.remove('active');
+    toast('Mode terrain désactivé','i');
+  }
+}
+
+// ═══════════════════════════════════════════
+// ZOOM
+// ═══════════════════════════════════════════
+let zoomLevel = 100;
+function adjustZoom(dir){
+  zoomLevel = Math.max(70, Math.min(150, zoomLevel + dir * 10));
+  document.documentElement.style.fontSize = (zoomLevel / 100 * 16) + 'px';
+  const lbl = document.getElementById('zoom-level-label');
+  if(lbl) lbl.textContent = zoomLevel + '%';
+}
+
+// ═══════════════════════════════════════════
+// RESET AFFICHAGE
+// ═══════════════════════════════════════════
+function resetDisplay(){
+  zoomLevel = 100;
+  document.documentElement.style.fontSize = '16px';
+  const lbl = document.getElementById('zoom-level-label');
+  if(lbl) lbl.textContent = '100%';
+  if(terrainMode) toggleTerrain();
+  toast('Affichage réinitialisé','s');
+}
+
+// ═══════════════════════════════════════════
+// MODE LIVE OVERLAY
+// ═══════════════════════════════════════════
+let liveOverlayOpen = false;
+let livePauseActive = false;
+
+function toggleLiveMode(){
+  liveOverlayOpen = !liveOverlayOpen;
+  const ov = document.getElementById('live-overlay-mode');
+  const btn = document.getElementById('btn-mode-live');
+  if(liveOverlayOpen){
+    ov.classList.add('open');
+    if(btn) btn.classList.add('active');
+    updateLiveOverlay();
+    toast('MODE LIVE activé','s');
+  } else {
+    ov.classList.remove('open');
+    if(btn) btn.classList.remove('active');
+  }
+}
+
+function updateLiveOverlay(){
+  const ev = S.events.find(e=>e.id===S.currentEventId);
+  const evName = document.getElementById('lo-event-name');
+  if(evName && ev) evName.textContent = ev.nom;
+  const live = S.sequences.find(s=>s.active);
+  if(live){
+    document.getElementById('lo-seq-name').textContent = live.title;
+    document.getElementById('lo-live-label').textContent = '▶ LIVE EN COURS';
+    document.getElementById('lo-live-label').style.color = 'var(--danger)';
+    document.getElementById('lo-seq-resp').textContent = live.resp || '—';
+    document.getElementById('lo-seq-cues').textContent = live.cues || '—';
+    const filtered = S.sequences.filter(s=>s.phase===S.runPhase);
+    const li = filtered.findIndex(s=>s.active);
+    const next = filtered[li+1];
+    document.getElementById('lo-next-name').textContent = next ? next.title : 'Fin de programme';
+    document.getElementById('lo-next-time').textContent = next ? next.time : '—';
+  } else {
+    document.getElementById('lo-seq-name').textContent = 'Prêt au démarrage';
+    document.getElementById('lo-live-label').textContent = 'EN ATTENTE';
+    document.getElementById('lo-live-label').style.color = 'var(--tx3)';
+    document.getElementById('lo-next-name').textContent = '—';
+    document.getElementById('lo-next-time').textContent = '—';
+  }
+  // Contacts rapides
+  const loContacts = document.getElementById('lo-contacts');
+  if(loContacts){
+    loContacts.innerHTML = S.contacts.slice(0,6).map(c=>`
+      <a href="tel:${c.tel}" class="btn btn-ghost" style="flex:1;min-width:140px;flex-direction:column;gap:2px;padding:10px">
+        <div style="font-size:13px;font-weight:700">${c.nom}</div>
+        <div style="font-family:var(--mono);font-size:14px;color:var(--accent)">${c.tel}</div>
+        <div style="font-size:10px;color:var(--tx3)">${c.cat}</div>
+      </a>`).join('');
+  }
+}
+
+function liveNext(){
+  const f = S.sequences.filter(s=>s.phase===S.runPhase);
+  const li = f.findIndex(s=>s.active);
+  if(li>=0) S.sequences[S.sequences.indexOf(f[li])].active=false;
+  if(li+1 < f.length){
+    S.sequences[S.sequences.indexOf(f[li+1])].active=true;
+    addActivity('NEXT: '+f[li+1].title,'s');
+  }
+  renderRun(); updateCockpit(); updateLiveOverlay(); saveStorage();
+}
+
+function livePrev(){
+  const f = S.sequences.filter(s=>s.phase===S.runPhase);
+  const li = f.findIndex(s=>s.active);
+  if(li>0){
+    if(li>=0) S.sequences[S.sequences.indexOf(f[li])].active=false;
+    S.sequences[S.sequences.indexOf(f[li-1])].active=true;
+    addActivity('PREV: '+f[li-1].title,'i');
+  } else if(li<0 && f.length>0){
+    S.sequences[S.sequences.indexOf(f[0])].active=true;
+  }
+  renderRun(); updateCockpit(); updateLiveOverlay(); saveStorage();
+}
+
+function liveTogglePause(){
+  livePauseActive = !livePauseActive;
+  const icon = document.getElementById('lo-pause-icon');
+  const label = document.getElementById('lo-pause-label');
+  const btn = document.getElementById('lo-pause-btn');
+  if(livePauseActive){
+    if(icon) icon.className='fas fa-play';
+    if(label) label.textContent='Reprendre';
+    if(btn) btn.style.background='var(--success)';
+    addActivity('⏸ Pause','i');
+  } else {
+    if(icon) icon.className='fas fa-pause';
+    if(label) label.textContent='Pause';
+    if(btn) btn.style.background='var(--warning)';
+    addActivity('▶ Reprise','s');
+  }
+}
+
+// ═══════════════════════════════════════════
+// MATOS SEARCH / FILTER
+// ═══════════════════════════════════════════
+let matosFilter = 'all';
+function setMatosFilter(f, btn){
+  matosFilter = f;
+  document.querySelectorAll('.matos-filter-tag').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  filterMatos();
+}
+
+function filterMatos(){
+  const q = (document.getElementById('matos-search')?.value||'').toLowerCase();
+  // Filtre sur les cartes motorola/hollyland
+  document.querySelectorAll('.matos-card-v2').forEach(card=>{
+    const name = (card.querySelector('.mc-name')?.textContent||card.querySelector('.mc-libre-label')?.textContent||'').toLowerCase();
+    const device = (card.querySelector('.mc-device')?.textContent||'').toLowerCase();
+    const assigned = card.classList.contains('assigned');
+    const libre = card.classList.contains('libre');
+    let show = true;
+    if(q && !name.includes(q) && !device.includes(q)) show=false;
+    if(matosFilter==='assigned' && !assigned) show=false;
+    if(matosFilter==='libre' && !libre) show=false;
+    card.style.display = show ? '' : 'none';
+  });
+}
+
+function toggleMatosVue(){
+  const grids = ['motorola-grid','hollyland-grid','mega-card'];
+  const btn = document.getElementById('btn-matos-vue');
+  const isGrid = btn?.innerHTML.includes('Liste');
+  grids.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    if(isGrid){el.style.gridTemplateColumns='repeat(auto-fill,minmax(200px,1fr))';}
+    else{el.style.gridTemplateColumns='1fr';}
+  });
+  if(btn) btn.innerHTML = isGrid ? '<i class="fas fa-grip"></i> Grille' : '<i class="fas fa-list"></i> Liste';
+}
+
+function assignAllMotorola(){
+  toast('Assignation automatique : utilisez les selects sur chaque talkie','i');
+}
+
+// ═══════════════════════════════════════════
+// CONTACTS ONGLET DÉDIÉ
+// ═══════════════════════════════════════════
+function renderContactsMain(){
+  const grid = document.getElementById('contacts-main-grid');
+  const empty = document.getElementById('contacts-main-empty');
+  if(!grid) return;
+  const q = (document.getElementById('ct-search-main')?.value||'').toLowerCase();
+  const cat = document.getElementById('ct-filter-cat')?.value||'';
+  let filtered = S.contacts.filter(c=>{
+    if(q && !c.nom.toLowerCase().includes(q) && !(c.tel||'').includes(q)) return false;
+    if(cat && c.cat !== cat) return false;
+    return true;
+  });
+  if(!filtered.length){
+    grid.innerHTML=''; if(empty) empty.style.display='';
+    return;
+  }
+  if(empty) empty.style.display='none';
+  grid.innerHTML = filtered.map(c=>`
+    <div class="card card-sm" style="display:flex;align-items:center;gap:12px">
+      <div style="width:44px;height:44px;border-radius:10px;background:var(--accent-glow);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">
+        ${c.cat==='Sécurité'?'🦺':c.cat==='Technique'?'🔧':c.cat==='Artiste'?'🎤':c.cat==='Production'?'🎬':c.cat==='Régie'?'🎛️':'📞'}
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:15px;font-weight:800;color:var(--tx)">${c.nom}</div>
+        <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--accent);margin:3px 0">${c.tel}</div>
+        <span class="badge b-neutral" style="font-size:10px">${c.cat}</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0">
+        <a href="tel:${c.tel}" class="btn btn-success btn-sm btn-icon" title="Appeler"><i class="fas fa-phone"></i></a>
+        ${c.tel?`<a href="https://wa.me/${c.tel.replace(/[\s+]/g,'').replace(/^0/,'33')}" target="_blank" class="btn btn-ghost btn-sm btn-icon" style="color:#25D366" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>`:''}
+        ${c.id>3?`<button onclick="deleteContact(${c.id})" class="btn btn-ghost btn-sm btn-icon" title="Supprimer"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>`:''}
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════
+// COCKPIT — MATOS RAPIDE WIDGET
+// ═══════════════════════════════════════════
+function updateCockpitMatosWidget(){
+  const el = document.getElementById('cw-matos-quick');
+  const status = document.getElementById('cw-matos-status');
+  if(!el) return;
+  const total = S.motorola.length + S.hollyland.length + 1;
+  const assigned = S.motorola.filter(m=>m.assigneA).length + S.hollyland.filter(h=>h.assigneA).length + (S.megaphone.assigneA?1:0);
+  const libre = total - assigned;
+  if(status) status.textContent = assigned+'/'+total+' assignés';
+  if(status) status.className = 'badge '+(assigned===total?'b-success':libre>3?'b-warning':'b-info');
+  const items = [];
+  S.motorola.filter(m=>m.assigneA).slice(0,4).forEach(m=>items.push(`<div style="display:flex;align-items:center;gap:6px;font-size:12px"><span class="badge b-accent" style="font-size:10px">T#${m.id}</span><span style="font-weight:600">${m.assigneA}</span></div>`));
+  if(libre>0) items.push(`<div style="font-size:12px;color:var(--tx3)">${libre} appareil${libre>1?'s':''} libre${libre>1?'s':''}</div>`);
+  el.innerHTML = items.join('') || '<div style="font-size:12px;color:var(--tx3)">Aucun matos assigné</div>';
+}
+
+// ═══════════════════════════════════════════
+// COCKPIT — EVENT BANNER UPDATE
+// ═══════════════════════════════════════════
+function updateCockpitBanner(){
+  const ev = S.events.find(e=>e.id===S.currentEventId);
+  if(!ev) return;
+  const nameEl = document.getElementById('cockpit-event-name');
+  const subEl = document.getElementById('cockpit-event-sub');
+  if(nameEl) nameEl.textContent = ev.nom || 'Événement';
+  if(subEl){
+    const dateStr = ev.date ? new Date(ev.date+'T12:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}) : '';
+    subEl.innerHTML = [
+      ev.lieu ? `<span><i class="fas fa-location-dot"></i> ${ev.lieu}</span>` : '',
+      dateStr ? `<span><i class="fas fa-calendar"></i> ${dateStr}</span>` : '',
+      ev.heure ? `<span><i class="fas fa-clock"></i> ${ev.heure}</span>` : '',
+      ev.jauge ? `<span><i class="fas fa-users"></i> ${ev.jauge} pers.</span>` : '',
+    ].filter(Boolean).join('');
+  }
+}
+
+// Mise à jour overlay live depuis le timer global
+const _origLiveOverlayTimer = setInterval(()=>{
+  if(!liveOverlayOpen) return;
+  const live = S.sequences.find(s=>s.active);
+  if(live && !livePauseActive){
+    const el = document.getElementById('lo-seq-timer');
+    if(el) el.textContent = document.getElementById('cw-now-timer')?.textContent || '00:00';
+  }
+  const clk = document.getElementById('lo-clock');
+  if(clk) clk.textContent = document.getElementById('hdr-clock')?.textContent || '00:00:00';
+}, 500);
 
 // ═══════════════════════════════════════════
 // TABS
@@ -1409,6 +1910,10 @@ function setRunPhase(p,btn){
 // COCKPIT UPDATE
 // ═══════════════════════════════════════════
 function updateCockpit(){
+  // Banner
+  updateCockpitBanner();
+  // Matos widget
+  updateCockpitMatosWidget();
   // Elec
   const pct=Math.min((S.elec/7200)*100,100);
   const elecColor=pct>90?'var(--danger)':pct>70?'var(--warning)':'var(--success)';
@@ -2550,8 +3055,7 @@ function loadProjectFromSession() {
     if (!raw) return;
     const project = JSON.parse(raw);
     // Pré-remplir le sous-titre du cockpit
-    const sub = document.getElementById('cockpit-event-sub');
-    if (sub) sub.textContent = project.name + (project.venue ? ' · ' + project.venue : '') + (project.date ? ' · ' + new Date(project.date + 'T12:00').toLocaleDateString('fr-FR', {day:'2-digit',month:'long',year:'numeric'}) : '');
+    updateCockpitBanner();
     // Pré-remplir modal édition événement
     ['ee-nom','ee-lieu','ee-adresse','ee-wifi','ee-code'].forEach(id => {
       const field = document.getElementById(id);
