@@ -35,7 +35,7 @@ html.light { --bg:#F4F6F9; --bg2:#FFFFFF; --bg3:#EEF1F5; --bg4:#E4E8EE;
   --tx:#111827; --tx2:#4B5563; --tx3:#9CA3AF; }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--tx);font-size:15px;-webkit-font-smoothing:antialiased;line-height:1.5}
+html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--tx);font-size:16px;-webkit-font-smoothing:antialiased;line-height:1.55}
 ::-webkit-scrollbar{width:3px;height:3px}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 
@@ -49,21 +49,14 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 #ftr{height:30px;background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex-shrink:0}
 
 /* ── HEADER ── */
-.hdr-logo{font-size:16px;font-weight:900;letter-spacing:-.5px;color:var(--accent);cursor:pointer;white-space:nowrap}
+.hdr-logo{font-size:17px;font-weight:900;letter-spacing:-.5px;color:var(--accent);cursor:pointer;white-space:nowrap}
 .hdr-logo span{color:var(--tx)}
 .hdr-sep{width:1px;height:28px;background:var(--border);flex-shrink:0}
-.hdr-clock{font-family:var(--mono);font-size:22px;font-weight:700;letter-spacing:-1px;color:var(--tx);line-height:1}
+.hdr-clock{font-family:var(--mono);font-size:24px;font-weight:700;letter-spacing:-1px;color:var(--tx);line-height:1}
 .hdr-date{font-size:9px;color:var(--accent);font-weight:700;letter-spacing:.1em;text-transform:uppercase}
-.hdr-cue{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:6px;max-width:200px;overflow:hidden}
-.hdr-cue-dot{width:6px;height:6px;border-radius:50%;background:var(--success);animation:blink 1.4s infinite}
+.hdr-cue{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 14px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;max-width:240px;overflow:hidden}
+.hdr-cue-dot{width:7px;height:7px;border-radius:50%;background:var(--success);animation:blink 1.4s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.hdr-phase{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:3px 10px;border-radius:20px;border:1px solid var(--border);color:var(--tx2)}
-.hdr-phase.montage{border-color:var(--warning);color:var(--warning)}
-.hdr-phase.show{border-color:var(--success);color:var(--success);animation:blink 2s infinite}
-.hdr-phase.demo{border-color:var(--info);color:var(--info)}
-.hdr-retard{font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px}
-.hdr-retard.ok{background:var(--success-bg);color:var(--success)}
-.hdr-retard.late{background:var(--danger-bg);color:var(--danger)}
 .hdr-spacer{flex:1}
 .hdr-time-container{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
 
@@ -77,25 +70,24 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .btn-icon{padding:6px 9px}
 .btn-sm{padding:4px 10px;font-size:10px}
 .btn-lg{padding:10px 22px;font-size:13px}
-.btn-next{background:var(--accent);color:#fff;padding:6px 16px;font-size:12px;font-weight:800;letter-spacing:.05em}
 .btn-sos{background:var(--danger);color:#fff;padding:6px 14px;font-size:11px;font-weight:800;letter-spacing:.05em;animation:none}
 .btn-sos:hover{animation:shake .3s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
 
 /* ── NAV ── */
 .nav-section{font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.12em;padding:8px 8px 4px;margin-top:6px}
-.nav-btn{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--r-sm);font-size:13px;font-weight:600;color:var(--tx2);cursor:pointer;transition:var(--tr);background:transparent;border:none;width:100%;text-align:left;font-family:var(--font)}
+.nav-btn{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:var(--r-sm);font-size:13px;font-weight:600;color:var(--tx2);cursor:pointer;transition:var(--tr);background:transparent;border:none;width:100%;text-align:left;font-family:var(--font)}
 .nav-btn:hover{background:var(--bg3);color:var(--tx)}
 .nav-btn.active{background:var(--accent-glow);color:var(--accent);font-weight:700;border-left:2px solid var(--accent);padding-left:6px}
 .nav-btn i{width:14px;text-align:center;font-size:11px}
 .nav-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:8px;min-width:16px;text-align:center}
 
 /* ── TABS ── */
-.tab{display:none;padding:20px;min-height:100%}
+.tab{display:none;padding:24px;min-height:100%}
 .tab.active{display:block}
 
 /* ── CARDS ── */
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px}
 .card-sm{padding:12px}
 .card-title{font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
 .card-value{font-family:var(--mono);font-size:26px;font-weight:700;color:var(--tx)}
@@ -108,8 +100,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 
 /* ── SECTION HEADER ── */
 .sec-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;gap:12px}
-.sec-title{font-size:20px;font-weight:800;letter-spacing:-.5px;color:var(--tx)}
-.sec-sub{font-size:11px;color:var(--tx2);margin-top:2px}
+.sec-title{font-size:22px;font-weight:800;letter-spacing:-.5px;color:var(--tx)}
+.sec-sub{font-size:12px;color:var(--tx2);margin-top:3px}
 .sec-actions{display:flex;gap:6px;align-items:center;flex-shrink:0;flex-wrap:wrap}
 
 /* ── TABLE ── */
@@ -174,11 +166,11 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 .live-dot::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--danger);animation:blink .8s infinite}
 
 /* ── CONDUCTEUR LINES ── */
-.run-row{display:grid;grid-template-columns:44px 68px 52px 1fr 90px 80px 70px 60px 90px;align-items:center;gap:6px;padding:9px 12px;border-bottom:1px solid var(--border);transition:var(--tr)}
+.run-row{display:grid;grid-template-columns:44px 68px 52px 1fr 80px 72px 68px 68px 60px 90px;align-items:center;gap:6px;padding:9px 12px;border-bottom:1px solid var(--border);transition:var(--tr)}
 .run-row:hover{background:var(--bg3)}
 .run-row.live-row{background:rgba(37,99,235,.06);border-left:3px solid var(--accent)}
 .run-row.done-row{opacity:.4}
-.run-hdr{display:grid;grid-template-columns:44px 68px 52px 1fr 90px 80px 70px 60px 90px;gap:6px;padding:7px 12px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.run-hdr{display:grid;grid-template-columns:44px 68px 52px 1fr 80px 72px 68px 68px 60px 90px;gap:6px;padding:7px 12px;background:var(--bg3);border-bottom:1px solid var(--border)}
 
 /* ── CREW ORG ── */
 .org-wrap{display:flex;flex-direction:column;align-items:center;gap:0;overflow-x:auto;padding-bottom:20px}
@@ -196,12 +188,13 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 .org-branch::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:calc(100% - 140px);height:2px;background:var(--border)}
 
 /* ── MATOS CARD V2 ── */
-.matos-card-v2{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px;transition:var(--tr);position:relative;cursor:default}
-.matos-card-v2.libre{opacity:.45;border-style:dashed}
-.matos-card-v2:hover{border-color:var(--border2)}
+.matos-card-v2{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;transition:var(--tr);position:relative;cursor:default}
+.matos-card-v2.libre{opacity:.5;border-style:dashed}
+.matos-card-v2:hover{border-color:var(--border2);transform:translateY(-1px)}
 .matos-card-v2.assigned{border-left:3px solid var(--accent)}
-.mc-device{font-size:11px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
-.mc-canal{font-size:11px;font-weight:700;color:var(--accent);margin-bottom:12px}
+.mc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.mc-device{font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.1em}
+.mc-canal{font-family:var(--mono);font-size:13px;font-weight:800;color:var(--accent)}
 .mc-divider{height:1px;background:var(--border);margin-bottom:12px}
 .mc-name{font-size:20px;font-weight:800;color:var(--tx);letter-spacing:-.3px;line-height:1.1;margin-bottom:4px;min-height:28px}
 .mc-poste{font-size:13px;font-weight:600;color:var(--tx2);margin-bottom:12px;min-height:20px}
@@ -211,11 +204,11 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 /* ── POSTE CARD V2 ── */
 .poste-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px;display:flex;align-items:center;gap:14px;transition:var(--tr);position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05)}
 .poste-card:hover{border-color:var(--border2);box-shadow:0 4px 16px rgba(0,0,0,.1);transform:translateY(-2px)}
-.poste-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent);opacity:.7}
+.poste-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--pc,var(--accent));opacity:.8}
 .poste-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;border:2px solid var(--bg2);box-shadow:0 0 0 2px var(--border)}
-.poste-nom{font-size:16px;font-weight:800;flex:1;color:var(--tx);letter-spacing:-.2px}
-.poste-count{font-size:12px;font-weight:700;color:var(--tx3);background:var(--bg3);padding:3px 8px;border-radius:12px;border:1px solid var(--border)}
-.poste-actions{display:flex;gap:4px;opacity:.6;transition:var(--tr)}
+.poste-nom{font-size:16px;font-weight:800;flex:1;color:var(--tx);letter-spacing:-.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.poste-count{font-size:12px;font-weight:700;color:var(--tx3);background:var(--bg3);padding:3px 8px;border-radius:12px;border:1px solid var(--border);flex-shrink:0}
+.poste-actions{display:flex;gap:4px;opacity:.6;transition:var(--tr);flex-shrink:0}
 .poste-card:hover .poste-actions{opacity:1}
 /* ── SORT SELECT ── */
 #postes-sort{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 10px;font-size:11px;font-weight:600;color:var(--tx);cursor:pointer;transition:var(--tr);outline:none}
@@ -284,22 +277,26 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  #hdr { height: 48px; padding: 0 12px; gap: 8px; }
-  .hdr-clock { font-size: 18px; }
+  #hdr { height: 52px; padding: 0 12px; gap: 8px; }
+  .hdr-clock { font-size: 20px; }
   .hdr-date { font-size: 8px; }
-  .hdr-cue { max-width: 140px; font-size: 10px; padding: 2px 8px; }
-  .hdr-retard { font-size: 9px; padding: 2px 8px; }
-  .btn-sos, .btn-next { padding: 4px 10px; font-size: 10px; }
+  .hdr-cue { max-width: 130px; font-size: 11px; padding: 3px 9px; }
+    .btn-sos, .btn-next { padding: 5px 11px; font-size: 10px; }
   .btn-ghost.btn-icon { padding: 4px 6px; }
-  #nav { width: 180px; }
-  .nav-btn { padding: 7px 8px; font-size: 12px; }
+  #nav { position:fixed;left:-240px;top:0;bottom:0;width:240px;z-index:500;transition:left .25s ease;box-shadow:none }
+  #nav.open { left:0; box-shadow:6px 0 30px rgba(0,0,0,.5) }
+  #nav-overlay { display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:499 }
+  #nav-overlay.open { display:block }
+  #nav-toggle { display:flex!important }
+  .nav-btn { padding: 9px 10px; font-size: 13px; }
   .sec-title { font-size: 18px; }
   .sec-sub { font-size: 10px; }
-  .g2, .g3, .g4 { grid-template-columns: 1fr; gap: 10px; }
+  .g2, .g3 { grid-template-columns: 1fr; gap: 10px; }
+  .g4 { grid-template-columns: 1fr 1fr; gap: 10px; }
   .cw-now-title { font-size: 16px; }
   .cw-now-timer { font-size: 32px; }
   .cw-big { font-size: 24px; }
-  .run-row, .run-hdr { grid-template-columns: 36px 60px 45px 1fr 80px 70px 60px 50px 80px; gap: 4px; padding: 6px 8px; }
+  .run-row, .run-hdr { grid-template-columns: 36px 56px 42px 1fr 70px 62px 58px 58px 50px 76px; gap: 3px; padding: 6px 8px; }
   .modal { width: 95vw; padding: 16px; }
   .modal-lg { width: 98vw; }
   .modal-xl { width: 98vw; }
@@ -316,7 +313,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
   #app-user-btn { padding: 3px 6px; }
   #user-avatar { width: 20px; height: 20px; font-size: 9px; }
   .hdr-sep { height: 24px; }
-  .tab { padding: 12px; }
+  .tab { padding: 10px; }
   .card { padding: 12px; }
   .card-sm { padding: 10px; }
   .card-value { font-size: 22px; }
@@ -480,19 +477,18 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 
   <!-- HEADER -->
   <header id="hdr">
+    <button id="nav-toggle" onclick="toggleNav()" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 9px;cursor:pointer;color:var(--tx);font-size:14px;align-items:center;justify-content:center"><i class="fas fa-bars"></i></button>
     <div class="hdr-logo" onclick="goHome()">AINTERCOM <span>PRO</span></div>
     <div class="hdr-sep"></div>
     <div class="hdr-time-container">
       <div class="hdr-clock" id="hdr-clock">00:00:00</div>
-      <div class="hdr-date" id="hdr-date">-- --- 2026</div>
+      <div class="hdr-date" id="hdr-date"></div>
     </div>
     <div class="hdr-sep"></div>
     <div class="hdr-cue"><div class="hdr-cue-dot"></div><span id="hdr-cue-name" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">En attente</span></div>
-    <div class="hdr-retard ok" id="hdr-retard">À l'heure</div>
     <div class="hdr-spacer"></div>
     <div style="display:flex;gap:6px;align-items:center">
       <button class="btn btn-sos btn-sm" onclick="openModal('modal-incident')"><i class="fas fa-triangle-exclamation"></i> SOS</button>
-      <button class="btn btn-next btn-sm" onclick="nextTop()"><i class="fas fa-forward-step"></i> NEXT TOP</button>
       <div class="hdr-sep"></div>
       <button class="btn btn-ghost btn-icon btn-sm" onclick="toggleTheme()" id="app-theme-btn" title="Thème"><i class="fas fa-moon"></i></button>
       <button class="btn btn-ghost btn-icon btn-sm" onclick="saveManual()" title="Ctrl+S — Sauvegarder"><i class="fas fa-floppy-disk"></i></button>
@@ -540,33 +536,32 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
       </div>
     </nav>
 
+    <div id="nav-overlay" onclick="toggleNav()"></div>
     <!-- MAIN -->
     <main id="main">
 
       <!-- ══ COCKPIT ══ -->
       <section class="tab active" id="tab-cockpit">
-        <div class="sec-hdr">
-          <div>
-            <div class="sec-title">🎛️ Cockpit</div>
-            <div class="sec-sub" id="cockpit-event-sub">Vision globale en temps réel</div>
-            <!-- Détails événement améliorés -->
-            <div id="cockpit-event-details" style="margin-top:8px;display:none">
-              <div style="display:flex;gap:12px;flex-wrap:wrap">
-                <span class="badge b-accent" id="cockpit-event-type">—</span>
-                <span class="badge b-neutral" id="cockpit-event-date">—</span>
-                <span class="badge b-neutral" id="cockpit-event-location">—</span>
-                <span class="badge b-neutral" id="cockpit-event-capacity">—</span>
-              </div>
+        <!-- EVENT BANNER -->
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:18px;font-weight:900;color:var(--tx);letter-spacing:-.3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" id="cockpit-event-name">— Événement —</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+              <span class="badge b-accent" id="cockpit-event-type">—</span>
+              <span class="badge b-neutral" id="cockpit-event-date">—</span>
+              <span class="badge b-neutral" id="cockpit-event-location">—</span>
+              <span class="badge b-neutral" id="cockpit-event-capacity">—</span>
             </div>
           </div>
           <div class="sec-actions">
-            <button class="btn btn-ghost btn-sm" onclick="openModal('modal-event-edit')"><i class="fas fa-pen"></i> Modifier événement</button>
-            <button class="btn btn-ghost btn-sm" onclick="toggleEventDetails()" id="toggle-event-details-btn"><i class="fas fa-chevron-down"></i> Détails</button>
+
+            <span id="cw-phase-badge" class="badge b-neutral" style="font-size:11px;font-weight:700;cursor:pointer" onclick="switchTab('conducteur',navBtnByTab('conducteur'))">⚙ Montage</span>
+            <button class="btn btn-ghost btn-sm" onclick="openModal('modal-event-edit')"><i class="fas fa-pen"></i> Modifier</button>
           </div>
         </div>
 
-        <!-- ROW 1: NOW / NEXT / GLOBAL TIMER -->
-        <div class="g3" style="margin-bottom:14px">
+        <!-- ROW 1: NOW / NEXT / TIMER / CLOCK -->
+        <div class="g4" style="margin-bottom:14px">
           <div class="cw-now">
             <div class="cw-label"><span class="live-dot" id="live-dot-label">EN ATTENTE</span></div>
             <div class="cw-now-title" id="cw-now-title">Prêt au démarrage</div>
@@ -577,27 +572,32 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
             </div>
           </div>
           <div class="cw">
-            <div class="cw-label"><i class="fas fa-forward" style="color:var(--tx3)"></i> Séquence suivante</div>
-            <div style="font-size:15px;font-weight:700;color:var(--tx2);margin-bottom:6px" id="cw-next-title">—</div>
+            <div class="cw-label"><i class="fas fa-forward" style="color:var(--tx3)"></i> Suivante</div>
+            <div style="font-size:14px;font-weight:700;color:var(--tx2);margin-bottom:6px" id="cw-next-title">—</div>
             <div style="display:flex;gap:6px;flex-wrap:wrap">
               <span class="badge b-neutral" id="cw-next-time">—</span>
               <span class="badge b-neutral" id="cw-next-resp">—</span>
             </div>
           </div>
           <div class="cw" style="background:var(--bg3)">
-            <div class="cw-label">⏱ Timer global</div>
+            <div class="cw-label">⏱ Timer</div>
             <div class="cw-big" id="cw-global-timer" style="color:var(--accent)">00:00:00</div>
             <div style="display:flex;gap:5px;margin-top:10px">
               <button class="btn btn-ghost btn-sm" id="gt-btn" onclick="gtToggle()"><i class="fas fa-play"></i></button>
               <button class="btn btn-ghost btn-sm" onclick="gtReset()"><i class="fas fa-rotate-left"></i></button>
             </div>
           </div>
+          <div class="cw" style="background:var(--bg3);text-align:center">
+            <div class="cw-label">🕐 Heure</div>
+            <div class="cw-big" id="cockpit-clock" style="color:var(--accent);font-size:32px">00:00:00</div>
+            <div style="font-size:10px;color:var(--tx2);margin-top:4px" id="cockpit-date"></div>
+          </div>
         </div>
 
-        <!-- ROW 2: STATS -->
+        <!-- ROW 2: KPIs -->
         <div class="g4" style="margin-bottom:14px">
           <div class="cw" style="cursor:pointer" onclick="switchTab('tech',navBtnByTab('tech'))">
-            <div class="cw-label">⚡ Power Load</div>
+            <div class="cw-label">⚡ Power</div>
             <div style="font-family:var(--mono);font-size:22px;font-weight:700" id="cw-elec">0 W</div>
             <div class="prog"><div class="prog-fill" id="cw-elec-bar" style="width:0%;background:var(--success)"></div></div>
             <div style="font-size:10px;color:var(--tx3);margin-top:4px" id="cw-amp">0.0 A mono</div>
@@ -605,42 +605,46 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
           <div class="cw" style="cursor:pointer" onclick="switchTab('tech',navBtnByTab('tech'))">
             <div class="cw-label">🚨 Incidents</div>
             <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--danger)" id="cw-inc">0</div>
-            <div style="font-size:10px;color:var(--tx3);margin-top:4px">actifs</div>
+            <div style="font-size:10px;color:var(--tx3);margin-top:4px">actifs → cliquer</div>
           </div>
-          <div class="cw" style="cursor:pointer" onclick="switchTab('crew',navBtnByTab('crew'))">
-            <div class="cw-label">👥 Crew</div>
+          <div class="cw" style="cursor:pointer" onclick="switchTab('staff',navBtnByTab('staff'))">
+            <div class="cw-label">👥 Staff</div>
             <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--success)" id="cw-crew">0</div>
-            <div style="font-size:10px;color:var(--tx3);margin-top:4px" id="cw-crew-total">/ 0 total</div>
+            <div style="font-size:10px;color:var(--tx3);margin-top:4px" id="cw-crew-total">membres</div>
           </div>
-          <div class="cw" id="cw-budget-widget">
-            <div class="cw-label">💰 Budget restant</div>
-            <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--success)" id="cw-budget">—</div>
-            <div style="font-size:10px;color:var(--tx3);margin-top:4px" id="cw-budget-sub">Admin uniquement</div>
+          <div class="cw" style="cursor:pointer" onclick="if(!S.budgetUnlocked)toggleBudget();switchTab('budget',navBtnByTab('budget'))" id="cw-budget-widget">
+            <div class="cw-label">💰 Marge nette</div>
+            <div style="font-family:var(--mono);font-size:22px;font-weight:700" id="cw-budget">—</div>
+            <div style="font-size:10px;color:var(--tx3);margin-top:4px" id="cw-budget-sub">Cliquer pour ouvrir</div>
           </div>
         </div>
 
-        <!-- ROW 3: METEO + NOTE + FLUX -->
+        <!-- ROW 3: MÉTÉO + NOTE + MATOS LISTE -->
         <div class="g3">
           <div class="cw">
-            <div class="cw-label">🌤 Météo</div>
-            <div style="display:flex;align-items:center;gap:10px">
+            <div class="cw-label" style="display:flex;justify-content:space-between;align-items:center">
+              🌤 Météo
+              <div style="display:flex;gap:4px">
+                <input type="text" id="cw-meteo-city" placeholder="Ville" style="width:80px;padding:2px 6px;font-size:10px" value="Lyon">
+                <button class="btn btn-ghost btn-sm" onclick="document.getElementById('meteo-city').value=document.getElementById('cw-meteo-city').value;fetchWeather()" style="padding:2px 6px"><i class="fas fa-rotate" style="font-size:9px"></i></button>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;margin-top:8px">
               <div style="font-size:36px" id="cw-meteo-icon">—</div>
               <div>
                 <div style="font-size:22px;font-weight:800;letter-spacing:-1px" id="cw-meteo-temp">--°C</div>
                 <div style="font-size:11px;color:var(--tx2)" id="cw-meteo-desc">—</div>
-                <div style="font-size:10px;color:var(--tx3)" id="cw-meteo-wind">Vent: -- km/h</div>
+                <div style="font-size:10px;color:var(--tx3)" id="cw-meteo-wind">— km/h</div>
               </div>
             </div>
           </div>
           <div class="cw">
-            <div class="cw-label" style="display:flex;justify-content:space-between">📝 Note rapide<button class="btn btn-ghost btn-sm" onclick="saveNote()" style="margin-top:-2px"><i class="fas fa-check" style="font-size:9px"></i></button></div>
+            <div class="cw-label" style="display:flex;justify-content:space-between">📝 Note<button class="btn btn-ghost btn-sm" onclick="saveNote()" style="margin-top:-2px"><i class="fas fa-check" style="font-size:9px"></i></button></div>
             <textarea id="quick-note" rows="3" placeholder="Mémo permanent..." style="font-size:12px;resize:none"></textarea>
           </div>
           <div class="cw">
-            <div class="cw-label">📋 Activité récente</div>
-            <div id="cw-activity" style="display:flex;flex-direction:column;gap:5px;max-height:110px;overflow-y:auto">
-              <div style="font-size:11px;color:var(--tx3);font-style:italic">Aucune activité</div>
-            </div>
+            <div class="cw-label" style="display:flex;justify-content:space-between">📡 Matos assignés<button class="btn btn-ghost btn-sm" style="margin-top:-2px" onclick="switchTab('matos',navBtnByTab('matos'))"><i class="fas fa-arrow-right" style="font-size:9px"></i></button></div>
+            <div id="cw-matos-list" style="display:flex;flex-direction:column;gap:4px;margin-top:6px;max-height:100px;overflow-y:auto"></div>
           </div>
         </div>
       </section>
@@ -648,25 +652,33 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
       <!-- ══ CONDUCTEUR ══ -->
       <section class="tab" id="tab-conducteur">
         <div class="sec-hdr">
-          <div><div class="sec-title">🎬 Conducteur</div><div class="sec-sub">Timeline de show · Cues · Scripts</div></div>
+          <div><div class="sec-title">🎬 Conducteur</div><div class="sec-sub">Timeline de show · Son · Lumière · Vidéo · Auto-trigger</div></div>
           <div class="sec-actions">
             <div class="phase-sel">
               <button class="phase-btn active" id="rp-mont" onclick="setRunPhase('montage',this)">Montage</button>
               <button class="phase-btn" id="rp-show" onclick="setRunPhase('show',this)">Show</button>
               <button class="phase-btn" id="rp-demo" onclick="setRunPhase('demo',this)">Démontage</button>
             </div>
+            <button class="btn btn-ghost btn-sm" id="run-pause-btn" onclick="toggleRunPause()" style="display:none"><i class="fas fa-pause"></i> Pause</button>
             <button class="btn btn-primary btn-sm" onclick="openAddSeq()"><i class="fas fa-plus"></i> Ajouter</button>
-            <button class="btn btn-ghost btn-sm" onclick="printConducteur()"><i class="fas fa-print"></i> Imprimer</button>
+            <button class="btn btn-ghost btn-sm" onclick="printConducteur()"><i class="fas fa-print"></i></button>
           </div>
+        </div>
+        <!-- Delay banner -->
+        <div id="run-delay-banner" style="display:none;background:var(--warning-bg);border:1px solid var(--warning);border-radius:var(--r-sm);padding:8px 14px;margin-bottom:12px;display:none;align-items:center;gap:10px">
+          <i class="fas fa-clock" style="color:var(--warning)"></i>
+          <span style="font-size:12px;font-weight:700;color:var(--warning)">Retard accumulé : <span id="run-delay-val">0 min</span></span>
+          <button class="btn btn-ghost btn-sm" onclick="resetDelay()" style="margin-left:auto">Réinitialiser</button>
         </div>
         <div class="tbl-wrap">
           <div class="run-hdr">
             <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase;text-align:center">LIVE</div>
             <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">HEURE</div>
-            <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">DURÉE</div>
+            <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">DUR.</div>
             <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">SÉQUENCE</div>
             <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">RESP.</div>
-            <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">CUES</div>
+            <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">🔊💡📺</div>
+            <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">DÉLAI</div>
             <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">CHRONO</div>
             <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">STATUT</div>
             <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">ACTIONS</div>
@@ -680,7 +692,8 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
         <div class="sec-hdr">
           <div><div class="sec-title">🏷️ Postes</div><div class="sec-sub">Configurez les rôles de votre équipe</div></div>
           <div class="sec-actions">
-            <select id="postes-sort" style="width:140px" onchange="renderPostes()">
+            <select id="postes-sort" style="width:160px" onchange="renderPostes()">
+              <option value="cat">Grouper par catégorie</option>
               <option value="nom">Trier par nom</option>
               <option value="count">Trier par membres</option>
               <option value="color">Trier par couleur</option>
@@ -700,7 +713,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
             <select id="staff-filter-poste" style="width:130px" onchange="renderStaff()">
               <option value="">Tous les postes</option>
             </select>
-            <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-staff')"><i class="fas fa-plus"></i> Ajouter</button>
+            <button class="btn btn-primary btn-sm" onclick="editingStaffId=-1;clearStaffPhoto();document.getElementById('staff-modal-title').textContent='Ajouter un membre';document.getElementById('staff-save-btn').innerHTML='<i class=\"fas fa-plus\"></i> Ajouter';['st-prenom','st-nom','st-tel','st-notes'].forEach(i=>{const e=document.getElementById(i);if(e)e.value=''});populatePosteSelects();openModal('modal-add-staff')"><i class="fas fa-plus"></i> Ajouter</button>
           </div>
         </div>
         <div id="staff-grid" class="g-auto"></div>
@@ -817,25 +830,71 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
       <!-- ══ BUDGET ══ -->
       <section class="tab" id="tab-budget">
         <div class="sec-hdr">
-          <div><div class="sec-title">💰 Budget</div></div>
+          <div><div class="sec-title">💰 Budget</div><div class="sec-sub">Plan financier complet · HT / TTC · Recettes & Dépenses</div></div>
           <div class="sec-actions">
+            <div class="phase-sel" id="budget-tva-toggle">
+              <button class="phase-btn active" onclick="setBudgetMode('ht',this)">HT</button>
+              <button class="phase-btn" onclick="setBudgetMode('ttc',this)">TTC</button>
+            </div>
+            <select id="budget-tva-rate" style="width:80px" onchange="renderBudget()" title="Taux TVA">
+              <option value="0">TVA 0%</option>
+              <option value="5.5">TVA 5.5%</option>
+              <option value="10">TVA 10%</option>
+              <option value="20" selected>TVA 20%</option>
+            </select>
             <span class="badge b-warning" id="budget-lock-badge"><i class="fas fa-lock"></i> Verrouillé</span>
             <button class="btn btn-ghost btn-sm" onclick="toggleBudget()"><i class="fas fa-lock" id="budget-lock-ico"></i> <span id="budget-lock-lbl">Déverrouiller</span></button>
-            <button class="btn btn-primary btn-sm" id="btn-add-budget" style="display:none" onclick="openModal('modal-add-budget')"><i class="fas fa-plus"></i> Ajouter</button>
+            <button class="btn btn-success btn-sm" id="btn-add-recette" style="display:none" onclick="openBudgetModal('recette')"><i class="fas fa-plus"></i> Recette</button>
+            <button class="btn btn-danger btn-sm" id="btn-add-depense" style="display:none" onclick="openBudgetModal('depense')"><i class="fas fa-plus"></i> Dépense</button>
             <button class="btn btn-ghost btn-sm" onclick="printBudget()"><i class="fas fa-print"></i></button>
           </div>
         </div>
         <div id="budget-locked" class="empty"><i class="fas fa-lock" style="color:var(--warning)"></i><p>Budget verrouillé — Accès Admin uniquement</p><button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="toggleBudget()">Déverrouiller</button></div>
         <div id="budget-open" style="display:none">
-          <div class="g4" style="margin-bottom:16px">
-            <div class="cw"><div class="cw-label">Budget alloué</div><div class="card-value" id="b-alloue">0 €</div></div>
-            <div class="cw"><div class="cw-label">Dépensé</div><div class="card-value" style="color:var(--danger)" id="b-depense">0 €</div></div>
-            <div class="cw"><div class="cw-label">Restant</div><div class="card-value" style="color:var(--success)" id="b-restant">0 €</div></div>
-            <div class="cw"><div class="cw-label">Consommé</div><div class="card-value" id="b-pct">0%</div><div class="prog"><div class="prog-fill" id="b-bar" style="width:0%;background:var(--success)"></div></div></div>
+
+          <!-- KPIs row -->
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px" id="budget-kpis">
+            <div class="cw"><div class="cw-label">💚 Recettes HT</div><div class="card-value" style="color:var(--success)" id="b-recettes">0 €</div><div style="font-size:10px;color:var(--tx3);margin-top:3px" id="b-recettes-ttc">TTC —</div></div>
+            <div class="cw"><div class="cw-label">🔴 Dépenses HT</div><div class="card-value" style="color:var(--danger)" id="b-depenses">0 €</div><div style="font-size:10px;color:var(--tx3);margin-top:3px" id="b-depenses-ttc">TTC —</div></div>
+            <div class="cw"><div class="cw-label">⚡ Marge brute</div><div class="card-value" id="b-marge">0 €</div><div style="font-size:10px;color:var(--tx3);margin-top:3px" id="b-marge-pct">0%</div></div>
+            <div class="cw"><div class="cw-label">💸 TVA collectée</div><div class="card-value" id="b-tva-col" style="color:var(--info)">0 €</div><div style="font-size:10px;color:var(--tx3);margin-top:3px" id="b-tva-rate-lbl">Taux 20%</div></div>
+            <div class="cw"><div class="cw-label">📊 Réalisé</div><div class="card-value" id="b-pct">0%</div><div class="prog" style="margin-top:8px"><div class="prog-fill" id="b-bar" style="width:0%;background:var(--success)"></div></div></div>
           </div>
-          <div class="tbl-wrap">
-            <table><thead><tr><th>Catégorie</th><th>Description</th><th>Fournisseur</th><th>Prévu</th><th>Réel</th><th>Écart</th><th>Statut</th><th>Date</th><th>Note</th><th>Actions</th></tr></thead>
-            <tbody id="budget-body"></tbody></table>
+
+          <!-- Recettes -->
+          <div style="margin-bottom:20px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:10px;height:10px;border-radius:50%;background:var(--success)"></div>
+                <span style="font-size:13px;font-weight:800;color:var(--tx)">RECETTES</span>
+                <span class="badge b-success" id="b-recettes-count">0 ligne</span>
+              </div>
+              <span style="font-family:var(--mono);font-size:14px;font-weight:700;color:var(--success)" id="b-recettes-total">0 €</span>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead><tr><th>Catégorie</th><th>Description</th><th>Client/Source</th><th>Prévu HT</th><th>Réel HT</th><th>TVA</th><th>TTC</th><th>Écart</th><th>Statut</th><th></th></tr></thead>
+                <tbody id="budget-body-recettes"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Dépenses -->
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:10px;height:10px;border-radius:50%;background:var(--danger)"></div>
+                <span style="font-size:13px;font-weight:800;color:var(--tx)">DÉPENSES</span>
+                <span class="badge b-danger" id="b-depenses-count">0 ligne</span>
+              </div>
+              <span style="font-family:var(--mono);font-size:14px;font-weight:700;color:var(--danger)" id="b-depenses-total">0 €</span>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead><tr><th>Catégorie</th><th>Description</th><th>Fournisseur</th><th>Prévu HT</th><th>Réel HT</th><th>TVA</th><th>TTC</th><th>Écart</th><th>Statut</th><th></th></tr></thead>
+                <tbody id="budget-body-depenses"></tbody>
+              </table>
+            </div>
           </div>
         </div>
       </section>
@@ -966,12 +1025,10 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 
   <!-- FOOTER -->
   <footer id="ftr">
-    <div style="font-size:10px;color:var(--tx3)">AINTERCOM PRO V2 · <span id="ftr-save">Jamais sauvegardé</span></div>
+    <div style="font-size:10px;color:var(--tx3)">AINTERCOM PRO · <span id="ftr-save">Jamais sauvegardé</span></div>
     <div style="display:flex;gap:6px;align-items:center">
-      <span style="font-size:10px;color:var(--tx3)">Cette interface vous aide ?</span>
-      <button class="btn btn-ghost btn-sm" onclick="toast('Merci ! 👍','s')" style="padding:2px 7px">👍</button>
-      <button class="btn btn-ghost btn-sm" onclick="openModal('modal-feedback')" style="padding:2px 7px">👎</button>
-      <button class="btn btn-ghost btn-sm" onclick="openModal('modal-feedback')"><i class="fas fa-comment" style="font-size:9px"></i> Suggérer</button>
+      <span id="ftr-phase" style="font-size:10px;font-weight:700;color:var(--tx3)"></span>
+      <button class="btn btn-ghost btn-sm" onclick="saveManual()" style="padding:2px 8px;font-size:9px"><i class="fas fa-floppy-disk" style="font-size:9px"></i> Sauver</button>
     </div>
   </footer>
 </div>
@@ -1044,9 +1101,66 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
     <div class="fg"><label>Titre de la séquence</label><input type="text" id="seq-title" placeholder="Ex: Ouverture / Vidéo Intro"></div>
     <div class="fg-row">
       <div class="fg"><label>Responsable</label><select id="seq-resp"><option value="">—</option></select></div>
-      <div class="fg"><label>Cues techniques</label><input type="text" id="seq-cues" placeholder="Ex: Cue 01 L, Mic 1 ON"></div>
+      <div class="fg"><label>Cues textuels</label><input type="text" id="seq-cues" placeholder="Ex: Cue 01 L, Mic 1 ON"></div>
     </div>
-    <div class="fg"><label>Script Speaker</label><textarea id="seq-script" rows="5" placeholder="Texte complet pour le speaker..."></textarea></div>
+
+    <!-- BLOC TECHNIQUE -->
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:12px">
+      <div style="font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">🎚️ Contrôles Techniques</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+        <!-- SON -->
+        <div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+            <span style="font-size:13px">🔊</span>
+            <span style="font-size:11px;font-weight:700;color:var(--tx)">Son</span>
+            <label style="margin-left:auto;margin-bottom:0;display:flex;align-items:center;gap:4px;cursor:pointer;text-transform:none;letter-spacing:0;font-size:11px">
+              <input type="checkbox" id="seq-son-on" style="width:14px;height:14px;accent-color:var(--accent)"> Actif
+            </label>
+          </div>
+          <div class="fg" style="margin-bottom:6px"><label style="font-size:9px">Source</label><input type="text" id="seq-son-src" placeholder="Ex: Spotify, Lecture, Live"></div>
+          <div class="fg" style="margin-bottom:6px"><label style="font-size:9px">Niveau</label><input type="text" id="seq-son-niv" placeholder="Ex: -6dB, 80%"></div>
+          <div class="fg" style="margin-bottom:0"><label style="font-size:9px">Fade in (s)</label><input type="number" id="seq-son-fade" placeholder="0" min="0" style="width:100%"></div>
+        </div>
+        <!-- LUMIÈRE -->
+        <div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+            <span style="font-size:13px">💡</span>
+            <span style="font-size:11px;font-weight:700;color:var(--tx)">Lumière</span>
+            <label style="margin-left:auto;margin-bottom:0;display:flex;align-items:center;gap:4px;cursor:pointer;text-transform:none;letter-spacing:0;font-size:11px">
+              <input type="checkbox" id="seq-lum-on" style="width:14px;height:14px;accent-color:var(--accent)"> Actif
+            </label>
+          </div>
+          <div class="fg" style="margin-bottom:6px"><label style="font-size:9px">Scène</label><input type="text" id="seq-lum-scene" placeholder="Ex: Scène 12, Full Color"></div>
+          <div class="fg" style="margin-bottom:6px"><label style="font-size:9px">Intensité</label><input type="text" id="seq-lum-int" placeholder="Ex: 100%, Demi"></div>
+          <div class="fg" style="margin-bottom:0"><label style="font-size:9px">Fade (s)</label><input type="number" id="seq-lum-fade" placeholder="0" min="0" style="width:100%"></div>
+        </div>
+        <!-- VIDÉO -->
+        <div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+            <span style="font-size:13px">📺</span>
+            <span style="font-size:11px;font-weight:700;color:var(--tx)">Vidéo</span>
+            <label style="margin-left:auto;margin-bottom:0;display:flex;align-items:center;gap:4px;cursor:pointer;text-transform:none;letter-spacing:0;font-size:11px">
+              <input type="checkbox" id="seq-vid-on" style="width:14px;height:14px;accent-color:var(--accent)"> Actif
+            </label>
+          </div>
+          <div class="fg" style="margin-bottom:6px"><label style="font-size:9px">Contenu</label><input type="text" id="seq-vid-src" placeholder="Ex: Vidéo intro, Live cam"></div>
+          <div class="fg" style="margin-bottom:6px"><label style="font-size:9px">Écran</label><input type="text" id="seq-vid-ecran" placeholder="Ex: Écran principal, LED"></div>
+          <div class="fg" style="margin-bottom:0"><label style="font-size:9px">Transition (s)</label><input type="number" id="seq-vid-trans" placeholder="0" min="0" style="width:100%"></div>
+        </div>
+      </div>
+      <!-- AUTO-TRIGGER + DÉLAI -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:8px">
+          <label style="margin-bottom:0;display:flex;align-items:center;gap:6px;cursor:pointer;text-transform:none;letter-spacing:0;font-size:12px;font-weight:600">
+            <input type="checkbox" id="seq-autotrig" style="width:15px;height:15px;accent-color:var(--success)">
+            <i class="fas fa-bolt" style="color:var(--warning);font-size:11px"></i> Auto-trigger après séquence précédente
+          </label>
+        </div>
+        <div class="fg" style="margin-bottom:0"><label style="font-size:9px">Délai de démarrage (s)</label><input type="number" id="seq-delay" placeholder="0" min="0" value="0"></div>
+      </div>
+    </div>
+
+    <div class="fg"><label>Script Speaker</label><textarea id="seq-script" rows="4" placeholder="Texte complet pour le speaker..."></textarea></div>
     <div class="fg"><label>Notes internes</label><input type="text" id="seq-note" placeholder="Optionnel"></div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-seq')">Annuler</button>
@@ -1087,32 +1201,37 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
   <div class="modal">
     <div class="modal-hdr"><div class="modal-title" id="poste-modal-title">Nouveau poste</div><button class="modal-close" onclick="closeModal('modal-add-poste')">✕</button></div>
     <div class="fg"><label>Nom du poste</label><input type="text" id="poste-nom" placeholder="Ex: Sécurité, Artiste, Staff..."></div>
-    <div class="fg"><label>Couleur</label>
-      <div style="display:flex;gap:8px;flex-wrap:wrap" id="poste-colors">
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#DC2626')"><input type="radio" name="pcolor" value="#DC2626" checked style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#DC2626;display:inline-block;border:2px solid transparent"></span>Rouge</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#2563EB')"><input type="radio" name="pcolor" value="#2563EB" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#2563EB;display:inline-block;border:2px solid transparent"></span>Bleu</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#16A34A')"><input type="radio" name="pcolor" value="#16A34A" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#16A34A;display:inline-block;border:2px solid transparent"></span>Vert</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#D97706')"><input type="radio" name="pcolor" value="#D97706" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#D97706;display:inline-block;border:2px solid transparent"></span>Orange</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#7C3AED')"><input type="radio" name="pcolor" value="#7C3AED" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#7C3AED;display:inline-block;border:2px solid transparent"></span>Violet</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#0891B2')"><input type="radio" name="pcolor" value="#0891B2" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#0891B2;display:inline-block;border:2px solid transparent"></span>Cyan</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#475569')"><input type="radio" name="pcolor" value="#475569" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#475569;display:inline-block;border:2px solid transparent"></span>Gris</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#F59E0B')"><input type="radio" name="pcolor" value="#F59E0B" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#F59E0B;display:inline-block;border:2px solid transparent"></span>Ambre</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#EC4899')"><input type="radio" name="pcolor" value="#EC4899" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#EC4899;display:inline-block;border:2px solid transparent"></span>Rose</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#10B981')"><input type="radio" name="pcolor" value="#10B981" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#10B981;display:inline-block;border:2px solid transparent"></span>Émeraude</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#8B5CF6')"><input type="radio" name="pcolor" value="#8B5CF6" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#8B5CF6;display:inline-block;border:2px solid transparent"></span>Violet clair</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#0EA5E9')"><input type="radio" name="pcolor" value="#0EA5E9" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#0EA5E9;display:inline-block;border:2px solid transparent"></span>Ciel</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#84CC16')"><input type="radio" name="pcolor" value="#84CC16" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#84CC16;display:inline-block;border:2px solid transparent"></span>Citron vert</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#F97316')"><input type="radio" name="pcolor" value="#F97316" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#F97316;display:inline-block;border:2px solid transparent"></span>Orange vif</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#EF4444')"><input type="radio" name="pcolor" value="#EF4444" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#EF4444;display:inline-block;border:2px solid transparent"></span>Rouge vif</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#6366F1')"><input type="radio" name="pcolor" value="#6366F1" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#6366F1;display:inline-block;border:2px solid transparent"></span>Indigo</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#14B8A6')"><input type="radio" name="pcolor" value="#14B8A6" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#14B8A6;display:inline-block;border:2px solid transparent"></span>Turquoise</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#A855F7')"><input type="radio" name="pcolor" value="#A855F7" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#A855F7;display:inline-block;border:2px solid transparent"></span>Pourpre</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#EAB308')"><input type="radio" name="pcolor" value="#EAB308" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#EAB308;display:inline-block;border:2px solid transparent"></span>Jaune</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#64748B')"><input type="radio" name="pcolor" value="#64748B" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#64748B;display:inline-block;border:2px solid transparent"></span>Gris foncé</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#F43F5E')"><input type="radio" name="pcolor" value="#F43F5E" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#F43F5E;display:inline-block;border:2px solid transparent"></span>Rose vif</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#06B6D4')"><input type="radio" name="pcolor" value="#06B6D4" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#06B6D4;display:inline-block;border:2px solid transparent"></span>Cyan vif</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#8B4513')"><input type="radio" name="pcolor" value="#8B4513" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#8B4513;display:inline-block;border:2px solid transparent"></span>Marron</label>
-        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#000000')"><input type="radio" name="pcolor" value="#000000" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#000000;display:inline-block;border:2px solid transparent"></span>Noir</label>
+    <div class="fg"><label>Catégorie</label>
+      <select id="poste-cat" onchange="selectedPosteCategory=this.value">
+        <option>Sécurité</option><option>Technique</option><option>Son</option><option>Lumière</option><option>Vidéo</option><option>Staff</option><option>Accueil</option><option>Artiste</option><option>Management</option><option>Logistique</option><option>Restauration</option><option>Médical</option><option>Presse</option><option>Bénévole</option><option selected>Autre</option>
+      </select>
+    </div>
+    <div class="fg"><label>Couleur — <span id="color-preview-name" style="color:var(--tx2);text-transform:none;letter-spacing:0">Rouge</span></label>
+      <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:6px;padding:8px;background:var(--bg3);border-radius:var(--r-sm);border:1px solid var(--border)" id="poste-colors">
+        <span onclick="selectPosteColor(this,'#DC2626')" title="Rouge" style="width:28px;height:28px;border-radius:7px;background:#DC2626;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Rouge"></span>
+        <span onclick="selectPosteColor(this,'#EF4444')" title="Rouge vif" style="width:28px;height:28px;border-radius:7px;background:#EF4444;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Rouge vif"></span>
+        <span onclick="selectPosteColor(this,'#F43F5E')" title="Rose vif" style="width:28px;height:28px;border-radius:7px;background:#F43F5E;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Rose vif"></span>
+        <span onclick="selectPosteColor(this,'#EC4899')" title="Rose" style="width:28px;height:28px;border-radius:7px;background:#EC4899;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Rose"></span>
+        <span onclick="selectPosteColor(this,'#A855F7')" title="Pourpre" style="width:28px;height:28px;border-radius:7px;background:#A855F7;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Pourpre"></span>
+        <span onclick="selectPosteColor(this,'#8B5CF6')" title="Violet clair" style="width:28px;height:28px;border-radius:7px;background:#8B5CF6;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Violet clair"></span>
+        <span onclick="selectPosteColor(this,'#7C3AED')" title="Violet" style="width:28px;height:28px;border-radius:7px;background:#7C3AED;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Violet"></span>
+        <span onclick="selectPosteColor(this,'#6366F1')" title="Indigo" style="width:28px;height:28px;border-radius:7px;background:#6366F1;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Indigo"></span>
+        <span onclick="selectPosteColor(this,'#2563EB')" title="Bleu" style="width:28px;height:28px;border-radius:7px;background:#2563EB;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Bleu"></span>
+        <span onclick="selectPosteColor(this,'#0EA5E9')" title="Ciel" style="width:28px;height:28px;border-radius:7px;background:#0EA5E9;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Ciel"></span>
+        <span onclick="selectPosteColor(this,'#0891B2')" title="Cyan" style="width:28px;height:28px;border-radius:7px;background:#0891B2;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Cyan"></span>
+        <span onclick="selectPosteColor(this,'#06B6D4')" title="Cyan vif" style="width:28px;height:28px;border-radius:7px;background:#06B6D4;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Cyan vif"></span>
+        <span onclick="selectPosteColor(this,'#14B8A6')" title="Turquoise" style="width:28px;height:28px;border-radius:7px;background:#14B8A6;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Turquoise"></span>
+        <span onclick="selectPosteColor(this,'#10B981')" title="Émeraude" style="width:28px;height:28px;border-radius:7px;background:#10B981;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Émeraude"></span>
+        <span onclick="selectPosteColor(this,'#16A34A')" title="Vert" style="width:28px;height:28px;border-radius:7px;background:#16A34A;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Vert"></span>
+        <span onclick="selectPosteColor(this,'#84CC16')" title="Citron vert" style="width:28px;height:28px;border-radius:7px;background:#84CC16;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Citron vert"></span>
+        <span onclick="selectPosteColor(this,'#EAB308')" title="Jaune" style="width:28px;height:28px;border-radius:7px;background:#EAB308;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Jaune"></span>
+        <span onclick="selectPosteColor(this,'#F59E0B')" title="Ambre" style="width:28px;height:28px;border-radius:7px;background:#F59E0B;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Ambre"></span>
+        <span onclick="selectPosteColor(this,'#F97316')" title="Orange vif" style="width:28px;height:28px;border-radius:7px;background:#F97316;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Orange vif"></span>
+        <span onclick="selectPosteColor(this,'#D97706')" title="Orange" style="width:28px;height:28px;border-radius:7px;background:#D97706;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Orange"></span>
+        <span onclick="selectPosteColor(this,'#8B4513')" title="Marron" style="width:28px;height:28px;border-radius:7px;background:#8B4513;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Marron"></span>
+        <span onclick="selectPosteColor(this,'#64748B')" title="Gris foncé" style="width:28px;height:28px;border-radius:7px;background:#64748B;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Gris foncé"></span>
+        <span onclick="selectPosteColor(this,'#475569')" title="Gris" style="width:28px;height:28px;border-radius:7px;background:#475569;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Gris"></span>
+        <span onclick="selectPosteColor(this,'#000000')" title="Noir" style="width:28px;height:28px;border-radius:7px;background:#000;cursor:pointer;display:block;border:2px solid transparent;transition:.15s" data-name="Noir"></span>
       </div>
     </div>
     <div class="modal-footer">
@@ -1126,15 +1245,29 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 <div class="overlay" id="modal-add-staff">
   <div class="modal modal-lg">
     <div class="modal-hdr"><div class="modal-title" id="staff-modal-title">Ajouter un membre</div><button class="modal-close" onclick="closeModal('modal-add-staff')">✕</button></div>
-    <div class="fg-row">
-      <div class="fg"><label>Prénom</label><input type="text" id="st-prenom" placeholder="Jean"></div>
-      <div class="fg"><label>Nom</label><input type="text" id="st-nom" placeholder="Dupont"></div>
+    <div style="display:flex;gap:16px;align-items:flex-start">
+      <!-- Photo -->
+      <div style="flex-shrink:0">
+        <div id="st-photo-preview" onclick="document.getElementById('st-photo-input').click()" style="width:80px;height:80px;border-radius:12px;background:var(--bg3);border:2px dashed var(--border2);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:var(--tr)" title="Ajouter une photo">
+          <i class="fas fa-camera" style="font-size:20px;color:var(--tx3)"></i>
+          <div style="font-size:9px;color:var(--tx3);margin-top:4px">Photo</div>
+        </div>
+        <input type="file" id="st-photo-input" accept="image/*" capture="environment" style="display:none" onchange="previewStaffPhoto(this)">
+        <button class="btn btn-ghost btn-sm" style="width:80px;margin-top:4px;font-size:9px" onclick="clearStaffPhoto()">Supprimer</button>
+      </div>
+      <!-- Fields -->
+      <div style="flex:1;min-width:0">
+        <div class="fg-row">
+          <div class="fg"><label>Prénom</label><input type="text" id="st-prenom" placeholder="Jean"></div>
+          <div class="fg"><label>Nom</label><input type="text" id="st-nom" placeholder="Dupont"></div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Poste</label><select id="st-poste"><option value="">— Choisir un poste —</option></select></div>
+          <div class="fg"><label>Téléphone</label><input type="tel" id="st-tel" placeholder="+33 6 00 00 00 00"></div>
+        </div>
+        <div class="fg"><label>Notes</label><input type="text" id="st-notes" placeholder="Optionnel"></div>
+      </div>
     </div>
-    <div class="fg-row">
-      <div class="fg"><label>Poste</label><select id="st-poste"><option value="">— Choisir un poste —</option></select></div>
-      <div class="fg"><label>Téléphone</label><input type="tel" id="st-tel" placeholder="+33 6 00 00 00 00"></div>
-    </div>
-    <div class="fg"><label>Notes</label><input type="text" id="st-notes" placeholder="Optionnel"></div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-add-staff')">Annuler</button>
       <button class="btn btn-primary" id="staff-save-btn" onclick="saveStaff()"><i class="fas fa-plus"></i> Ajouter</button>
@@ -1204,16 +1337,64 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 <!-- ADD BUDGET -->
 <div class="overlay" id="modal-add-budget">
   <div class="modal modal-lg">
-    <div class="modal-hdr"><div class="modal-title" id="budget-modal-title">Ajouter une ligne budget</div><button class="modal-close" onclick="closeModal('modal-add-budget')">✕</button></div>
-    <div class="fg-row">
-      <div class="fg"><label>Catégorie</label><select id="b-cat"><option>Matos</option><option>Crew</option><option>Lieu</option><option>Traiteur</option><option>Communication</option><option>Imprévus</option></select></div>
-      <div class="fg"><label>Statut</label><select id="b-statut"><option>Devis</option><option>Commandé</option><option>Facturé</option><option>Payé</option></select></div>
+    <div class="modal-hdr">
+      <div>
+        <div class="modal-title" id="budget-modal-title">Ajouter une ligne</div>
+        <div id="b-type-badge" style="margin-top:4px"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-add-budget')">✕</button>
     </div>
-    <div class="fg"><label>Description</label><input type="text" id="b-desc" placeholder="Ex: Location sono"></div>
-    <div class="fg"><label>Fournisseur</label><input type="text" id="b-fourn" placeholder="Ex: Sono Pro Lyon"></div>
+    <input type="hidden" id="b-type" value="depense">
     <div class="fg-row">
-      <div class="fg"><label>Montant prévu (€)</label><input type="number" id="b-prevu" placeholder="0"></div>
-      <div class="fg"><label>Montant réel (€)</label><input type="number" id="b-reel" placeholder="0"></div>
+      <div class="fg"><label>Catégorie</label>
+        <select id="b-cat">
+          <optgroup label="— Recettes —">
+            <option value="Billetterie">Billetterie</option>
+            <option value="Subvention">Subvention</option>
+            <option value="Partenariat">Partenariat</option>
+            <option value="Sponsoring">Sponsoring</option>
+            <option value="Bar / Restauration">Bar / Restauration</option>
+            <option value="Merchandising">Merchandising</option>
+            <option value="Autres recettes">Autres recettes</option>
+          </optgroup>
+          <optgroup label="— Dépenses —">
+            <option value="Lieu / Salle">Lieu / Salle</option>
+            <option value="Son / Audio">Son / Audio</option>
+            <option value="Lumière">Lumière</option>
+            <option value="Vidéo / Écrans">Vidéo / Écrans</option>
+            <option value="Matos / Location">Matos / Location</option>
+            <option value="Crew / Staff">Crew / Staff</option>
+            <option value="Artistes / Cachets">Artistes / Cachets</option>
+            <option value="Traiteur">Traiteur</option>
+            <option value="Transport / Logistique">Transport / Logistique</option>
+            <option value="Communication / Print">Communication / Print</option>
+            <option value="Assurances">Assurances</option>
+            <option value="Sécurité">Sécurité</option>
+            <option value="Droits / SACEM">Droits / SACEM</option>
+            <option value="Imprévus">Imprévus</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="fg"><label>Statut</label>
+        <select id="b-statut">
+          <option>Estimé</option><option>Devis reçu</option><option>Commandé</option><option>Facturé</option><option>Payé</option><option>Annulé</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg"><label>Description</label><input type="text" id="b-desc" placeholder="Ex: Location sono principale"></div>
+    <div class="fg"><label id="b-fourn-label">Fournisseur / Source</label><input type="text" id="b-fourn" placeholder="Ex: Sono Pro Lyon"></div>
+    <div class="fg-row">
+      <div class="fg"><label>Montant prévu HT (€)</label><input type="number" id="b-prevu" placeholder="0" step="0.01" oninput="calcTTC()"></div>
+      <div class="fg"><label>Montant réel HT (€)</label><input type="number" id="b-reel" placeholder="0" step="0.01" oninput="calcTTC()"></div>
+      <div class="fg"><label>Taux TVA (%)</label>
+        <select id="b-tva" onchange="calcTTC()">
+          <option value="0">0%</option><option value="5.5">5.5%</option><option value="10">10%</option><option value="20" selected>20%</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg-row">
+      <div class="fg"><label>Prévu TTC (€) <span style="color:var(--tx3);font-weight:400">(calculé)</span></label><input type="text" id="b-prevu-ttc" readonly style="background:var(--bg4);color:var(--tx2)" placeholder="—"></div>
+      <div class="fg"><label>Réel TTC (€) <span style="color:var(--tx3);font-weight:400">(calculé)</span></label><input type="text" id="b-reel-ttc" readonly style="background:var(--bg4);color:var(--tx2)" placeholder="—"></div>
       <div class="fg"><label>Date</label><input type="date" id="b-date"></div>
     </div>
     <div class="fg"><label>Note</label><input type="text" id="b-note" placeholder="Optionnel"></div>
@@ -1297,6 +1478,7 @@ let S = {
   note: '',
   nextId: 200,
   weatherCache: null,
+  runDelay: 0,
 };
 
 // ═══════════════════════════════════════════
@@ -1321,11 +1503,17 @@ function startClock(){
   function tick(){
     const now=new Date();
     const hms=now.toLocaleTimeString('fr-FR');
-    const date=now.toLocaleDateString('fr-FR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}).toUpperCase();
-    ['hdr-clock'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=hms});
-    ['hdr-date'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=date});
-    if(S.globalTimer.running){S.globalTimer.elapsed++;document.getElementById('cw-global-timer').textContent=fmtTime(S.globalTimer.elapsed)}
-    S.sequences.forEach((s,i)=>{if(s.active){s.elapsed++;const el=document.getElementById('seq-chrono-'+i);if(el)el.textContent=fmtSec(s.elapsed);document.getElementById('cw-now-timer').textContent=fmtSec(s.elapsed)}});
+    const dateShort=now.toLocaleDateString('fr-FR',{weekday:'short',day:'2-digit',month:'short',year:'numeric'}).toUpperCase();
+    const dateLong=now.toLocaleDateString('fr-FR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}).toUpperCase();
+    // Header
+    const hdrClock=document.getElementById('hdr-clock');if(hdrClock)hdrClock.textContent=hms;
+    const hdrDate=document.getElementById('hdr-date');if(hdrDate)hdrDate.textContent=dateShort;
+    // Cockpit
+    const cpClock=document.getElementById('cockpit-clock');if(cpClock)cpClock.textContent=hms;
+    const cpDate=document.getElementById('cockpit-date');if(cpDate)cpDate.textContent=dateLong;
+    // Timers
+    if(S.globalTimer.running){S.globalTimer.elapsed++;const gt=document.getElementById('cw-global-timer');if(gt)gt.textContent=fmtTime(S.globalTimer.elapsed)}
+    S.sequences.forEach((s,i)=>{if(s.active&&!s.paused){s.elapsed++;const el=document.getElementById('seq-chrono-'+i);if(el)el.textContent=fmtSec(s.elapsed);const ct=document.getElementById('cw-now-timer');if(ct)ct.textContent=fmtSec(s.elapsed)}});
   }
   tick();
   setInterval(tick,1000);
@@ -1507,11 +1695,13 @@ function renderAll(){
   renderBudget();
   renderIncidents();
   renderElec();
-  renderSignHistory();
+  if(document.getElementById('sign-history-list'))renderSignHistory();
   updateMatosStats();
   updateCockpit();
   populatePosteSelects();
   populateAllStaffSelects();
+  // Init phase badge
+  setRunPhase(S.runPhase||'show', document.getElementById(S.runPhase==='montage'?'rp-mont':S.runPhase==='demo'?'rp-demo':'rp-show'));
 }
 
 // ═══════════════════════════════════════════
@@ -1527,34 +1717,44 @@ function toggleTheme(){
 // ═══════════════════════════════════════════
 // TABS
 // ═══════════════════════════════════════════
+function toggleNav(){
+  const n=document.getElementById('nav');
+  const o=document.getElementById('nav-overlay');
+  n.classList.toggle('open');
+  o.classList.toggle('open');
+}
 function switchTab(id,btn){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   const tab=document.getElementById('tab-'+id);
   if(tab)tab.classList.add('active');
   if(btn)btn.classList.add('active');
+  // Ferme nav mobile
+  if(window.innerWidth<=768){const n=document.getElementById('nav');const o=document.getElementById('nav-overlay');if(n&&n.classList.contains('open')){n.classList.remove('open');if(o)o.classList.remove('open');}}
+  // Si retour cockpit → sync météo cockpit
+  if(id==='cockpit'){const cwCity=document.getElementById('cw-meteo-city');const mCity=document.getElementById('meteo-city');if(cwCity&&mCity&&mCity.value)cwCity.value=mCity.value;}
 }
 function navBtnByTab(id){return document.querySelector('.nav-btn[onclick*="\''+id+'\'"]');}
 
 // ═══════════════════════════════════════════
 // PHASE
 // ═══════════════════════════════════════════
-function setPhase(p,btn){
+function setPhase(p){
   S.phase=p;
-  document.querySelectorAll('#nav .phase-btn').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
   const labels={montage:'MONTAGE',show:'SHOW',demo:'DÉMONTAGE'};
-  const hdrPhase=document.getElementById('hdr-phase');
-  hdrPhase.textContent=labels[p];
-  hdrPhase.className='hdr-phase '+p;
   addActivity('Phase: '+labels[p],'i');
   saveStorage();
 }
 function setRunPhase(p,btn){
   S.runPhase=p;
+  // Sync conducteur selector
   document.querySelectorAll('#tab-conducteur .phase-btn').forEach(b=>b.classList.remove('active'));
+  const cBtn=document.getElementById(p==='montage'?'rp-mont':p==='show'?'rp-show':'rp-demo');
+  if(cBtn)cBtn.classList.add('active');
+
   if(btn)btn.classList.add('active');
   renderRun();
+  saveStorage();
 }
 
 // ═══════════════════════════════════════════
@@ -1574,15 +1774,32 @@ function updateCockpit(){
   const nb=document.getElementById('nav-inc-badge');
   nb.style.display=activeInc>0?'inline':'none';
   nb.textContent=activeInc;
-  // Crew
-  const enPoste=S.crew.filter(c=>c.statut==='En poste').length;
+  // Staff count
+  const enPoste=(S.staff||[]).length;
   document.getElementById('cw-crew').textContent=enPoste;
-  document.getElementById('cw-crew-total').textContent='/ '+S.crew.length+' total';
+  document.getElementById('cw-crew-total').textContent=enPoste>0?(S.postes||[]).map(p=>{const c=(S.staff||[]).filter(s=>s.posteId===p.id).length;return c>0?c+' '+p.nom:'';}).filter(Boolean).slice(0,2).join(' · '):'membres';
   // Budget
   if(S.budgetUnlocked){
-    const dep=S.budget.lignes.reduce((a,l)=>a+(l.reel||0),0);
-    document.getElementById('cw-budget').textContent=(S.budget.alloue-dep).toLocaleString('fr-FR')+' €';
-    document.getElementById('cw-budget-sub').textContent=Math.round((dep/S.budget.alloue)*100||0)+'% consommé';
+    const lignes=S.budget.lignes||[];
+    const rec=lignes.filter(l=>l.type==='recette').reduce((a,l)=>a+(l.reel||l.prevu||0),0);
+    const dep=lignes.filter(l=>l.type!=='recette').reduce((a,l)=>a+(l.reel||l.prevu||0),0);
+    const marge=rec-dep;
+    document.getElementById('cw-budget').textContent=(marge>=0?'+':'')+marge.toLocaleString('fr-FR')+' €';
+    document.getElementById('cw-budget').style.color=marge>=0?'var(--success)':'var(--danger)';
+    document.getElementById('cw-budget-sub').textContent='Rec: '+rec.toLocaleString('fr-FR')+' · Dép: '+dep.toLocaleString('fr-FR');
+  }
+  // Event name in banner
+  const evName=document.getElementById('cockpit-event-name');
+  if(evName){const ev=S.events.find(e=>e.id===S.currentEventId);evName.textContent=ev?ev.nom:'— Événement —';}
+  // Matos list in cockpit
+  const cwMatos=document.getElementById('cw-matos-list');
+  if(cwMatos){
+    const assigned=[
+      ...S.motorola.filter(m=>m.assigneA).map(m=>`<div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0"><span>📻 Talkie #${m.id} CH${m.canal}</span><span style="color:var(--tx2);font-weight:600">${m.assigneA}</span></div>`),
+      ...S.hollyland.filter(h=>h.assigneA).map(h=>`<div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0"><span>🎧 ${h.label}</span><span style="color:var(--tx2);font-weight:600">${h.assigneA}</span></div>`),
+      S.megaphone.assigneA?`<div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0"><span>📢 Mégaphone</span><span style="color:var(--tx2);font-weight:600">${S.megaphone.assigneA}</span></div>`:null
+    ].filter(Boolean);
+    cwMatos.innerHTML=assigned.length?assigned.join(''):'<div style="font-size:11px;color:var(--tx3);font-style:italic">Aucun matos assigné</div>';
   }
   // Live sequence
   const live=S.sequences.find(s=>s.active);
@@ -1603,60 +1820,23 @@ function updateCockpit(){
     document.getElementById('live-dot-label').style.color='var(--tx3)';
   }
   
-  // Mettre à jour les détails de l'événement
   updateEventDetails();
+
 }
 
-// Fonction pour basculer l'affichage des détails de l'événement
-function toggleEventDetails() {
-  const detailsEl = document.getElementById('cockpit-event-details');
-  const btn = document.getElementById('toggle-event-details-btn');
-  const isVisible = detailsEl.style.display === 'block';
-  
-  if (isVisible) {
-    detailsEl.style.display = 'none';
-    btn.innerHTML = '<i class="fas fa-chevron-down"></i> Détails';
-  } else {
-    detailsEl.style.display = 'block';
-    btn.innerHTML = '<i class="fas fa-chevron-up"></i> Détails';
-    updateEventDetails();
-  }
-}
-
-// Mettre à jour les détails de l'événement
+// updateEventDetails — bannière cockpit
 function updateEventDetails() {
   const ev = S.events.find(e => e.id === S.currentEventId);
   if (!ev) return;
-  
-  // Type d'événement
-  const typeEl = document.getElementById('cockpit-event-type');
-  if (typeEl) {
-    typeEl.textContent = ev.type || '—';
-  }
-  
-  // Date
-  const dateEl = document.getElementById('cockpit-event-date');
-  if (dateEl) {
-    if (ev.date) {
-      const date = new Date(ev.date + 'T12:00');
-      dateEl.textContent = date.toLocaleDateString('fr-FR', { weekday: 'short', day: '2-digit', month: 'short' });
-    } else {
-      dateEl.textContent = '—';
-    }
-  }
-  
-  // Lieu
-  const locationEl = document.getElementById('cockpit-event-location');
-  if (locationEl) {
-    locationEl.textContent = ev.lieu ? (ev.lieu.length > 20 ? ev.lieu.substring(0, 20) + '...' : ev.lieu) : '—';
-  }
-  
-  // Capacité
-  const capacityEl = document.getElementById('cockpit-event-capacity');
-  if (capacityEl) {
-    capacityEl.textContent = ev.jauge ? `${ev.jauge} pers.` : '—';
-  }
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  set('cockpit-event-type', ev.type||'—');
+  set('cockpit-event-date', ev.date?new Date(ev.date+'T12:00').toLocaleDateString('fr-FR',{weekday:'short',day:'2-digit',month:'short',year:'2-digit'}):'—');
+  set('cockpit-event-location', ev.lieu?(ev.lieu.length>22?ev.lieu.slice(0,22)+'…':ev.lieu):'—');
+  set('cockpit-event-capacity', ev.jauge?ev.jauge+' pers.':'—');
+  const nameEl=document.getElementById('cockpit-event-name');
+  if(nameEl)nameEl.textContent=ev.nom||'— Événement —';
 }
+function toggleEventDetails(){} // kept for compat
 
 // ═══════════════════════════════════════════
 // CONDUCTEUR / RUN
@@ -1668,28 +1848,46 @@ function renderRun(){
     body.innerHTML=`<div class="empty"><i class="fas fa-film"></i><p>Aucune séquence pour cette phase — Cliquez sur Ajouter</p></div>`;
     return;
   }
+  // Delay tracking
+  let totalDelay=S.runDelay||0;
+  const delayBanner=document.getElementById('run-delay-banner');
+  if(delayBanner){
+    delayBanner.style.display=totalDelay>0?'flex':'none';
+    const dv=document.getElementById('run-delay-val');
+    if(dv)dv.textContent=totalDelay+'s';
+  }
   body.innerHTML=filtered.map(s=>{
     const ri=S.sequences.indexOf(s);
-    const cueIcons=`<span style="cursor:pointer;opacity:${s.cueSon?1:.25};font-size:13px" onclick="toggleCue(${ri},'son')" title="Son">🔊</span><span style="cursor:pointer;opacity:${s.cueLum?1:.25};font-size:13px" onclick="toggleCue(${ri},'lum')" title="Lumière">💡</span><span style="cursor:pointer;opacity:${s.cueVid?1:.25};font-size:13px" onclick="toggleCue(${ri},'vid')" title="Vidéo">📺</span>`;
+    const sonOk=s.sonOn;const lumOk=s.lumOn;const vidOk=s.vidOn;
+    const techIcons=`<span title="${sonOk?'Son: '+(s.sonSrc||'ON'):'Son OFF'}" style="cursor:pointer;font-size:13px;opacity:${sonOk?1:.2};filter:${sonOk?'none':'grayscale(1)'}" onclick="toggleCue(${ri},'son')">🔊</span><span title="${lumOk?'Lumière: '+(s.lumScene||'ON'):'Lumière OFF'}" style="cursor:pointer;font-size:13px;opacity:${lumOk?1:.2};filter:${lumOk?'none':'grayscale(1)'}" onclick="toggleCue(${ri},'lum')">💡</span><span title="${vidOk?'Vidéo: '+(s.vidSrc||'ON'):'Vidéo OFF'}" style="cursor:pointer;font-size:13px;opacity:${vidOk?1:.2};filter:${vidOk?'none':'grayscale(1)'}" onclick="toggleCue(${ri},'vid')">📺</span>`;
+    const delayS=s.delay||0;
+    const delayDisp=delayS>0?`<span style="font-family:var(--mono);font-size:11px;color:var(--warning);font-weight:700">+${delayS}s</span>`:`<span style="font-size:11px;color:var(--tx3)">—</span>`;
+    const isPaused=s.paused;
     return `<div class="run-row ${s.active?'live-row':''} ${s.done?'done-row':''}">
       <div style="display:flex;justify-content:center">
         <button onclick="toggleLive(${ri})" style="width:34px;height:34px;border-radius:7px;background:${s.active?'var(--danger)':'var(--accent)'};color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;transition:var(--tr)">
           <i class="fas ${s.active?'fa-stop':'fa-play'}" style="${!s.active?'margin-left:2px':''}"></i>
         </button>
       </div>
-      <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent)">${s.time}</div>
-      <div style="font-size:11px;color:var(--tx2)">${s.dur}min</div>
+      <div>
+        <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent)">${s.time}</div>
+        ${s.autoTrig?'<div style="font-size:9px;color:var(--warning)"><i class="fas fa-bolt"></i> auto</div>':''}
+      </div>
+      <div style="font-size:11px;color:var(--tx2)">${s.dur}m</div>
       <div onclick="openSeqDetail(${ri})" style="cursor:pointer">
         <div style="font-size:13px;font-weight:700">${s.title}</div>
         ${s.cues?`<div style="font-size:10px;color:var(--tx3)">${s.cues}</div>`:''}
       </div>
       <div style="font-size:11px;color:var(--tx2)">${s.resp||'—'}</div>
-      <div style="display:flex;gap:4px">${cueIcons}</div>
-      <div style="font-family:var(--mono);font-size:14px;font-weight:700" id="seq-chrono-${ri}">${fmtSec(s.elapsed)}</div>
-      <div>${s.active?'<span class="badge b-danger">LIVE</span>':s.done?'<span class="badge b-success">DONE</span>':'<span class="badge b-neutral">WAIT</span>'}</div>
-      <div style="display:flex;gap:3px">
+      <div style="display:flex;gap:3px;align-items:center">${techIcons}</div>
+      <div>${delayDisp}</div>
+      <div style="font-family:var(--mono);font-size:14px;font-weight:700;color:${isPaused?'var(--warning)':'var(--tx)'}" id="seq-chrono-${ri}">${fmtSec(s.elapsed)}${isPaused?' ⏸':''}</div>
+      <div>${s.active?`<span class="badge b-danger">LIVE${isPaused?' ⏸':''}</span>`:s.done?'<span class="badge b-success">DONE</span>':'<span class="badge b-neutral">WAIT</span>'}</div>
+      <div style="display:flex;gap:2px">
         <button onclick="openSeqDetail(${ri})" class="btn btn-ghost btn-sm btn-icon" title="Détail"><i class="fas fa-expand" style="font-size:10px"></i></button>
-        <button onclick="markDone(${ri})" class="btn btn-ghost btn-sm btn-icon" title="Marquer DONE"><i class="fas fa-check" style="font-size:10px;color:var(--success)"></i></button>
+        ${s.active?`<button onclick="pauseSeq(${ri})" class="btn btn-ghost btn-sm btn-icon" title="${isPaused?'Reprendre':'Pause'}"><i class="fas ${isPaused?'fa-play':'fa-pause'}" style="font-size:10px;color:var(--warning)"></i></button>`:''}
+        <button onclick="addDelay(${ri})" class="btn btn-ghost btn-sm btn-icon" title="Ajouter délai"><i class="fas fa-clock" style="font-size:10px;color:var(--tx3)"></i></button>
+        <button onclick="markDone(${ri})" class="btn btn-ghost btn-sm btn-icon" title="DONE"><i class="fas fa-check" style="font-size:10px;color:var(--success)"></i></button>
         <button onclick="editSeq(${ri})" class="btn btn-ghost btn-sm btn-icon" title="Modifier"><i class="fas fa-pen" style="font-size:10px"></i></button>
         <button onclick="deleteSeq(${ri})" class="btn btn-ghost btn-sm btn-icon" title="Supprimer"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
       </div>
@@ -1697,17 +1895,59 @@ function renderRun(){
   }).join('');
 }
 
-function toggleCue(ri,type){const s=S.sequences[ri];if(!s)return;if(type==='son')s.cueSon=!s.cueSon;if(type==='lum')s.cueLum=!s.cueLum;if(type==='vid')s.cueVid=!s.cueVid;renderRun();saveStorage();}
+function toggleCue(ri,type){const s=S.sequences[ri];if(!s)return;if(type==='son')s.sonOn=!s.sonOn;if(type==='lum')s.lumOn=!s.lumOn;if(type==='vid')s.vidOn=!s.vidOn;renderRun();saveStorage();}
 
 function toggleLive(ri){
   const was=S.sequences[ri].active;
-  S.sequences.forEach(s=>s.active=false);
-  if(!was){S.sequences[ri].active=true;addActivity('LIVE: '+S.sequences[ri].title,'s');document.getElementById('hdr-cue-name').textContent=S.sequences[ri].title;}
-  else{document.getElementById('hdr-cue-name').textContent='En attente';}
+  S.sequences.forEach(s=>{s.active=false;s.paused=false;});
+  if(!was){
+    S.sequences[ri].active=true;
+    S.sequences[ri].elapsed=0;
+    addActivity('LIVE: '+S.sequences[ri].title,'s');
+    const hc=document.getElementById('hdr-cue-name');if(hc)hc.textContent=S.sequences[ri].title;
+    const pb=document.getElementById('run-pause-btn');if(pb){pb.style.display='inline-flex';pb.innerHTML='<i class="fas fa-pause"></i> Pause';pb.className='btn btn-ghost btn-sm';}
+    // Auto-trigger: check next seq
+    const filtered=S.sequences.filter(s=>s.phase===S.runPhase);
+    const ni=filtered.findIndex((s,i)=>filtered[i+1]&&filtered[i].id===S.sequences[ri].id);
+    const next=filtered[filtered.findIndex(s=>s.id===S.sequences[ri].id)+1];
+    if(next&&next.autoTrig){const delay=next.delay||0;setTimeout(()=>{const nri=S.sequences.indexOf(next);if(nri>=0)toggleLive(nri);},((S.sequences[ri].dur||0)*60+delay)*1000);toast('Auto-trigger: '+next.title+' dans '+(S.sequences[ri].dur||0)+'min','i');}
+  } else {
+    const hc=document.getElementById('hdr-cue-name');if(hc)hc.textContent='En attente';
+    const pb=document.getElementById('run-pause-btn');if(pb)pb.style.display='none';
+  }
   renderRun();updateCockpit();saveStorage();
 }
 
-function markDone(ri){S.sequences[ri].done=!S.sequences[ri].done;S.sequences[ri].active=false;renderRun();saveStorage();}
+function markDone(ri){S.sequences[ri].done=!S.sequences[ri].done;S.sequences[ri].active=false;S.sequences[ri].paused=false;renderRun();updateCockpit();saveStorage();}
+
+function pauseSeq(ri){
+  const s=S.sequences[ri];if(!s||!s.active)return;
+  s.paused=!s.paused;
+  const btn=document.getElementById('run-pause-btn');
+  if(btn){btn.innerHTML=s.paused?'<i class="fas fa-play"></i> Reprendre':'<i class="fas fa-pause"></i> Pause';btn.className=s.paused?'btn btn-warning btn-sm':'btn btn-ghost btn-sm';}
+  renderRun();toast(s.paused?'⏸ Pause':'▶ Reprise','i');
+}
+
+// Override tick to respect pause
+const _origTick=null;
+
+function toggleRunPause(){
+  const live=S.sequences.find(s=>s.active);
+  if(live){const ri=S.sequences.indexOf(live);pauseSeq(ri);}
+}
+
+function addDelay(ri){
+  const s=S.sequences[ri];if(!s)return;
+  const mins=parseInt(prompt('Ajouter combien de secondes de délai ?','60'))||0;
+  if(mins<=0)return;
+  s.delay=(s.delay||0)+mins;
+  if(!S.runDelay)S.runDelay=0;
+  S.runDelay+=mins;
+  renderRun();saveStorage();toast('+'+mins+'s de délai sur '+s.title,'i');
+  addActivity('Délai +'+mins+'s : '+s.title,'i');
+}
+
+function resetDelay(){S.runDelay=0;S.sequences.forEach(s=>s.delay=0);renderRun();saveStorage();toast('Délais réinitialisés','i');}
 
 function deleteSeq(ri){if(!confirm('Supprimer cette séquence ?'))return;S.sequences.splice(ri,1);renderRun();addActivity('Séquence supprimée','i');saveStorage();toast('Séquence supprimée','i');}
 
@@ -1719,20 +1959,70 @@ function nextTop(){
 }
 
 let editingSeqIdx=-1;
-function openAddSeq(){editingSeqIdx=-1;document.getElementById('seq-modal-title').textContent='Ajouter une Séquence';document.getElementById('seq-save-btn').innerHTML='<i class="fas fa-plus"></i> Ajouter';document.getElementById('seq-time').value='20:00';document.getElementById('seq-dur').value='10';document.getElementById('seq-title').value='';document.getElementById('seq-resp').value='';document.getElementById('seq-cues').value='';document.getElementById('seq-script').value='';document.getElementById('seq-note').value='';document.getElementById('seq-phase').value=S.runPhase;openModal('modal-seq');}
+function openAddSeq(){
+  editingSeqIdx=-1;
+  const g=id=>document.getElementById(id);
+  g('seq-modal-title').textContent='Ajouter une Séquence';
+  g('seq-save-btn').innerHTML='<i class="fas fa-plus"></i> Ajouter';
+  g('seq-time').value='20:00';g('seq-dur').value='10';g('seq-title').value='';
+  g('seq-resp').value='';g('seq-cues').value='';g('seq-script').value='';g('seq-note').value='';
+  g('seq-phase').value=S.runPhase;
+  // Reset tech fields
+  ['seq-son-on','seq-lum-on','seq-vid-on','seq-autotrig'].forEach(id=>{const el=g(id);if(el)el.checked=false;});
+  ['seq-son-src','seq-son-niv','seq-son-fade','seq-lum-scene','seq-lum-int','seq-lum-fade','seq-vid-src','seq-vid-ecran','seq-vid-trans','seq-delay'].forEach(id=>{const el=g(id);if(el)el.value='';});
+  if(g('seq-delay'))g('seq-delay').value='0';
+  openModal('modal-seq');
+}
 
 function editSeq(ri){
   const s=S.sequences[ri];editingSeqIdx=ri;
-  document.getElementById('seq-modal-title').textContent='Modifier la Séquence';
-  document.getElementById('seq-save-btn').innerHTML='<i class="fas fa-floppy-disk"></i> Mettre à jour';
-  document.getElementById('seq-time').value=s.time;document.getElementById('seq-dur').value=s.dur;document.getElementById('seq-title').value=s.title;document.getElementById('seq-resp').value=s.resp||'';document.getElementById('seq-cues').value=s.cues||'';document.getElementById('seq-script').value=s.script||'';document.getElementById('seq-note').value=s.note||'';document.getElementById('seq-phase').value=s.phase;
+  const g=id=>document.getElementById(id);
+  g('seq-modal-title').textContent='Modifier la Séquence';
+  g('seq-save-btn').innerHTML='<i class="fas fa-floppy-disk"></i> Mettre à jour';
+  g('seq-time').value=s.time;g('seq-dur').value=s.dur;g('seq-title').value=s.title;
+  g('seq-resp').value=s.resp||'';g('seq-cues').value=s.cues||'';
+  g('seq-script').value=s.script||'';g('seq-note').value=s.note||'';g('seq-phase').value=s.phase;
+  // Tech fields
+  if(g('seq-son-on'))g('seq-son-on').checked=s.sonOn||false;
+  if(g('seq-son-src'))g('seq-son-src').value=s.sonSrc||'';
+  if(g('seq-son-niv'))g('seq-son-niv').value=s.sonNiv||'';
+  if(g('seq-son-fade'))g('seq-son-fade').value=s.sonFade||0;
+  if(g('seq-lum-on'))g('seq-lum-on').checked=s.lumOn||false;
+  if(g('seq-lum-scene'))g('seq-lum-scene').value=s.lumScene||'';
+  if(g('seq-lum-int'))g('seq-lum-int').value=s.lumInt||'';
+  if(g('seq-lum-fade'))g('seq-lum-fade').value=s.lumFade||0;
+  if(g('seq-vid-on'))g('seq-vid-on').checked=s.vidOn||false;
+  if(g('seq-vid-src'))g('seq-vid-src').value=s.vidSrc||'';
+  if(g('seq-vid-ecran'))g('seq-vid-ecran').value=s.vidEcran||'';
+  if(g('seq-vid-trans'))g('seq-vid-trans').value=s.vidTrans||0;
+  if(g('seq-autotrig'))g('seq-autotrig').checked=s.autoTrig||false;
+  if(g('seq-delay'))g('seq-delay').value=s.delay||0;
   openModal('modal-seq');
 }
 
 function saveSeq(){
-  const data={time:document.getElementById('seq-time').value,dur:parseInt(document.getElementById('seq-dur').value)||10,title:document.getElementById('seq-title').value||'Séquence',resp:document.getElementById('seq-resp').value,cues:document.getElementById('seq-cues').value,script:document.getElementById('seq-script').value,note:document.getElementById('seq-note').value,phase:document.getElementById('seq-phase').value,active:false,done:false,elapsed:0,cueSon:false,cueLum:false,cueVid:false};
+  const g=id=>document.getElementById(id);
+  const data={
+    time:g('seq-time').value, dur:parseInt(g('seq-dur').value)||10,
+    title:g('seq-title').value||'Séquence', resp:g('seq-resp').value,
+    cues:g('seq-cues').value, script:g('seq-script').value,
+    note:g('seq-note').value, phase:g('seq-phase').value,
+    // Tech son
+    sonOn:g('seq-son-on')?.checked||false, sonSrc:g('seq-son-src')?.value||'',
+    sonNiv:g('seq-son-niv')?.value||'', sonFade:parseFloat(g('seq-son-fade')?.value)||0,
+    // Tech lumière
+    lumOn:g('seq-lum-on')?.checked||false, lumScene:g('seq-lum-scene')?.value||'',
+    lumInt:g('seq-lum-int')?.value||'', lumFade:parseFloat(g('seq-lum-fade')?.value)||0,
+    // Tech vidéo
+    vidOn:g('seq-vid-on')?.checked||false, vidSrc:g('seq-vid-src')?.value||'',
+    vidEcran:g('seq-vid-ecran')?.value||'', vidTrans:parseFloat(g('seq-vid-trans')?.value)||0,
+    // Auto-trigger + délai
+    autoTrig:g('seq-autotrig')?.checked||false, delay:parseInt(g('seq-delay')?.value)||0,
+    // Runtime state (preserve if editing)
+    active:false, done:false, elapsed:0, paused:false
+  };
   if(editingSeqIdx===-1){data.id=S.nextId++;S.sequences.push(data);toast('Séquence ajoutée','s');addActivity('Ajout: '+data.title,'i');}
-  else{Object.assign(S.sequences[editingSeqIdx],data);toast('Séquence mise à jour','s');}
+  else{const prev=S.sequences[editingSeqIdx];data.active=prev.active;data.done=prev.done;data.elapsed=prev.elapsed;data.paused=prev.paused;Object.assign(S.sequences[editingSeqIdx],data);toast('Séquence mise à jour','s');}
   closeModal('modal-seq');renderRun();saveStorage();
 }
 
@@ -1761,11 +2051,17 @@ function openPrompter(s){document.getElementById('pt-label').textContent=s.title
 // ═══════════════════════════════════════════
 let editingPosteId = -1;
 let selectedPosteColor = '#DC2626';
+let selectedPosteCategory = 'Autre';
+const POSTE_CATEGORIES = ['Sécurité','Technique','Son','Lumière','Vidéo','Staff','Accueil','Artiste','Management','Logistique','Restauration','Médical','Presse','Bénévole','Autre'];
+const POSTE_CAT_ICONS = {Sécurité:'fa-shield-halved',Technique:'fa-screwdriver-wrench',Son:'fa-volume-high',Lumière:'fa-lightbulb',Vidéo:'fa-video',Staff:'fa-user-tie',Accueil:'fa-hand-wave',Artiste:'fa-star',Management:'fa-briefcase',Logistique:'fa-truck',Restauration:'fa-utensils',Médical:'fa-kit-medical',Presse:'fa-camera',Bénévole:'fa-heart',Autre:'fa-circle'};
 
-function selectPosteColor(label, color) {
+function selectPosteColor(el, color) {
   selectedPosteColor = color;
-  document.querySelectorAll('#poste-colors span').forEach(s => s.style.border = '2px solid transparent');
-  label.querySelector('span').style.border = '2px solid var(--tx)';
+  document.querySelectorAll('#poste-colors span').forEach(s => { s.style.border = '2px solid transparent'; s.style.transform = 'scale(1)'; });
+  el.style.border = '2px solid var(--tx)';
+  el.style.transform = 'scale(1.2)';
+  const nameEl = document.getElementById('color-preview-name');
+  if (nameEl) nameEl.textContent = el.dataset.name || '';
 }
 
 function renderPostes() {
@@ -1774,31 +2070,72 @@ function renderPostes() {
     grid.innerHTML = '<div class="empty"><i class="fas fa-tags"></i><p>Aucun poste — Créez vos premiers postes (Sécurité, Artiste, Staff...)</p></div>';
     return;
   }
-  grid.innerHTML = S.postes.map(p => {
-    const count = (S.staff || []).filter(s => s.posteId === p.id).length;
-    return `<div class="poste-card">
-      <div class="poste-dot" style="background:${p.color}"></div>
-      <div class="poste-nom">${p.nom}</div>
-      <div class="poste-count">${count} membre${count > 1 ? 's' : ''}</div>
-      <div style="display:flex;gap:4px">
-        <button onclick="editPoste(${p.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-pen" style="font-size:10px"></i></button>
-        <button onclick="deletePoste(${p.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
+  const sortVal = document.getElementById('postes-sort')?.value || 'cat';
+  let postes = [...S.postes];
+  if (sortVal === 'nom') postes.sort((a,b)=>a.nom.localeCompare(b.nom));
+  else if (sortVal === 'count') postes.sort((a,b)=>(S.staff||[]).filter(s=>s.posteId===b.id).length-(S.staff||[]).filter(s=>s.posteId===a.id).length);
+  else if (sortVal === 'color') postes.sort((a,b)=>a.color.localeCompare(b.color));
+  else { // cat grouping
+    postes.sort((a,b)=>{const ca=a.cat||'Autre',cb=b.cat||'Autre';const ci=POSTE_CATEGORIES.indexOf(ca),cj=POSTE_CATEGORIES.indexOf(cb);return ci-cj||a.nom.localeCompare(b.nom);});
+  }
+  if (sortVal === 'cat') {
+    // Group by category
+    const groups = {};
+    postes.forEach(p=>{const c=p.cat||'Autre';if(!groups[c])groups[c]=[];groups[c].push(p);});
+    grid.innerHTML = Object.entries(groups).map(([cat, items])=>`
+      <div style="grid-column:1/-1;margin-top:10px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <i class="fas ${POSTE_CAT_ICONS[cat]||'fa-circle'}" style="font-size:12px;color:var(--tx3)"></i>
+          <span style="font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.1em">${cat}</span>
+          <div style="flex:1;height:1px;background:var(--border)"></div>
+          <span style="font-size:10px;color:var(--tx3)">${items.length} poste${items.length>1?'s':''}</span>
+        </div>
       </div>
-    </div>`;
-  }).join('');
+      ${items.map(p=>posteCardHTML(p)).join('')}
+    `).join('');
+  } else {
+    grid.innerHTML = postes.map(p=>posteCardHTML(p)).join('');
+  }
   populatePosteSelects();
+}
+
+function posteCardHTML(p) {
+  const count = (S.staff || []).filter(s => s.posteId === p.id).length;
+  const icon = POSTE_CAT_ICONS[p.cat||'Autre'] || 'fa-circle';
+  const pct = count > 0 ? Math.min(count * 20, 100) : 0;
+  return `<div class="poste-card" style="--pc:${p.color}">
+    <div style="width:44px;height:44px;border-radius:10px;background:${p.color}22;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid ${p.color}55">
+      <i class="fas ${icon}" style="color:${p.color};font-size:18px"></i>
+    </div>
+    <div style="flex:1;min-width:0">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+        <div class="poste-nom">${p.nom}</div>
+        <div style="width:10px;height:10px;border-radius:50%;background:${p.color};flex-shrink:0"></div>
+      </div>
+      <div style="font-size:11px;color:var(--tx3);margin-bottom:6px">${p.cat||'Autre'}</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="flex:1;height:3px;background:var(--bg4);border-radius:3px;overflow:hidden"><div style="width:${Math.min(count*15,100)}%;height:100%;background:${p.color};border-radius:3px;transition:.4s ease"></div></div>
+        <div class="poste-count">${count} membre${count!==1?'s':''}</div>
+      </div>
+    </div>
+    <div class="poste-actions">
+      <button onclick="editPoste(${p.id})" class="btn btn-ghost btn-sm btn-icon" title="Modifier"><i class="fas fa-pen" style="font-size:10px"></i></button>
+      <button onclick="deletePoste(${p.id})" class="btn btn-ghost btn-sm btn-icon" title="Supprimer"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
+    </div>
+  </div>`;
 }
 
 function savePoste() {
   const nom = document.getElementById('poste-nom').value.trim();
   if (!nom) return;
   if (!S.postes) S.postes = [];
+  const cat = document.getElementById('poste-cat')?.value || 'Autre';
   if (editingPosteId === -1) {
-    S.postes.push({ id: S.nextId++, nom, color: selectedPosteColor });
+    S.postes.push({ id: S.nextId++, nom, color: selectedPosteColor, cat });
     toast('Poste créé', 's');
   } else {
     const p = S.postes.find(p => p.id === editingPosteId);
-    if (p) { p.nom = nom; p.color = selectedPosteColor; }
+    if (p) { p.nom = nom; p.color = selectedPosteColor; p.cat = cat; }
     toast('Poste mis à jour', 's');
     editingPosteId = -1;
   }
@@ -1811,12 +2148,20 @@ function editPoste(id) {
   editingPosteId = id;
   document.getElementById('poste-nom').value = p.nom;
   selectedPosteColor = p.color;
-  document.querySelectorAll('#poste-colors span').forEach(s => s.style.border = '2px solid transparent');
-  document.querySelectorAll('#poste-colors input').forEach(inp => {
-    if (inp.value === p.color) { inp.checked = true; inp.closest('label').querySelector('span').style.border = '2px solid var(--tx)'; }
+  document.querySelectorAll('#poste-colors span').forEach(s => { s.style.border = '2px solid transparent'; s.style.transform = 'scale(1)'; });
+  document.querySelectorAll('#poste-colors span').forEach(s => {
+    if (s.style.background === p.color || s.title === (s.dataset.name) || s.getAttribute('onclick')?.includes(p.color)) {
+      const match = document.querySelector('#poste-colors span[onclick*="' + p.color + '"]');
+      if (match) { match.style.border = '2px solid var(--tx)'; match.style.transform = 'scale(1.2)'; }
+    }
   });
+  const matchSwatch = document.querySelector('#poste-colors span[onclick*="' + p.color + '"]');
+  if (matchSwatch) { matchSwatch.style.border = '2px solid var(--tx)'; matchSwatch.style.transform = 'scale(1.2)'; const nameEl = document.getElementById('color-preview-name'); if(nameEl) nameEl.textContent = matchSwatch.dataset.name || ''; }
   document.getElementById('poste-modal-title').textContent = 'Modifier le poste';
   document.getElementById('poste-save-btn').innerHTML = '<i class="fas fa-floppy-disk"></i> Mettre à jour';
+  const catEl = document.getElementById('poste-cat');
+  if (catEl) catEl.value = p.cat || 'Autre';
+  selectedPosteCategory = p.cat || 'Autre';
   openModal('modal-add-poste');
 }
 
@@ -1862,9 +2207,12 @@ function renderStaff() {
     const initials = ((s.prenom[0] || '') + (s.nom[0] || '')).toUpperCase();
     const color = poste ? poste.color : '#475569';
     const matos = getMatosForStaff(s.prenom + ' ' + s.nom);
+    const avatarHTML = s.photo
+      ? `<div class="staff-avatar" style="background:${color};padding:0;overflow:hidden"><img src="${s.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:10px"></div>`
+      : `<div class="staff-avatar" style="background:${color}">${initials}</div>`;
     return `<div class="staff-card">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
-        <div class="staff-avatar" style="background:${color}">${initials}</div>
+        ${avatarHTML}
         <div style="flex:1;min-width:0">
           <div class="staff-name">${s.prenom} ${s.nom}</div>
           <div class="staff-poste" style="color:${color}">${poste ? poste.nom : '—'}</div>
@@ -1888,6 +2236,25 @@ function getMatosForStaff(name) {
   return [...mots, ...hols, ...meg].join(' · ');
 }
 
+let staffPhotoData = null;
+function previewStaffPhoto(input) {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    staffPhotoData = e.target.result;
+    const prev = document.getElementById('st-photo-preview');
+    prev.innerHTML = `<img src="${staffPhotoData}" style="width:100%;height:100%;object-fit:cover">`;
+    prev.style.border = 'none';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+function clearStaffPhoto() {
+  staffPhotoData = null;
+  const prev = document.getElementById('st-photo-preview');
+  prev.innerHTML = '<i class="fas fa-camera" style="font-size:20px;color:var(--tx3)"></i><div style="font-size:9px;color:var(--tx3);margin-top:4px">Photo</div>';
+  prev.style.border = '2px dashed var(--border2)';
+  document.getElementById('st-photo-input').value = '';
+}
 function saveStaff() {
   if (!S.staff) S.staff = [];
   const data = {
@@ -1896,6 +2263,7 @@ function saveStaff() {
     posteId: parseInt(document.getElementById('st-poste').value) || null,
     tel: document.getElementById('st-tel').value.trim(),
     notes: document.getElementById('st-notes').value.trim(),
+    photo: staffPhotoData || null,
   };
   if (editingStaffId === -1) {
     data.id = S.nextId++;
@@ -1922,6 +2290,11 @@ function editStaff(id) {
   document.getElementById('st-notes').value = s.notes || '';
   document.getElementById('staff-modal-title').textContent = 'Modifier le membre';
   document.getElementById('staff-save-btn').innerHTML = '<i class="fas fa-floppy-disk"></i> Mettre à jour';
+  // Photo
+  staffPhotoData = s.photo || null;
+  const prev = document.getElementById('st-photo-preview');
+  if (s.photo) { prev.innerHTML=`<img src="${s.photo}" style="width:100%;height:100%;object-fit:cover">`; prev.style.border='none'; }
+  else clearStaffPhoto();
   openModal('modal-add-staff');
 }
 
@@ -2064,32 +2437,48 @@ function updateMatosStats() {
 // ═══════════════════════════════════════════
 // MATOS — MOTOROLA
 // ═══════════════════════════════════════════
-function renderMatorola(){
-  const grid=document.getElementById('motorola-grid');
-  if (!grid) return;
-  const staffOpts = '<option value="">— Libre —</option>' + (S.staff || []).map(s => {
-    const poste = (S.postes || []).find(p => p.id === s.posteId);
-    return `<option value="${s.prenom} ${s.nom}">${s.prenom} ${s.nom}${poste ? ' · ' + poste.nom : ''}</option>`;
+function matosStaffOpts(current){
+  return '<option value="">— Libre —</option>' + (S.staff||[]).map(s=>{
+    const p=(S.postes||[]).find(p=>p.id===s.posteId);
+    return `<option value="${s.prenom} ${s.nom}" ${current===s.prenom+' '+s.nom?'selected':''}>${s.prenom} ${s.nom}${p?' · '+p.nom:''}</option>`;
   }).join('');
-  grid.innerHTML = S.motorola.map((m, i) => {
-    const assigned = !!m.assigneA;
-    const staffMember = (S.staff || []).find(s => s.prenom + ' ' + s.nom === m.assigneA);
-    const poste = staffMember ? (S.postes || []).find(p => p.id === staffMember.posteId) : null;
-    return `<div class="matos-card-v2 ${assigned ? 'assigned' : 'libre'}" style="${poste ? 'border-left-color:' + poste.color : ''}">
-      <div class="mc-device">Talkie #${m.id}</div>
-      <div class="mc-canal">Canal ${m.canal}</div>
-      <div class="mc-divider"></div>
+}
+function matosPoste(name){
+  const sm=(S.staff||[]).find(s=>s.prenom+' '+s.nom===name);
+  return sm?(S.postes||[]).find(p=>p.id===sm.posteId):null;
+}
+function renderMatorola(){
+  const grid=document.getElementById('motorola-grid');if(!grid)return;
+  grid.innerHTML=S.motorola.map((m,i)=>{
+    const assigned=!!m.assigneA;
+    const poste=matosPoste(m.assigneA);
+    const accentColor=poste?poste.color:'var(--accent)';
+    return `<div class="matos-card-v2 ${assigned?'assigned':'libre'}" style="${assigned&&poste?'border-left-color:'+poste.color:''}">
+      <div class="mc-header">
+        <div>
+          <div class="mc-device">📻 Talkie-walkie</div>
+          <div style="font-size:18px;font-weight:900;color:var(--tx);letter-spacing:-.5px;margin-top:2px">#${String(m.id).padStart(2,'0')}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="mc-canal">CH ${m.canal}</div>
+          <div style="font-size:10px;color:var(--tx3);margin-top:2px">Motorola XT420</div>
+        </div>
+      </div>
       ${assigned
-        ? `<div class="mc-name">${m.assigneA}</div>
-           <div class="mc-poste" style="${poste ? 'color:' + poste.color : ''}">${poste ? poste.nom : '—'}</div>`
-        : `<div class="mc-libre-label">Libre</div>`
+        ?`<div style="background:${accentColor}18;border:1px solid ${accentColor}44;border-radius:var(--r-sm);padding:8px 10px;margin-bottom:8px">
+            <div style="font-size:13px;font-weight:800;color:var(--tx)">${m.assigneA}</div>
+            ${poste?`<div style="font-size:11px;color:${poste.color};font-weight:600;margin-top:1px">${poste.nom}</div>`:''}
+          </div>`
+        :`<div style="border:1px dashed var(--border2);border-radius:var(--r-sm);padding:8px 10px;margin-bottom:8px;text-align:center">
+            <span style="font-size:11px;color:var(--tx3)">Non assigné</span>
+          </div>`
       }
-      <select class="mc-select" data-current="${m.assigneA}" onchange="S.motorola[${i}].assigneA=this.value;renderMatorola();renderStaff();updateMatosStats();saveStorage()">
-        ${staffOpts.replace(`value="${m.assigneA}"`, `value="${m.assigneA}" selected`)}
-      </select>
-      <div style="display:flex;gap:5px;margin-top:10px">
-        <select onchange="S.motorola[${i}].canal=parseInt(this.value);renderMatorola();saveStorage()" style="flex:1;font-size:12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:5px 8px;color:var(--tx);font-family:var(--font)">
-          ${Array.from({length:15},(_,j)=>`<option value="${j+1}" ${m.canal===j+1?'selected':''}>CH ${j+1}</option>`).join('')}
+      <div style="display:flex;gap:6px">
+        <select style="flex:2;font-size:11px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:5px 7px;color:var(--tx);font-family:var(--font)" onchange="S.motorola[${i}].assigneA=this.value;renderMatorola();renderStaff();updateMatosStats();saveStorage()">
+          ${matosStaffOpts(m.assigneA)}
+        </select>
+        <select style="flex:1;font-size:11px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:5px 7px;color:var(--accent);font-family:var(--mono);font-weight:700" onchange="S.motorola[${i}].canal=parseInt(this.value);renderMatorola();saveStorage()">
+          ${Array.from({length:15},(_,j)=>`<option value="${j+1}" ${m.canal===j+1?'selected':''}>CH${j+1}</option>`).join('')}
         </select>
       </div>
     </div>`;
@@ -2117,28 +2506,34 @@ function saveCanaux(){
 // HOLLYLAND
 // ═══════════════════════════════════════════
 function renderHollyland(){
-  const grid=document.getElementById('hollyland-grid');
-  if (!grid) return;
-  const staffOpts = '<option value="">— Libre —</option>' + (S.staff || []).map(s => {
-    const poste = (S.postes || []).find(p => p.id === s.posteId);
-    return `<option value="${s.prenom} ${s.nom}">${s.prenom} ${s.nom}${poste ? ' · ' + poste.nom : ''}</option>`;
-  }).join('');
-  grid.innerHTML = S.hollyland.map((h, i) => {
-    const assigned = !!h.assigneA;
-    const isMaster = h.id === 'master';
-    const staffMember = (S.staff || []).find(s => s.prenom + ' ' + s.nom === h.assigneA);
-    const poste = staffMember ? (S.postes || []).find(p => p.id === staffMember.posteId) : null;
-    return `<div class="matos-card-v2 ${assigned ? 'assigned' : 'libre'}" style="${isMaster ? 'border-left-color:var(--accent)' : poste ? 'border-left-color:' + poste.color : ''}">
-      <div class="mc-device">${isMaster ? '🎧 Master' : 'Casque #' + i}</div>
-      <div class="mc-canal">${isMaster ? 'Hollyland Solidcom' : 'Hollyland'}</div>
-      <div class="mc-divider"></div>
+  const grid=document.getElementById('hollyland-grid');if(!grid)return;
+  grid.innerHTML=S.hollyland.map((h,i)=>{
+    const assigned=!!h.assigneA;
+    const isMaster=h.id==='master';
+    const poste=matosPoste(h.assigneA);
+    const accentColor=isMaster?'var(--accent)':poste?poste.color:'var(--info)';
+    return `<div class="matos-card-v2 ${assigned?'assigned':'libre'}" style="${assigned?'border-left-color:'+accentColor:''}">
+      <div class="mc-header">
+        <div>
+          <div class="mc-device">🎧 ${isMaster?'Master':'Casque'}</div>
+          <div style="font-size:18px;font-weight:900;color:var(--tx);letter-spacing:-.5px;margin-top:2px">${isMaster?'👑 M':String(i).padStart(2,'0')}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:10px;font-weight:700;color:${accentColor}">Solidcom</div>
+          <div style="font-size:10px;color:var(--tx3);margin-top:2px">Hollyland</div>
+        </div>
+      </div>
       ${assigned
-        ? `<div class="mc-name">${h.assigneA}</div>
-           <div class="mc-poste" style="${poste ? 'color:' + poste.color : ''}">${poste ? poste.nom : '—'}</div>`
-        : `<div class="mc-libre-label">Libre</div>`
+        ?`<div style="background:${accentColor}18;border:1px solid ${accentColor}44;border-radius:var(--r-sm);padding:8px 10px;margin-bottom:8px">
+            <div style="font-size:13px;font-weight:800;color:var(--tx)">${h.assigneA}</div>
+            ${poste?`<div style="font-size:11px;color:${poste.color};font-weight:600;margin-top:1px">${poste.nom}</div>`:''}
+          </div>`
+        :`<div style="border:1px dashed var(--border2);border-radius:var(--r-sm);padding:8px 10px;margin-bottom:8px;text-align:center">
+            <span style="font-size:11px;color:var(--tx3)">Non assigné</span>
+          </div>`
       }
-      <select class="mc-select" data-current="${h.assigneA}" onchange="S.hollyland[${i}].assigneA=this.value;renderHollyland();renderStaff();updateMatosStats();saveStorage()">
-        ${staffOpts.replace(`value="${h.assigneA}"`, `value="${h.assigneA}" selected`)}
+      <select style="width:100%;font-size:11px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 8px;color:var(--tx);font-family:var(--font)" onchange="S.hollyland[${i}].assigneA=this.value;renderHollyland();renderStaff();updateMatosStats();saveStorage()">
+        ${matosStaffOpts(h.assigneA)}
       </select>
     </div>`;
   }).join('');
@@ -2148,26 +2543,24 @@ function renderHollyland(){
 // MEGAPHONE
 // ═══════════════════════════════════════════
 function renderMegaphone(){
-  const el = document.getElementById('mega-card');
-  if (!el) return;
-  const assigned = !!S.megaphone.assigneA;
-  const staffMember = (S.staff || []).find(s => s.prenom + ' ' + s.nom === S.megaphone.assigneA);
-  const poste = staffMember ? (S.postes || []).find(p => p.id === staffMember.posteId) : null;
-  const staffOpts = '<option value="">— Libre —</option>' + (S.staff || []).map(s => {
-    const p = (S.postes || []).find(p => p.id === s.posteId);
-    return `<option value="${s.prenom} ${s.nom}" ${S.megaphone.assigneA === s.prenom + ' ' + s.nom ? 'selected' : ''}>${s.prenom} ${s.nom}${p ? ' · ' + p.nom : ''}</option>`;
-  }).join('');
-  el.innerHTML = `<div class="matos-card-v2 ${assigned ? 'assigned' : 'libre'}" style="max-width:220px;${poste ? 'border-left-color:' + poste.color : ''}">
-    <div class="mc-device">📢 Mégaphone</div>
-    <div class="mc-canal">VONYX MEG065</div>
-    <div class="mc-divider"></div>
+  const el=document.getElementById('mega-card');if(!el)return;
+  const assigned=!!S.megaphone.assigneA;
+  const poste=matosPoste(S.megaphone.assigneA);
+  const ac=poste?poste.color:'var(--warning)';
+  el.innerHTML=`<div class="matos-card-v2 ${assigned?'assigned':'libre'}" style="max-width:240px;${assigned?'border-left-color:'+ac:''}">
+    <div class="mc-header">
+      <div><div class="mc-device">📢 Mégaphone</div><div style="font-size:18px;font-weight:900;color:var(--tx);margin-top:2px">VONYX</div></div>
+      <div style="text-align:right"><div style="font-size:10px;font-weight:700;color:var(--warning)">MEG065</div><div style="font-size:10px;color:var(--tx3);margin-top:2px">65W</div></div>
+    </div>
     ${assigned
-      ? `<div class="mc-name">${S.megaphone.assigneA}</div>
-         <div class="mc-poste" style="${poste ? 'color:' + poste.color : ''}">${poste ? poste.nom : '—'}</div>`
-      : `<div class="mc-libre-label">Libre</div>`
+      ?`<div style="background:${ac}18;border:1px solid ${ac}44;border-radius:var(--r-sm);padding:8px 10px;margin-bottom:8px">
+          <div style="font-size:13px;font-weight:800;color:var(--tx)">${S.megaphone.assigneA}</div>
+          ${poste?`<div style="font-size:11px;color:${poste.color};font-weight:600;margin-top:1px">${poste.nom}</div>`:''}
+        </div>`
+      :`<div style="border:1px dashed var(--border2);border-radius:var(--r-sm);padding:8px 10px;margin-bottom:8px;text-align:center"><span style="font-size:11px;color:var(--tx3)">Non assigné</span></div>`
     }
-    <select class="mc-select" onchange="S.megaphone.assigneA=this.value;renderMegaphone();renderStaff();updateMatosStats();saveStorage()">
-      ${staffOpts}
+    <select style="width:100%;font-size:11px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 8px;color:var(--tx);font-family:var(--font)" onchange="S.megaphone.assigneA=this.value;renderMegaphone();renderStaff();updateMatosStats();saveStorage()">
+      ${matosStaffOpts(S.megaphone.assigneA)}
     </select>
   </div>`;
 }
@@ -2298,65 +2691,142 @@ function deleteContact(id){S.contacts=S.contacts.filter(c=>c.id!==id);renderCont
 // ═══════════════════════════════════════════
 function toggleBudget(){
   S.budgetUnlocked=!S.budgetUnlocked;
-  document.getElementById('budget-locked').style.display=S.budgetUnlocked?'none':'block';
-  document.getElementById('budget-open').style.display=S.budgetUnlocked?'block':'none';
-  document.getElementById('btn-add-budget').style.display=S.budgetUnlocked?'inline-flex':'none';
-  document.getElementById('budget-lock-ico').className=S.budgetUnlocked?'fas fa-lock-open':'fas fa-lock';
-  document.getElementById('budget-lock-lbl').textContent=S.budgetUnlocked?'Verrouiller':'Déverrouiller';
-  document.getElementById('budget-lock-badge').style.display=S.budgetUnlocked?'none':'inline-flex';
-  if(S.budgetUnlocked)renderBudget();
+  const ul=S.budgetUnlocked;
+  document.getElementById('budget-locked').style.display=ul?'none':'block';
+  document.getElementById('budget-open').style.display=ul?'block':'none';
+  document.getElementById('btn-add-recette').style.display=ul?'inline-flex':'none';
+  document.getElementById('btn-add-depense').style.display=ul?'inline-flex':'none';
+  document.getElementById('budget-lock-ico').className=ul?'fas fa-lock-open':'fas fa-lock';
+  document.getElementById('budget-lock-lbl').textContent=ul?'Verrouiller':'Déverrouiller';
+  document.getElementById('budget-lock-badge').style.display=ul?'none':'inline-flex';
+  if(ul)renderBudget();
+}
+
+let budgetDisplayMode='ht';
+function setBudgetMode(m,btn){
+  budgetDisplayMode=m;
+  document.querySelectorAll('#budget-tva-toggle .phase-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderBudget();
+}
+
+function calcTTC(){
+  const tva=parseFloat(document.getElementById('b-tva')?.value)||0;
+  const prevu=parseFloat(document.getElementById('b-prevu')?.value)||0;
+  const reel=parseFloat(document.getElementById('b-reel')?.value)||0;
+  const el1=document.getElementById('b-prevu-ttc');const el2=document.getElementById('b-reel-ttc');
+  if(el1)el1.value=prevu?(prevu*(1+tva/100)).toFixed(2)+' €':'—';
+  if(el2)el2.value=reel?(reel*(1+tva/100)).toFixed(2)+' €':'—';
+}
+
+function openBudgetModal(type){
+  editingBudgetId=-1;
+  document.getElementById('b-type').value=type;
+  document.getElementById('budget-modal-title').textContent=type==='recette'?'Ajouter une recette':'Ajouter une dépense';
+  document.getElementById('b-type-badge').innerHTML=type==='recette'?'<span class="badge b-success"><i class="fas fa-arrow-up"></i> Recette</span>':'<span class="badge b-danger"><i class="fas fa-arrow-down"></i> Dépense</span>';
+  document.getElementById('b-fourn-label').textContent=type==='recette'?'Client / Source':'Fournisseur';
+  document.getElementById('b-save-btn').innerHTML=type==='recette'?'<i class="fas fa-plus"></i> Ajouter recette':'<i class="fas fa-plus"></i> Ajouter dépense';
+  document.getElementById('b-save-btn').className=type==='recette'?'btn btn-success':'btn btn-danger';
+  // Reset fields
+  ['b-desc','b-fourn','b-note'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['b-prevu','b-reel'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['b-prevu-ttc','b-reel-ttc'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='—';});
+  document.getElementById('b-statut').value='Estimé';
+  document.getElementById('b-tva').value='20';
+  openModal('modal-add-budget');
 }
 
 function renderBudget(){
   if(!S.budgetUnlocked)return;
-  const lignes=S.budget.lignes;
-  const dep=lignes.reduce((a,l)=>a+(l.reel||0),0);
-  const al=S.budget.alloue;
-  const rest=al-dep;
-  const pct=al?Math.round((dep/al)*100):0;
-  const bc=pct>90?'var(--danger)':pct>70?'var(--warning)':'var(--success)';
-  document.getElementById('b-alloue').textContent=al.toLocaleString('fr-FR')+' €';
-  document.getElementById('b-depense').textContent=dep.toLocaleString('fr-FR')+' €';
-  document.getElementById('b-restant').textContent=rest.toLocaleString('fr-FR')+' €';
+  const lignes=S.budget.lignes||[];
+  const tva=parseFloat(document.getElementById('budget-tva-rate')?.value)||20;
+  const isHT=budgetDisplayMode==='ht';
+  const recettes=lignes.filter(l=>l.type==='recette');
+  const depenses=lignes.filter(l=>l.type!=='recette');
+  const sumReel=arr=>arr.reduce((a,l)=>a+(l.reel||l.prevu||0),0);
+  const sumPrevu=arr=>arr.reduce((a,l)=>a+(l.prevu||0),0);
+  const totRec=sumReel(recettes), totDep=sumReel(depenses);
+  const marge=totRec-totDep;
+  const pct=totRec>0?Math.round((totDep/totRec)*100):0;
+  const tvaCol=totRec*(tva/100);
+  const fmt=(n)=>n.toLocaleString('fr-FR',{minimumFractionDigits:0,maximumFractionDigits:2})+' €';
+  const fmtTTC=(n)=>fmt(n*(1+tva/100));
+  // KPIs
+  document.getElementById('b-recettes').textContent=fmt(totRec);
+  document.getElementById('b-recettes-ttc').textContent='TTC '+fmtTTC(totRec);
+  document.getElementById('b-depenses').textContent=fmt(totDep);
+  document.getElementById('b-depenses-ttc').textContent='TTC '+fmtTTC(totDep);
+  const margeEl=document.getElementById('b-marge');
+  margeEl.textContent=fmt(marge);
+  margeEl.style.color=marge>=0?'var(--success)':'var(--danger)';
+  document.getElementById('b-marge-pct').textContent=totRec>0?Math.round((marge/totRec)*100)+'% marge':'—';
+  document.getElementById('b-tva-col').textContent=fmt(tvaCol);
+  document.getElementById('b-tva-rate-lbl').textContent='Taux '+tva+'%';
   document.getElementById('b-pct').textContent=pct+'%';
-  document.getElementById('b-bar').style.width=pct+'%';
-  document.getElementById('b-bar').style.background=bc;
-  const sb={Devis:'b-neutral',Commandé:'b-info',Facturé:'b-warning',Payé:'b-success'};
-  document.getElementById('budget-body').innerHTML=lignes.map(l=>{
-    const ecart=(l.reel||0)-(l.prevu||0);
+  const bar=document.getElementById('b-bar');
+  bar.style.width=Math.min(pct,100)+'%';
+  bar.style.background=pct>100?'var(--danger)':pct>80?'var(--warning)':'var(--success)';
+  document.getElementById('b-recettes-count').textContent=recettes.length+' ligne'+(recettes.length>1?'s':'');
+  document.getElementById('b-depenses-count').textContent=depenses.length+' ligne'+(depenses.length>1?'s':'');
+  document.getElementById('b-recettes-total').textContent=fmt(sumPrevu(recettes))+' prévu · '+fmt(totRec)+' réel';
+  document.getElementById('b-depenses-total').textContent=fmt(sumPrevu(depenses))+' prévu · '+fmt(totDep)+' réel';
+  // Statut colors
+  const sb={Estimé:'b-neutral','Devis reçu':'b-neutral',Commandé:'b-info',Facturé:'b-warning',Payé:'b-success',Annulé:'b-neutral'};
+  const rowHTML=(l,isRec)=>{
+    const tvaPct=l.tva??tva;
+    const prevuHT=l.prevu||0;const reelHT=l.reel||0;
+    const prevuTTC=prevuHT*(1+tvaPct/100);const reelTTC=reelHT*(1+tvaPct/100);
+    const ecart=reelHT-prevuHT;
+    const dispPrevu=isHT?fmt(prevuHT):fmt(prevuTTC);
+    const dispReel=isHT?fmt(reelHT):fmt(reelTTC);
+    const color=isRec?'var(--success)':'var(--danger)';
     return `<tr>
-      <td><span class="badge b-accent">${l.cat}</span></td>
-      <td style="font-weight:600">${l.desc}</td>
-      <td style="color:var(--tx2)">${l.fourn||'—'}</td>
-      <td style="font-family:var(--mono)">${(l.prevu||0).toLocaleString('fr-FR')} €</td>
-      <td style="font-family:var(--mono);font-weight:700">${(l.reel||0).toLocaleString('fr-FR')} €</td>
-      <td style="font-family:var(--mono);color:${ecart>0?'var(--danger)':ecart<0?'var(--success)':'var(--tx2)'};font-weight:700">${ecart>0?'+':''}${ecart.toLocaleString('fr-FR')} €</td>
-      <td><span class="badge ${sb[l.statut]||'b-neutral'}">${l.statut}</span></td>
-      <td style="color:var(--tx3)">${l.date||'—'}</td>
-      <td style="color:var(--tx3);font-size:11px">${l.note||''}</td>
-      <td style="display:flex;gap:3px">
+      <td><span class="badge" style="background:${isRec?'rgba(22,163,74,.12)':'rgba(220,38,38,.1)';};color:${color};font-size:10px">${l.cat}</span></td>
+      <td><div style="font-weight:700;font-size:13px">${l.desc}</div>${l.note?`<div style="font-size:10px;color:var(--tx3)">${l.note}</div>`:''}</td>
+      <td style="color:var(--tx2);font-size:11px">${l.fourn||'—'}</td>
+      <td style="font-family:var(--mono);color:var(--tx2)">${fmt(prevuHT)}</td>
+      <td style="font-family:var(--mono);font-weight:700;color:${color}">${fmt(reelHT)}</td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--tx3)">${tvaPct}%</td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--tx2)">${fmt(reelTTC)}</td>
+      <td style="font-family:var(--mono);font-weight:700;color:${ecart>0&&!isRec?'var(--danger)':ecart<0&&isRec?'var(--danger)':ecart===0?'var(--tx2)':'var(--success)'}">${ecart>0?'+':''}${fmt(ecart)}</td>
+      <td><span class="badge ${sb[l.statut]||'b-neutral'}" style="font-size:10px">${l.statut||'—'}</span>${l.date?`<div style="font-size:10px;color:var(--tx3);margin-top:2px">${l.date}</div>`:''}</td>
+      <td style="white-space:nowrap">
         <button onclick="editBudgetLine(${l.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-pen" style="font-size:10px"></i></button>
         <button onclick="deleteBudgetLine(${l.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
       </td>
     </tr>`;
-  }).join('');
+  };
+  const emptyRow=(msg)=>`<tr><td colspan="10" style="text-align:center;padding:20px;color:var(--tx3);font-size:12px;font-style:italic">${msg}</td></tr>`;
+  document.getElementById('budget-body-recettes').innerHTML=recettes.length?recettes.map(l=>rowHTML(l,true)).join('')+`<tr style="background:var(--bg3)"><td colspan="3" style="font-weight:800;font-size:11px;color:var(--tx3);padding:8px 12px;text-transform:uppercase">TOTAL RECETTES</td><td style="font-family:var(--mono);font-weight:700">${fmt(sumPrevu(recettes))}</td><td style="font-family:var(--mono);font-weight:800;color:var(--success)">${fmt(totRec)}</td><td colspan="5"></td></tr>`:emptyRow('Aucune recette — Cliquez sur + Recette');
+  document.getElementById('budget-body-depenses').innerHTML=depenses.length?depenses.map(l=>rowHTML(l,false)).join('')+`<tr style="background:var(--bg3)"><td colspan="3" style="font-weight:800;font-size:11px;color:var(--tx3);padding:8px 12px;text-transform:uppercase">TOTAL DÉPENSES</td><td style="font-family:var(--mono);font-weight:700">${fmt(sumPrevu(depenses))}</td><td style="font-family:var(--mono);font-weight:800;color:var(--danger)">${fmt(totDep)}</td><td colspan="5"></td></tr>`:emptyRow('Aucune dépense — Cliquez sur + Dépense');
   updateCockpit();
 }
 
 let editingBudgetId=-1;
 function saveBudgetLine(){
-  const data={cat:document.getElementById('b-cat').value,desc:document.getElementById('b-desc').value||'Dépense',fourn:document.getElementById('b-fourn').value,prevu:parseFloat(document.getElementById('b-prevu').value)||0,reel:parseFloat(document.getElementById('b-reel').value)||0,statut:document.getElementById('b-statut').value,date:document.getElementById('b-date').value,note:document.getElementById('b-note').value};
+  const type=document.getElementById('b-type').value||'depense';
+  const tva=parseFloat(document.getElementById('b-tva').value)||0;
+  const data={type,cat:document.getElementById('b-cat').value,desc:document.getElementById('b-desc').value||(type==='recette'?'Recette':'Dépense'),fourn:document.getElementById('b-fourn').value,prevu:parseFloat(document.getElementById('b-prevu').value)||0,reel:parseFloat(document.getElementById('b-reel').value)||0,tva,statut:document.getElementById('b-statut').value||'Estimé',date:document.getElementById('b-date').value,note:document.getElementById('b-note').value};
   if(editingBudgetId===-1){data.id=S.nextId++;S.budget.lignes.push(data);toast('Ligne ajoutée','s');}
-  else{const l=S.budget.lignes.find(l=>l.id===editingBudgetId);if(l)Object.assign(l,data);toast('Ligne mise à jour','s');editingBudgetId=-1;}
+  else{const l=S.budget.lignes.find(l=>l.id===editingBudgetId);if(l)Object.assign(l,data);toast('Mis à jour','s');editingBudgetId=-1;}
   closeModal('modal-add-budget');renderBudget();saveStorage();
 }
 
 function editBudgetLine(id){
   const l=S.budget.lignes.find(l=>l.id===id);if(!l)return;
   editingBudgetId=id;
+  const type=l.type||'depense';
+  document.getElementById('b-type').value=type;
   document.getElementById('budget-modal-title').textContent='Modifier la ligne';
+  document.getElementById('b-type-badge').innerHTML=type==='recette'?'<span class="badge b-success"><i class="fas fa-arrow-up"></i> Recette</span>':'<span class="badge b-danger"><i class="fas fa-arrow-down"></i> Dépense</span>';
+  document.getElementById('b-fourn-label').textContent=type==='recette'?'Client / Source':'Fournisseur';
   document.getElementById('b-save-btn').innerHTML='<i class="fas fa-floppy-disk"></i> Mettre à jour';
-  document.getElementById('b-cat').value=l.cat;document.getElementById('b-desc').value=l.desc;document.getElementById('b-fourn').value=l.fourn||'';document.getElementById('b-prevu').value=l.prevu||0;document.getElementById('b-reel').value=l.reel||0;document.getElementById('b-statut').value=l.statut;document.getElementById('b-date').value=l.date||'';document.getElementById('b-note').value=l.note||'';
+  document.getElementById('b-save-btn').className='btn btn-primary';
+  document.getElementById('b-cat').value=l.cat;document.getElementById('b-desc').value=l.desc;document.getElementById('b-fourn').value=l.fourn||'';
+  document.getElementById('b-prevu').value=l.prevu||'';document.getElementById('b-reel').value=l.reel||'';
+  document.getElementById('b-tva').value=l.tva??20;
+  document.getElementById('b-statut').value=l.statut||'Estimé';document.getElementById('b-date').value=l.date||'';document.getElementById('b-note').value=l.note||'';
+  calcTTC();
   openModal('modal-add-budget');
 }
 
@@ -2376,6 +2846,7 @@ function geolocate(){
 }
 
 async function fetchWeather(){
+  const cwCity=document.getElementById('cw-meteo-city');if(cwCity&&cwCity.value)document.getElementById('meteo-city').value=cwCity.value;
   const city=document.getElementById('meteo-city')?.value||'Lyon';
   // Use open-meteo geocoding (free, no key)
   try{
@@ -2788,7 +3259,6 @@ function toggleMatosView() {
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape')document.querySelectorAll('.overlay.open').forEach(m=>m.classList.remove('open'));
   if(e.ctrlKey&&e.key==='s'){e.preventDefault();saveManual();}
-  if(e.ctrlKey&&e.key==='n'){e.preventDefault();nextTop();}
 });
 
 // ═══════════════════════════════════════════
@@ -2861,16 +3331,23 @@ function buildUser(u) {
 
 // ── UPDATE HEADER USER UI ──
 function updateUserUI() {
-  if (!currentUser) return;
-  const initials = currentUser.initials || currentUser.name?.[0]?.toUpperCase() || '?';
+  // Fallback: essayer de lire la session locale si currentUser est null
+  if (!currentUser) {
+    try {
+      const raw = localStorage.getItem('aintercom_session');
+      if (raw) currentUser = JSON.parse(raw);
+    } catch(e) {}
+  }
+  const name = currentUser?.name || currentUser?.email?.split('@')[0] || 'Utilisateur';
+  const initials = currentUser?.initials || name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2) || '?';
   const el = document.getElementById('user-avatar');
   if (el) el.textContent = initials;
   const nameEl = document.getElementById('app-user-name');
-  if (nameEl) nameEl.textContent = currentUser.name || currentUser.email;
+  if (nameEl) nameEl.textContent = name;
   const ddName = document.getElementById('app-dd-name');
-  if (ddName) ddName.textContent = currentUser.name || 'Utilisateur';
+  if (ddName) ddName.textContent = name;
   const ddEmail = document.getElementById('app-dd-email');
-  if (ddEmail) ddEmail.textContent = currentUser.email || 'Mode local';
+  if (ddEmail) ddEmail.textContent = currentUser?.email || 'Mode local';
 }
 
 // ── LOGOUT ──
