@@ -1286,12 +1286,25 @@ function openEvent(id){
   switchTab('cockpit',null);
 }
 
+function getEnvPath(basePath) {
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const isGitHubPages = window.location.hostname.includes('github.io') || window.location.hostname === 'live.aintercom.fr';
+  
+  // Sur GitHub Pages ou local, utiliser .html directement
+  // Sur Apache avec .htaccess, utiliser URL propre (sans .html)
+  if (isLocal || isGitHubPages) {
+    return basePath === '/' ? 'index.html' : basePath + '.html';
+  } else {
+    return basePath;
+  }
+}
+
 function goHome(){
-  window.location.href = 'index.html';
+  window.location.href = getEnvPath('/');
 }
 
 function goBackToProjects(){
-  window.location.href = 'index.html';
+  window.location.href = getEnvPath('/projets');
 }
 
 function deleteEvent(id){
@@ -2499,7 +2512,7 @@ async function initAuth() {
     if (session?.user) {
       currentUser = buildUser(session.user);
       sb.auth.onAuthStateChange((event) => {
-        if (event === 'SIGNED_OUT') { window.location.href = 'login'; }
+        if (event === 'SIGNED_OUT') { window.location.href = getEnvPath('/login'); }
       });
       return true;
     }
@@ -2512,7 +2525,7 @@ async function initAuth() {
   }
 
   // Pas de session → redirect login
-  window.location.href = 'login';
+  window.location.href = getEnvPath('/login');
   return false;
 }
 
@@ -2541,7 +2554,7 @@ function updateUserUI() {
 async function logout() {
   if (sb && !currentUser?.isLocal) { try { await sb.auth.signOut(); } catch(e) {} }
   localStorage.removeItem('aintercom_session');
-  window.location.href = 'login';
+  window.location.href = getEnvPath('/login');
 }
 
 // ── LOAD PROJECT FROM INDEX.HTML ──

@@ -555,7 +555,7 @@ function renderProjects() {
 }
 
 // ═══════════════════════════════════════════
-// OPEN PROJECT → app.html
+// OPEN PROJECT → /app ou app.html selon l'environnement
 // ═══════════════════════════════════════════
 function openProject(index) {
   const project = projects[index];
@@ -566,7 +566,14 @@ function openProject(index) {
     _uid: currentUser?.id || 'local',
     _index: index
   }));
-  window.location.href = 'app.html';
+  
+  // Détection de l'environnement
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const isGitHubPages = window.location.hostname.includes('github.io') || window.location.hostname === 'live.aintercom.fr';
+  
+  // Sur GitHub Pages ou local, utiliser app.html directement
+  // Sur Apache avec .htaccess, utiliser /app (URL propre)
+  window.location.href = (isLocal || isGitHubPages) ? 'app.html' : '/app';
 }
 
 // ═══════════════════════════════════════════

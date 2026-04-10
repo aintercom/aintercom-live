@@ -10,6 +10,9 @@ RewriteRule ^projets/?$ index.html [L]
 # Redirection de /test-button vers /test-button.html
 RewriteRule ^test-button/?$ test-button.html [L]
 
+# Redirection de /app vers /app.html
+RewriteRule ^app/?$ app.html [L]
+
 # Redirection de la racine vers /app.html
 RewriteRule ^$ app.html [L]
 
