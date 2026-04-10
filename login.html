@@ -80,6 +80,14 @@ html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--t
     <div style="margin-top:32px;font-size:11px;color:var(--tx3)">
       En vous connectant, vous acceptez les <a href="https://aintercom.fr/cgl.html" style="color:var(--accent)" target="_blank">conditions d'utilisation</a>.
     </div>
+    
+    <!-- Mode test local (désactivé en production) -->
+    <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);display:none" id="local-test">
+      <div style="font-size:10px;color:var(--tx3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.1em">Mode test local</div>
+      <button class="btn-ghost" style="font-size:11px;padding:8px 12px;width:100%" onclick="localTestLogin()">
+        <i class="fas fa-laptop-code"></i> Connexion test (sans Google)
+      </button>
+    </div>
   </div>
 </div>
 
@@ -141,7 +149,36 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   console.log('✅ JavaScript fonctionne correctement - Page prête');
+  
+  // Activer le mode test local en développement
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    document.getElementById('local-test').style.display = 'block';
+    console.log('✅ Mode test local activé');
+  }
 });
+
+// Connexion test locale (pour développement)
+function localTestLogin() {
+  console.log('DEBUG: Connexion test locale');
+  
+  // Créer une session locale simulée
+  const testUser = {
+    id: 'test_user_' + Date.now(),
+    email: 'test@aintercom.fr',
+    name: 'Utilisateur Test',
+    initials: 'UT',
+    isLocal: true
+  };
+  
+  // Sauvegarder la session locale
+  localStorage.setItem('aintercom_session', JSON.stringify(testUser));
+  
+  // Rediriger vers la page des projets
+  // En développement local, utiliser index.html directement
+  // En production, .htaccess redirigera /projets vers index.html
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  window.location.href = isLocal ? 'index.html' : 'projets';
+}
 
 // Connexion avec Google
 async function signInWithGoogle() {
@@ -159,10 +196,15 @@ async function signInWithGoogle() {
   
   try {
     console.log('DEBUG: Tentative de connexion OAuth avec Google...');
+    // URL de redirection dynamique basée sur l'origine actuelle
+    const currentOrigin = window.location.origin;
+    const redirectUrl = currentOrigin + '/projets';
+    console.log('DEBUG: URL de redirection:', redirectUrl);
+    
     const { data, error } = await supabaseClient.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'https://live.aintercom.fr/projets'
+        redirectTo: redirectUrl
       }
     });
     
@@ -190,7 +232,8 @@ async function checkAuth() {
     
     if (session && session.user) {
       // Déjà connecté, rediriger vers le sélecteur de projets
-      window.location.href = 'projets';
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      window.location.href = isLocal ? 'index.html' : 'projets';
     }
   } catch (error) {
     console.error('❌ Erreur de vérification d\'authentification:', error);

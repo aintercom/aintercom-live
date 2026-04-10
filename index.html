@@ -270,30 +270,49 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function resolveUser() {
+  console.log('DEBUG: resolveUser() appelée');
+  
   // 1. Essayer session Supabase
   if (sb) {
     try {
-      const { data: { session } } = await sb.auth.getSession();
-      if (session?.user) {
+      console.log('DEBUG: Vérification session Supabase...');
+      const { data: { session }, error } = await sb.auth.getSession();
+      
+      if (error) {
+        console.error('DEBUG: Erreur session Supabase:', error);
+      } else if (session?.user) {
+        console.log('DEBUG: Session Supabase trouvée:', session.user.email);
         currentUser = buildUser(session.user);
         setupAuthListener();
         boot();
         return;
+      } else {
+        console.log('DEBUG: Aucune session Supabase trouvée');
       }
-    } catch(e) {}
+    } catch(e) {
+      console.error('DEBUG: Exception session Supabase:', e);
+    }
+  } else {
+    console.log('DEBUG: Client Supabase non initialisé');
   }
 
   // 2. Essayer session locale (mode local)
   const local = localStorage.getItem('aintercom_session');
   if (local) {
     try {
+      console.log('DEBUG: Session locale trouvée');
       currentUser = JSON.parse(local);
       boot();
       return;
-    } catch(e) {}
+    } catch(e) {
+      console.error('DEBUG: Erreur parsing session locale:', e);
+    }
+  } else {
+    console.log('DEBUG: Aucune session locale trouvée');
   }
 
   // 3. Pas de session → redirect login
+  console.log('DEBUG: Redirection vers login...');
   window.location.href = 'login';
 }
 
