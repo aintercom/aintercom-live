@@ -35,7 +35,7 @@ html.light { --bg:#F4F6F9; --bg2:#FFFFFF; --bg3:#EEF1F5; --bg4:#E4E8EE;
   --tx:#111827; --tx2:#4B5563; --tx3:#9CA3AF; }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--tx);font-size:14px;-webkit-font-smoothing:antialiased}
+html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--tx);font-size:15px;-webkit-font-smoothing:antialiased;line-height:1.5}
 ::-webkit-scrollbar{width:3px;height:3px}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 
@@ -83,7 +83,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 
 /* ── NAV ── */
 .nav-section{font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.12em;padding:8px 8px 4px;margin-top:6px}
-.nav-btn{display:flex;align-items:center;gap:9px;padding:7px 8px;border-radius:var(--r-sm);font-size:12px;font-weight:600;color:var(--tx2);cursor:pointer;transition:var(--tr);background:transparent;border:none;width:100%;text-align:left;font-family:var(--font)}
+.nav-btn{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--r-sm);font-size:13px;font-weight:600;color:var(--tx2);cursor:pointer;transition:var(--tr);background:transparent;border:none;width:100%;text-align:left;font-family:var(--font)}
 .nav-btn:hover{background:var(--bg3);color:var(--tx)}
 .nav-btn.active{background:var(--accent-glow);color:var(--accent);font-weight:700;border-left:2px solid var(--accent);padding-left:6px}
 .nav-btn i{width:14px;text-align:center;font-size:11px}
@@ -207,11 +207,18 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 .mc-libre-label{font-size:14px;font-weight:700;color:var(--tx3);margin-bottom:12px;min-height:48px;display:flex;align-items:center}
 .mc-select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;font-family:var(--font);font-size:13px;font-weight:600;color:var(--tx);cursor:pointer;transition:var(--tr)}
 .mc-select:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-glow)}
-/* ── POSTE CARD ── */
-.poste-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;display:flex;align-items:center;gap:12px;transition:var(--tr)}
-.poste-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0}
-.poste-nom{font-size:15px;font-weight:800;flex:1;color:var(--tx)}
-.poste-count{font-size:11px;font-weight:700;color:var(--tx3)}
+/* ── POSTE CARD V2 ── */
+.poste-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px;display:flex;align-items:center;gap:14px;transition:var(--tr);position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.poste-card:hover{border-color:var(--border2);box-shadow:0 4px 16px rgba(0,0,0,.1);transform:translateY(-2px)}
+.poste-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent);opacity:.7}
+.poste-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;border:2px solid var(--bg2);box-shadow:0 0 0 2px var(--border)}
+.poste-nom{font-size:16px;font-weight:800;flex:1;color:var(--tx);letter-spacing:-.2px}
+.poste-count{font-size:12px;font-weight:700;color:var(--tx3);background:var(--bg3);padding:3px 8px;border-radius:12px;border:1px solid var(--border)}
+.poste-actions{display:flex;gap:4px;opacity:.6;transition:var(--tr)}
+.poste-card:hover .poste-actions{opacity:1}
+/* ── SORT SELECT ── */
+#postes-sort{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 10px;font-size:11px;font-weight:600;color:var(--tx);cursor:pointer;transition:var(--tr);outline:none}
+#postes-sort:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
 /* ── STAFF CARD ── */
 .staff-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;transition:var(--tr)}
 .staff-card:hover{border-color:var(--border2)}
@@ -273,6 +280,163 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 .notif-dot{position:absolute;top:-2px;right:-2px;width:7px;height:7px;border-radius:50%;background:var(--danger);border:2px solid var(--bg2)}
 .proc-step{display:flex;gap:10px;align-items:flex-start;padding:5px 0}
 .proc-num{width:22px;height:22px;border-radius:50%;background:var(--danger);color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  #hdr { height: 48px; padding: 0 12px; gap: 8px; }
+  .hdr-clock { font-size: 18px; }
+  .hdr-date { font-size: 8px; }
+  .hdr-cue { max-width: 140px; font-size: 10px; padding: 2px 8px; }
+  .hdr-retard { font-size: 9px; padding: 2px 8px; }
+  .btn-sos, .btn-next { padding: 4px 10px; font-size: 10px; }
+  .btn-ghost.btn-icon { padding: 4px 6px; }
+  #nav { width: 180px; }
+  .nav-btn { padding: 7px 8px; font-size: 12px; }
+  .sec-title { font-size: 18px; }
+  .sec-sub { font-size: 10px; }
+  .g2, .g3, .g4 { grid-template-columns: 1fr; gap: 10px; }
+  .cw-now-title { font-size: 16px; }
+  .cw-now-timer { font-size: 32px; }
+  .cw-big { font-size: 24px; }
+  .run-row, .run-hdr { grid-template-columns: 36px 60px 45px 1fr 80px 70px 60px 50px 80px; gap: 4px; padding: 6px 8px; }
+  .modal { width: 95vw; padding: 16px; }
+  .modal-lg { width: 98vw; }
+  .modal-xl { width: 98vw; }
+  .matos-card-v2 { padding: 14px; }
+  .mc-name { font-size: 18px; }
+  .poste-card { padding: 12px; }
+  .poste-nom { font-size: 14px; }
+  .staff-card { padding: 12px; }
+  .staff-name { font-size: 14px; }
+  .staff-avatar { width: 36px; height: 36px; font-size: 14px; }
+  .sec-actions { flex-wrap: wrap; gap: 4px; }
+  .sec-actions input, .sec-actions select { width: 100%; }
+  #app-user-name { max-width: 80px; }
+  #app-user-btn { padding: 3px 6px; }
+  #user-avatar { width: 20px; height: 20px; font-size: 9px; }
+  .hdr-sep { height: 24px; }
+  .tab { padding: 12px; }
+  .card { padding: 12px; }
+  .card-sm { padding: 10px; }
+  .card-value { font-size: 22px; }
+  .matos-stat { padding: 10px; }
+  .matos-stat-num { font-size: 22px; }
+  .org-card { min-width: 100px; max-width: 120px; padding: 10px; }
+  .org-avatar { width: 32px; height: 32px; font-size: 12px; }
+  .org-name { font-size: 11px; }
+  .org-role { font-size: 9px; }
+  .sign-title { font-size: 36px; }
+  .sign-subtitle { font-size: 16px; }
+  .sign-preview { padding: 30px 20px; }
+  .sign-picto { font-size: 32px; }
+  .inc-item { padding: 10px; }
+  .elec-row { padding: 6px 8px; }
+  .meteo-hour { min-width: 56px; padding: 6px 8px; }
+  .meteo-day { padding: 10px; }
+  #met-icon { font-size: 48px; }
+  #met-temp { font-size: 36px; }
+  #met-desc { font-size: 12px; }
+  #met-feels { font-size: 10px; }
+  #met-wind, #met-hum, #met-rain, #met-rise, #met-set { font-size: 14px; }
+  .meteo-hour > div:nth-child(2) { font-size: 16px; }
+  .meteo-hour > div:nth-child(3) { font-size: 10px; }
+  .meteo-hour > div:nth-child(4) { font-size: 8px; }
+  .meteo-day > div:nth-child(1) { font-size: 10px; }
+  .meteo-day > div:nth-child(2) { font-size: 24px; }
+  .meteo-day > div:nth-child(3) { font-size: 12px; }
+  .meteo-day > div:nth-child(4) { font-size: 9px; }
+  .tbl-wrap { overflow-x: auto; }
+  table { min-width: 800px; }
+  th, td { padding: 6px 8px; font-size: 11px; }
+  .badge { font-size: 9px; padding: 1px 5px; }
+  input, select, textarea { font-size: 11px; padding: 6px 8px; }
+  label { font-size: 9px; }
+  .btn { font-size: 10px; padding: 5px 10px; }
+  .btn-sm { padding: 3px 8px; font-size: 9px; }
+  .btn-lg { padding: 8px 16px; font-size: 12px; }
+  .btn-icon { padding: 5px 7px; }
+  .toast { min-width: 180px; padding: 8px 12px; font-size: 11px; }
+  .overlay { padding: 10px; }
+  .modal-footer { margin-top: 12px; padding-top: 10px; }
+  .modal-hdr { margin-bottom: 12px; }
+  .modal-title { font-size: 14px; }
+  .modal-close { width: 22px; height: 22px; font-size: 11px; }
+  .fg { margin-bottom: 10px; }
+  .fg-row { gap: 8px; }
+  .prog { height: 3px; }
+  .prog-fill { height: 3px; }
+  .cw { padding: 12px; }
+  .cw-label { font-size: 8px; }
+  .cw-now { padding: 14px; }
+  .cw-now-title { font-size: 16px; }
+  .cw-now-timer { font-size: 32px; }
+  .live-dot { font-size: 9px; }
+  .live-dot::before { width: 6px; height: 6px; }
+  .hdr-cue-dot { width: 5px; height: 5px; }
+  .nav-section { font-size: 8px; padding: 6px 6px 3px; }
+  .nav-badge { font-size: 8px; padding: 1px 4px; min-width: 14px; }
+  .nav-btn i { font-size: 10px; width: 12px; }
+  .phase-btn { font-size: 9px; padding: 4px 6px; }
+  .phase-sel { padding: 2px; gap: 2px; }
+  .mc-device { font-size: 10px; }
+  .mc-canal { font-size: 10px; margin-bottom: 10px; }
+  .mc-name { font-size: 18px; }
+  .mc-poste { font-size: 12px; }
+  .mc-libre-label { font-size: 12px; }
+  .mc-select { padding: 6px 8px; font-size: 12px; }
+  .poste-dot { width: 14px; height: 14px; }
+  .poste-count { font-size: 10px; }
+  .staff-poste { font-size: 11px; }
+  .staff-matos { font-size: 10px; }
+  .matos-stat-label { font-size: 9px; }
+  .org-line { height: 16px; }
+  .org-branch::before { height: 1px; }
+  .org-status { width: 6px; height: 6px; }
+  .sign-arrow-svg { margin-bottom: 8px; }
+  .inc-item { gap: 8px; }
+  .elec-name { font-size: 11px; }
+  .elec-w { font-size: 10px; width: 55px; }
+  .proc-step { gap: 8px; }
+  .proc-num { width: 18px; height: 18px; font-size: 9px; }
+  .card-title { font-size: 9px; margin-bottom: 10px; }
+  .empty i { font-size: 24px; }
+  .empty p { font-size: 11px; }
+  .event-card { padding: 16px; gap: 12px; }
+  .event-card-icon { width: 40px; height: 40px; font-size: 18px; }
+  .event-card-name { font-size: 14px; }
+  .event-card-meta { font-size: 10px; }
+  .event-status { font-size: 9px; padding: 2px 7px; }
+  .home-hdr { padding: 0 16px; }
+  .home-body { padding: 20px; }
+  .home-body > div:first-child { margin-bottom: 20px; }
+  .home-body > div:first-child > div:first-child { font-size: 22px; }
+  .home-body > div:first-child > div:first-child + div { font-size: 11px; }
+  .btn-primary.btn-lg { padding: 8px 16px; font-size: 12px; }
+  #home-templates-list { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  .matos-card { padding: 12px; }
+  .matos-num { font-size: 10px; }
+  .matos-name { font-size: 13px; }
+  .app-dd-hdr { padding: 9px 12px; }
+  .app-dd-name { font-size: 11px; }
+  .app-dd-email { font-size: 9px; }
+  .app-dd-item { padding: 7px 12px; font-size: 11px; }
+  .app-dd-item i { font-size: 10px; width: 12px; }
+  #app-user-dropdown { min-width: 180px; }
+  #ftr { height: 26px; padding: 0 12px; font-size: 9px; }
+  #ftr-save { font-size: 9px; }
+  #toasts { top: 50px; right: 12px; }
+  .toast { min-width: 180px; }
+  #print-zone { display: none; }
+  @media print {
+    body { padding: 10px; }
+    h1 { font-size: 20px; }
+    h2 { font-size: 14px; }
+    .meta { font-size: 10px; }
+    th { font-size: 9px; padding: 4px 6px; }
+    td { font-size: 10px; padding: 4px 6px; }
+    .badge { font-size: 8px; padding: 1px 4px; }
+  }
+}
 </style>
 </head>
 <body>
@@ -323,7 +487,6 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
     </div>
     <div class="hdr-sep"></div>
     <div class="hdr-cue"><div class="hdr-cue-dot"></div><span id="hdr-cue-name" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">En attente</span></div>
-    <div class="hdr-phase" id="hdr-phase">MONTAGE</div>
     <div class="hdr-retard ok" id="hdr-retard">À l'heure</div>
     <div class="hdr-spacer"></div>
     <div style="display:flex;gap:6px;align-items:center">
@@ -370,16 +533,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
       <button class="nav-btn" onclick="switchTab('meteo',this)"><i class="fas fa-cloud-sun"></i>Météo</button>
       <button class="nav-btn" onclick="switchTab('budget',this)"><i class="fas fa-euro-sign"></i>Budget</button>
       <button class="nav-btn" onclick="switchTab('tech',this)" style="position:relative"><i class="fas fa-shield-halved"></i>Tech & Sécu<span class="nav-badge" id="nav-inc-badge" style="display:none">0</span></button>
-      <button class="nav-btn" onclick="switchTab('sign',this)"><i class="fas fa-sign"></i>Signalétique</button>
-      <div class="nav-section" style="margin-top:auto">Phase</div>
-      <div style="padding:6px">
-        <div class="phase-sel">
-          <button class="phase-btn active" onclick="setPhase('montage',this)">Mont.</button>
-          <button class="phase-btn" onclick="setPhase('show',this)">Show</button>
-          <button class="phase-btn" onclick="setPhase('demo',this)">Démo</button>
-        </div>
-      </div>
-      <div style="padding:6px;text-align:center">
+      <div style="padding:6px;text-align:center;margin-top:auto">
         <div style="font-size:9px;color:var(--tx3);font-weight:600">Auto-save</div>
         <div style="font-size:9px;color:var(--success);font-weight:700" id="save-ind">● Actif</div>
       </div>
@@ -512,6 +666,11 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
         <div class="sec-hdr">
           <div><div class="sec-title">🏷️ Postes</div><div class="sec-sub">Configurez les rôles de votre équipe</div></div>
           <div class="sec-actions">
+            <select id="postes-sort" style="width:140px" onchange="renderPostes()">
+              <option value="nom">Trier par nom</option>
+              <option value="count">Trier par membres</option>
+              <option value="color">Trier par couleur</option>
+            </select>
             <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-poste')"><i class="fas fa-plus"></i> Nouveau poste</button>
           </div>
         </div>
@@ -773,73 +932,6 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
         </div>
       </section>
 
-      <!-- ══ SIGNALÉTIQUE ══ -->
-      <section class="tab" id="tab-sign">
-        <div class="sec-hdr">
-          <div><div class="sec-title">🪧 Signalétique</div><div class="sec-sub">Générateur de panneaux professionnels — Impression directe A4/A3</div></div>
-        </div>
-        <div class="g2">
-          <div class="card">
-            <div class="card-title">Générateur</div>
-            <div class="fg"><label>Titre principal</label><input type="text" id="sig-titre" value="SALLE DE PRESSE" oninput="updateSign()" style="font-size:16px;font-weight:700;text-transform:uppercase"></div>
-            <div class="fg"><label>Sous-titre (optionnel)</label><input type="text" id="sig-sub" placeholder="Niveau 2 — Couloir B" oninput="updateSign()"></div>
-            <div class="fg">
-              <label>Direction</label>
-              <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px">
-                <button class="btn btn-ghost" id="db-u" onclick="setDir('haut',this)" style="font-size:22px;padding:14px;font-weight:900">↑</button>
-                <button class="btn btn-ghost" id="db-r" onclick="setDir('droite',this)" style="font-size:22px;padding:14px;font-weight:900">→</button>
-                <button class="btn btn-ghost" id="db-l" onclick="setDir('gauche',this)" style="font-size:22px;padding:14px;font-weight:900">←</button>
-                <button class="btn btn-ghost" id="db-d" onclick="setDir('bas',this)" style="font-size:22px;padding:14px;font-weight:900">↓</button>
-              </div>
-            </div>
-            <div class="fg">
-              <label>Pictogramme</label>
-              <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">
-                <button class="btn btn-ghost" onclick="setPicto('🚻',this)" style="font-size:18px;padding:10px">🚻</button>
-                <button class="btn btn-ghost" onclick="setPicto('🚪',this)" style="font-size:18px;padding:10px">🚪</button>
-                <button class="btn btn-ghost" onclick="setPicto('⭐',this)" style="font-size:18px;padding:10px">⭐</button>
-                <button class="btn btn-ghost" onclick="setPicto('💎',this)" style="font-size:18px;padding:10px">💎</button>
-                <button class="btn btn-ghost" onclick="setPicto('⚠️',this)" style="font-size:18px;padding:10px">⚠️</button>
-                <button class="btn btn-ghost" onclick="setPicto('🎭',this)" style="font-size:18px;padding:10px">🎭</button>
-                <button class="btn btn-ghost" onclick="setPicto('🅿️',this)" style="font-size:18px;padding:10px">🅿️</button>
-                <button class="btn btn-ghost" onclick="setPicto('👋',this)" style="font-size:18px;padding:10px">👋</button>
-                <button class="btn btn-ghost" onclick="setPicto('',this)" style="font-size:10px;padding:10px">Aucun</button>
-              </div>
-            </div>
-            <div class="fg"><label>Format</label>
-              <div style="display:flex;gap:8px">
-                <button class="btn btn-ghost" id="fmt-a4" onclick="setFormat('A4',this)" style="flex:1">A4</button>
-                <button class="btn btn-ghost" id="fmt-a3" onclick="setFormat('A3',this)" style="flex:1">A3</button>
-              </div>
-            </div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <button class="btn btn-primary" onclick="printSign()"><i class="fas fa-print"></i> Imprimer</button>
-              <button class="btn btn-ghost" onclick="saveSign()"><i class="fas fa-floppy-disk"></i> Sauvegarder</button>
-              <button class="btn btn-ghost" onclick="clearSign()"><i class="fas fa-rotate-left"></i> Reset</button>
-            </div>
-          </div>
-
-          <!-- Preview -->
-          <div>
-            <div class="sign-preview" id="sign-preview" style="min-height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center">
-              <div class="sign-picto" id="sig-picto-out"></div>
-              <svg id="sig-arrow-out" width="180" height="140" viewBox="0 0 180 140" style="margin-bottom:14px"></svg>
-              <div class="sign-title" id="sig-title-out">SALLE DE PRESSE</div>
-              <div class="sign-subtitle" id="sig-sub-out"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Historique -->
-        <div class="card" style="margin-top:14px">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-            <div style="font-size:14px;font-weight:800">Panneaux créés cette session</div>
-            <button class="btn btn-ghost btn-sm" onclick="clearSignHistory()"><i class="fas fa-trash"></i></button>
-          </div>
-          <div id="sign-history" class="g-auto"></div>
-        </div>
-      </section>
-
     </main>
   </div>
 
@@ -975,6 +1067,23 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
         <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#7C3AED')"><input type="radio" name="pcolor" value="#7C3AED" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#7C3AED;display:inline-block;border:2px solid transparent"></span>Violet</label>
         <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#0891B2')"><input type="radio" name="pcolor" value="#0891B2" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#0891B2;display:inline-block;border:2px solid transparent"></span>Cyan</label>
         <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#475569')"><input type="radio" name="pcolor" value="#475569" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#475569;display:inline-block;border:2px solid transparent"></span>Gris</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#F59E0B')"><input type="radio" name="pcolor" value="#F59E0B" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#F59E0B;display:inline-block;border:2px solid transparent"></span>Ambre</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#EC4899')"><input type="radio" name="pcolor" value="#EC4899" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#EC4899;display:inline-block;border:2px solid transparent"></span>Rose</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#10B981')"><input type="radio" name="pcolor" value="#10B981" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#10B981;display:inline-block;border:2px solid transparent"></span>Émeraude</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#8B5CF6')"><input type="radio" name="pcolor" value="#8B5CF6" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#8B5CF6;display:inline-block;border:2px solid transparent"></span>Violet clair</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#0EA5E9')"><input type="radio" name="pcolor" value="#0EA5E9" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#0EA5E9;display:inline-block;border:2px solid transparent"></span>Ciel</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#84CC16')"><input type="radio" name="pcolor" value="#84CC16" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#84CC16;display:inline-block;border:2px solid transparent"></span>Citron vert</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#F97316')"><input type="radio" name="pcolor" value="#F97316" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#F97316;display:inline-block;border:2px solid transparent"></span>Orange vif</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#EF4444')"><input type="radio" name="pcolor" value="#EF4444" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#EF4444;display:inline-block;border:2px solid transparent"></span>Rouge vif</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#6366F1')"><input type="radio" name="pcolor" value="#6366F1" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#6366F1;display:inline-block;border:2px solid transparent"></span>Indigo</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#14B8A6')"><input type="radio" name="pcolor" value="#14B8A6" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#14B8A6;display:inline-block;border:2px solid transparent"></span>Turquoise</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#A855F7')"><input type="radio" name="pcolor" value="#A855F7" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#A855F7;display:inline-block;border:2px solid transparent"></span>Pourpre</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#EAB308')"><input type="radio" name="pcolor" value="#EAB308" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#EAB308;display:inline-block;border:2px solid transparent"></span>Jaune</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#64748B')"><input type="radio" name="pcolor" value="#64748B" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#64748B;display:inline-block;border:2px solid transparent"></span>Gris foncé</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#F43F5E')"><input type="radio" name="pcolor" value="#F43F5E" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#F43F5E;display:inline-block;border:2px solid transparent"></span>Rose vif</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#06B6D4')"><input type="radio" name="pcolor" value="#06B6D4" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#06B6D4;display:inline-block;border:2px solid transparent"></span>Cyan vif</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#8B4513')"><input type="radio" name="pcolor" value="#8B4513" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#8B4513;display:inline-block;border:2px solid transparent"></span>Marron</label>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:500" onclick="selectPosteColor(this,'#000000')"><input type="radio" name="pcolor" value="#000000" style="display:none"><span style="width:24px;height:24px;border-radius:6px;background:#000000;display:inline-block;border:2px solid transparent"></span>Noir</label>
       </div>
     </div>
     <div class="modal-footer">
