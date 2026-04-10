@@ -313,7 +313,12 @@ async function resolveUser() {
 
   // 3. Pas de session → redirect login
   console.log('DEBUG: Redirection vers login...');
-  window.location.href = 'login';
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const isGitHubPages = window.location.hostname.includes('github.io') || window.location.hostname === 'live.aintercom.fr';
+  
+  // Sur GitHub Pages, utiliser login.html
+  // Sur Apache avec .htaccess, utiliser /login
+  window.location.href = (isLocal || isGitHubPages) ? 'login.html' : 'login';
 }
 
 function buildUser(supaUser) {
@@ -386,7 +391,13 @@ async function logout() {
     await sb.auth.signOut();
   }
   localStorage.removeItem('aintercom_session');
-  window.location.href = 'login';
+  
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const isGitHubPages = window.location.hostname.includes('github.io') || window.location.hostname === 'live.aintercom.fr';
+  
+  // Sur GitHub Pages, utiliser login.html
+  // Sur Apache avec .htaccess, utiliser /login
+  window.location.href = (isLocal || isGitHubPages) ? 'login.html' : 'login';
 }
 
 // ═══════════════════════════════════════════

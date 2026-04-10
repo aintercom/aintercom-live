@@ -174,10 +174,13 @@ function localTestLogin() {
   localStorage.setItem('aintercom_session', JSON.stringify(testUser));
   
   // Rediriger vers la page des projets
-  // En développement local, utiliser index.html directement
-  // En production, .htaccess redirigera /projets vers index.html
+  // Détection de l'environnement pour adapter les URLs
   const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-  window.location.href = isLocal ? 'index.html' : 'projets';
+  const isGitHubPages = window.location.hostname.includes('github.io') || window.location.hostname === 'live.aintercom.fr';
+  
+  // Sur GitHub Pages, utiliser les URLs avec .html
+  // Sur Apache avec .htaccess, utiliser les URLs propres
+  window.location.href = (isLocal || isGitHubPages) ? 'index.html' : 'projets';
 }
 
 // Connexion avec Google
@@ -198,8 +201,14 @@ async function signInWithGoogle() {
     console.log('DEBUG: Tentative de connexion OAuth avec Google...');
     // URL de redirection dynamique basée sur l'origine actuelle
     const currentOrigin = window.location.origin;
-    const redirectUrl = currentOrigin + '/projets';
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const isGitHubPages = window.location.hostname.includes('github.io') || window.location.hostname === 'live.aintercom.fr';
+    
+    // Sur GitHub Pages, utiliser index.html
+    // Sur Apache avec .htaccess, utiliser /projets
+    const redirectUrl = (isLocal || isGitHubPages) ? currentOrigin + '/index.html' : currentOrigin + '/projets';
     console.log('DEBUG: URL de redirection:', redirectUrl);
+    console.log('DEBUG: Environnement détecté - Local:', isLocal, 'GitHub Pages:', isGitHubPages);
     
     const { data, error } = await supabaseClient.auth.signInWithOAuth({
       provider: 'google',
@@ -233,7 +242,11 @@ async function checkAuth() {
     if (session && session.user) {
       // Déjà connecté, rediriger vers le sélecteur de projets
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      window.location.href = isLocal ? 'index.html' : 'projets';
+      const isGitHubPages = window.location.hostname.includes('github.io') || window.location.hostname === 'live.aintercom.fr';
+      
+      // Sur GitHub Pages, utiliser les URLs avec .html
+      // Sur Apache avec .htaccess, utiliser les URLs propres
+      window.location.href = (isLocal || isGitHubPages) ? 'index.html' : 'projets';
     }
   } catch (error) {
     console.error('❌ Erreur de vérification d\'authentification:', error);
