@@ -40,7 +40,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 
 /* ── LAYOUT ── */
-#page-home{display:none!important}
+#page-home{display:none}
 #app{display:flex;flex-direction:column;height:100vh}
 #hdr{height:52px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;padding:0 16px;z-index:100;flex-shrink:0}
 #body{display:flex;flex:1;overflow:hidden}
@@ -77,6 +77,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 /* ── NAV ── */
 .nav-section{font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.12em;padding:8px 8px 4px;margin-top:6px}
 .nav-btn{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:var(--r-sm);font-size:13px;font-weight:600;color:var(--tx2);cursor:pointer;transition:var(--tr);background:transparent;border:none;width:100%;text-align:left;font-family:var(--font)}
+.nav-btn.drag-over{background:var(--accent-glow);border:1px dashed var(--accent)}
 .nav-btn:hover{background:var(--bg3);color:var(--tx)}
 .nav-btn.active{background:var(--accent-glow);color:var(--accent);font-weight:700;border-left:2px solid var(--accent);padding-left:6px}
 .nav-btn i{width:14px;text-align:center;font-size:11px}
@@ -166,11 +167,14 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 .live-dot::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--danger);animation:blink .8s infinite}
 
 /* ── CONDUCTEUR LINES ── */
-.run-row{display:grid;grid-template-columns:44px 68px 52px 1fr 80px 72px 68px 68px 60px 90px;align-items:center;gap:6px;padding:9px 12px;border-bottom:1px solid var(--border);transition:var(--tr)}
+.run-row{display:grid;grid-template-columns:20px 44px 68px 52px 1fr 80px 72px 68px 68px 60px 90px;align-items:center;gap:6px;padding:9px 12px;border-bottom:1px solid var(--border);transition:var(--tr)}
+.run-row.drag-over{background:var(--accent-glow);border-top:2px solid var(--accent)}
+.run-row[draggable]{cursor:default}
+.run-drag-handle{cursor:grab;color:var(--tx3);font-size:12px;display:flex;align-items:center;justify-content:center}
 .run-row:hover{background:var(--bg3)}
 .run-row.live-row{background:rgba(37,99,235,.06);border-left:3px solid var(--accent)}
 .run-row.done-row{opacity:.4}
-.run-hdr{display:grid;grid-template-columns:44px 68px 52px 1fr 80px 72px 68px 68px 60px 90px;gap:6px;padding:7px 12px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.run-hdr{display:grid;grid-template-columns:20px 44px 68px 52px 1fr 80px 72px 68px 68px 60px 90px;gap:6px;padding:7px 12px;background:var(--bg3);border-bottom:1px solid var(--border)}
 
 /* ── CREW ORG ── */
 .org-wrap{display:flex;flex-direction:column;align-items:center;gap:0;overflow-x:auto;padding-bottom:20px}
@@ -264,7 +268,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 
 /* ── PRINT ── */
 @media print{
-  #app,#page-home{display:none!important}
+  #app,#page-home{display:none}
   #print-zone{display:block!important}
 }
 #print-zone{display:none}
@@ -296,7 +300,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
   .cw-now-title { font-size: 16px; }
   .cw-now-timer { font-size: 32px; }
   .cw-big { font-size: 24px; }
-  .run-row, .run-hdr { grid-template-columns: 36px 56px 42px 1fr 70px 62px 58px 58px 50px 76px; gap: 3px; padding: 6px 8px; }
+  .run-row, .run-hdr { grid-template-columns: 16px 36px 56px 42px 1fr 60px 52px 52px 48px 50px 70px; gap: 2px; padding: 6px 6px; }
   .modal { width: 95vw; padding: 16px; }
   .modal-lg { width: 98vw; }
   .modal-xl { width: 98vw; }
@@ -521,14 +525,14 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
     <!-- NAV -->
     <nav id="nav">
       <div class="nav-section">Navigation</div>
-      <button class="nav-btn active" onclick="switchTab('cockpit',this)"><i class="fas fa-gauge-high"></i>Cockpit</button>
-      <button class="nav-btn" onclick="switchTab('conducteur',this)"><i class="fas fa-film"></i>Conducteur</button>
-      <button class="nav-btn" onclick="switchTab('postes',this)"><i class="fas fa-tags"></i>Postes</button>
-      <button class="nav-btn" onclick="switchTab('staff',this)"><i class="fas fa-users"></i>Staff</button>
-      <button class="nav-btn" onclick="switchTab('matos',this)"><i class="fas fa-walkie-talkie"></i>Matos</button>
+      <button class="nav-btn active" draggable="true" ondragstart="navDragStart(event)" ondragover="navDragOver(event)" ondrop="navDrop(event)" ondragend="navDragEnd(event)" onclick="switchTab('cockpit',this)"><i class="fas fa-gauge-high"></i>Cockpit</button>
+      <button class="nav-btn" draggable="true" ondragstart="navDragStart(event)" ondragover="navDragOver(event)" ondrop="navDrop(event)" ondragend="navDragEnd(event)" onclick="switchTab('conducteur',this)"><i class="fas fa-film"></i>Conducteur</button>
+      <button class="nav-btn" draggable="true" ondragstart="navDragStart(event)" ondragover="navDragOver(event)" ondrop="navDrop(event)" ondragend="navDragEnd(event)" onclick="switchTab('postes',this)"><i class="fas fa-tags"></i>Postes</button>
+      <button class="nav-btn" draggable="true" ondragstart="navDragStart(event)" ondragover="navDragOver(event)" ondrop="navDrop(event)" ondragend="navDragEnd(event)" onclick="switchTab('staff',this)"><i class="fas fa-users"></i>Staff</button>
+      <button class="nav-btn" draggable="true" ondragstart="navDragStart(event)" ondragover="navDragOver(event)" ondrop="navDrop(event)" ondragend="navDragEnd(event)" onclick="switchTab('matos',this)"><i class="fas fa-walkie-talkie"></i>Matos</button>
       <div class="nav-section">Outils</div>
-      <button class="nav-btn" onclick="switchTab('meteo',this)"><i class="fas fa-cloud-sun"></i>Météo</button>
-      <button class="nav-btn" onclick="switchTab('budget',this)"><i class="fas fa-euro-sign"></i>Budget</button>
+      <button class="nav-btn" draggable="true" ondragstart="navDragStart(event)" ondragover="navDragOver(event)" ondrop="navDrop(event)" ondragend="navDragEnd(event)" onclick="switchTab('meteo',this)"><i class="fas fa-cloud-sun"></i>Météo</button>
+      <button class="nav-btn" draggable="true" ondragstart="navDragStart(event)" ondragover="navDragOver(event)" ondrop="navDrop(event)" ondragend="navDragEnd(event)" onclick="switchTab('budget',this)"><i class="fas fa-euro-sign"></i>Budget</button>
       <button class="nav-btn" onclick="switchTab('tech',this)" style="position:relative"><i class="fas fa-shield-halved"></i>Tech & Sécu<span class="nav-badge" id="nav-inc-badge" style="display:none">0</span></button>
       <div style="padding:6px;text-align:center;margin-top:auto">
         <div style="font-size:9px;color:var(--tx3);font-weight:600">Auto-save</div>
@@ -580,11 +584,12 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
             </div>
           </div>
           <div class="cw" style="background:var(--bg3)">
-            <div class="cw-label">⏱ Timer</div>
+            <div class="cw-label">⏱ Timer show</div>
             <div class="cw-big" id="cw-global-timer" style="color:var(--accent)">00:00:00</div>
-            <div style="display:flex;gap:5px;margin-top:10px">
-              <button class="btn btn-ghost btn-sm" id="gt-btn" onclick="gtToggle()"><i class="fas fa-play"></i></button>
-              <button class="btn btn-ghost btn-sm" onclick="gtReset()"><i class="fas fa-rotate-left"></i></button>
+            <div style="font-size:9px;color:var(--tx3);margin-top:2px">Durée depuis démarrage</div>
+            <div style="display:flex;gap:5px;margin-top:8px">
+              <button class="btn btn-ghost btn-sm" id="gt-btn" onclick="gtToggle()" title="Démarrer/Pauser le timer show"><i class="fas fa-play"></i></button>
+              <button class="btn btn-ghost btn-sm" onclick="gtReset()" title="Reset"><i class="fas fa-rotate-left"></i></button>
             </div>
           </div>
           <div class="cw" style="background:var(--bg3);text-align:center">
@@ -664,14 +669,27 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
             <button class="btn btn-ghost btn-sm" onclick="printConducteur()"><i class="fas fa-print"></i></button>
           </div>
         </div>
-        <!-- Delay banner -->
-        <div id="run-delay-banner" style="display:none;background:var(--warning-bg);border:1px solid var(--warning);border-radius:var(--r-sm);padding:8px 14px;margin-bottom:12px;display:none;align-items:center;gap:10px">
-          <i class="fas fa-clock" style="color:var(--warning)"></i>
-          <span style="font-size:12px;font-weight:700;color:var(--warning)">Retard accumulé : <span id="run-delay-val">0 min</span></span>
-          <button class="btn btn-ghost btn-sm" onclick="resetDelay()" style="margin-left:auto">Réinitialiser</button>
+        <!-- Barre de timing -->
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase">Fin prévue</span>
+            <span style="font-family:var(--mono);font-size:16px;font-weight:800;color:var(--tx)" id="run-end-planned">—</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px" id="run-delay-block" style="display:none">
+            <span style="font-size:10px;font-weight:800;color:var(--warning);text-transform:uppercase">⚠ Retard</span>
+            <span style="font-family:var(--mono);font-size:16px;font-weight:800;color:var(--warning)" id="run-delay-val">0 min</span>
+            <span style="font-size:10px;color:var(--tx3)">→ Fin estimée</span>
+            <span style="font-family:var(--mono);font-size:16px;font-weight:800;color:var(--danger)" id="run-end-estimated">—</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-left:auto">
+            <span style="font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase">Durée totale</span>
+            <span style="font-family:var(--mono);font-size:14px;font-weight:700;color:var(--accent)" id="run-total-dur">—</span>
+            <button class="btn btn-ghost btn-sm" onclick="resetDelay()" title="Reset retard"><i class="fas fa-rotate-left" style="font-size:9px"></i></button>
+          </div>
         </div>
         <div class="tbl-wrap">
           <div class="run-hdr">
+            <div></div>
             <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase;text-align:center">LIVE</div>
             <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">HEURE</div>
             <div style="font-size:9px;font-weight:800;color:var(--tx3);text-transform:uppercase">DUR.</div>
@@ -713,7 +731,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
             <select id="staff-filter-poste" style="width:130px" onchange="renderStaff()">
               <option value="">Tous les postes</option>
             </select>
-            <button class="btn btn-primary btn-sm" onclick="editingStaffId=-1;clearStaffPhoto();document.getElementById('staff-modal-title').textContent='Ajouter un membre';document.getElementById('staff-save-btn').innerHTML='<i class=\"fas fa-plus\"></i> Ajouter';['st-prenom','st-nom','st-tel','st-notes'].forEach(i=>{const e=document.getElementById(i);if(e)e.value=''});populatePosteSelects();openModal('modal-add-staff')"><i class="fas fa-plus"></i> Ajouter</button>
+            <button class="btn btn-primary btn-sm" onclick="openAddStaffModal()"><i class="fas fa-plus"></i> Ajouter</button>
           </div>
         </div>
         <div id="staff-grid" class="g-auto"></div>
@@ -1503,17 +1521,49 @@ function startClock(){
   function tick(){
     const now=new Date();
     const hms=now.toLocaleTimeString('fr-FR');
-    const dateShort=now.toLocaleDateString('fr-FR',{weekday:'short',day:'2-digit',month:'short',year:'numeric'}).toUpperCase();
+    const hm=now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    const dateShort=now.toLocaleDateString('fr-FR',{weekday:'short',day:'2-digit',month:'short'}).toUpperCase();
     const dateLong=now.toLocaleDateString('fr-FR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}).toUpperCase();
-    // Header
+    // Header + Cockpit
     const hdrClock=document.getElementById('hdr-clock');if(hdrClock)hdrClock.textContent=hms;
     const hdrDate=document.getElementById('hdr-date');if(hdrDate)hdrDate.textContent=dateShort;
-    // Cockpit
     const cpClock=document.getElementById('cockpit-clock');if(cpClock)cpClock.textContent=hms;
     const cpDate=document.getElementById('cockpit-date');if(cpDate)cpDate.textContent=dateLong;
-    // Timers
+    // Timer global (show elapsed depuis gtToggle)
     if(S.globalTimer.running){S.globalTimer.elapsed++;const gt=document.getElementById('cw-global-timer');if(gt)gt.textContent=fmtTime(S.globalTimer.elapsed)}
-    S.sequences.forEach((s,i)=>{if(s.active&&!s.paused){s.elapsed++;const el=document.getElementById('seq-chrono-'+i);if(el)el.textContent=fmtSec(s.elapsed);const ct=document.getElementById('cw-now-timer');if(ct)ct.textContent=fmtSec(s.elapsed)}});
+    // Sequences : chrono + pause accumulation
+    let anyActive=false;
+    S.sequences.forEach((s,i)=>{
+      if(s.active){
+        anyActive=true;
+        if(!s.paused){
+          s.elapsed++;
+          const el=document.getElementById('seq-chrono-'+i);if(el)el.textContent=fmtSec(s.elapsed);
+          const ct=document.getElementById('cw-now-timer');if(ct)ct.textContent=fmtSec(s.elapsed);
+        } else {
+          // Accumule le retard en temps réel
+          s.pauseElapsed=(s.pauseElapsed||0)+1;
+          if(!S.runDelay)S.runDelay=0;
+          S.runDelay++;
+          // Mise à jour live de la barre de retard
+          const dv=document.getElementById('run-delay-val');
+          if(dv)dv.textContent=Math.round(S.runDelay/60)+'min';
+          const planned=document.getElementById('run-end-planned')?.textContent;
+          const ee=document.getElementById('run-end-estimated');
+          if(ee&&planned&&planned!=='—')ee.textContent=addMinutes(planned,S.runDelay/60);
+          const db=document.getElementById('run-delay-block');if(db)db.style.display='flex';
+        }
+      }
+    });
+    // AUTO-TRIGGER À L'HEURE EXACTE
+    if(!anyActive){
+      S.sequences.forEach((s,i)=>{
+        if(!s.done && !s.active && s.autoTrig && s.time && s.time===hm && s.phase===S.runPhase){
+          toggleLive(i);
+          toast('⚡ Auto-trigger : '+s.title,'s');
+        }
+      });
+    }
   }
   tick();
   setInterval(tick,1000);
@@ -1626,11 +1676,15 @@ function getEnvPath(basePath) {
 }
 
 function goHome(){
-  window.location.href = getEnvPath('/');
+  document.getElementById('page-home').style.display='flex';
+  document.getElementById('app').style.display='none';
+  renderHomeEvents();
 }
 
 function goBackToProjects(){
-  window.location.href = getEnvPath('/projets');
+  document.getElementById('page-home').style.display='flex';
+  document.getElementById('app').style.display='none';
+  renderHomeEvents();
 }
 
 function deleteEvent(id){
@@ -1662,9 +1716,14 @@ function useTemplate(id){
 }
 
 function saveEventEdit(){
-  const ev=S.events.find(e=>e.id===S.currentEventId);
-  if(!ev)return;
-  ev.nom=document.getElementById('ee-nom').value;
+  let ev=S.events.find(e=>e.id===S.currentEventId);
+  if(!ev){
+    // Créer un événement par défaut si aucun n'existe
+    ev={id:S.currentEventId||'default',nom:'Mon événement',date:'',heure:'',lieu:'',type:'Soirée privée',jauge:'',adresse:'',wifi:'',code:'',statut:'Préparation',created:Date.now()};
+    S.events.push(ev);
+    S.currentEventId=ev.id;
+  }
+  ev.nom=document.getElementById('ee-nom').value||ev.nom;
   ev.date=document.getElementById('ee-date').value;
   ev.heure=document.getElementById('ee-heure').value;
   ev.lieu=document.getElementById('ee-lieu').value;
@@ -1674,9 +1733,11 @@ function saveEventEdit(){
   ev.wifi=document.getElementById('ee-wifi').value;
   ev.code=document.getElementById('ee-code').value;
   closeModal('modal-event-edit');
-  document.getElementById('cockpit-event-sub').textContent=ev.nom+' · '+(ev.lieu||'')+(ev.date?' · '+new Date(ev.date+'T12:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}):'');
+  updateEventDetails();
+  updateCockpit();
   saveStorage();
-  toast('Événement mis à jour','s');
+  addActivity('Événement modifié : '+ev.nom,'s');
+  toast('Événement mis à jour ✓','s');
 }
 
 // ═══════════════════════════════════════════
@@ -1717,6 +1778,23 @@ function toggleTheme(){
 // ═══════════════════════════════════════════
 // TABS
 // ═══════════════════════════════════════════
+// ── NAV DRAG TO REORDER ──
+let navDragSrc=null;
+function navDragStart(e){navDragSrc=e.currentTarget;e.dataTransfer.effectAllowed='move';e.currentTarget.style.opacity='.5';}
+function navDragOver(e){e.preventDefault();e.dataTransfer.dropEffect='move';document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('drag-over'));e.currentTarget.classList.add('drag-over');return false;}
+function navDragEnd(e){e.currentTarget.style.opacity='';document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('drag-over'));}
+function navDrop(e){
+  e.stopPropagation();
+  const target=e.currentTarget;
+  if(navDragSrc===target)return;
+  const nav=document.getElementById('nav');
+  const btns=[...nav.querySelectorAll('.nav-btn')];
+  const si=btns.indexOf(navDragSrc);const ti=btns.indexOf(target);
+  if(si<ti)target.after(navDragSrc);else target.before(navDragSrc);
+  navDragSrc.style.opacity='';
+  return false;
+}
+
 function toggleNav(){
   const n=document.getElementById('nav');
   const o=document.getElementById('nav-overlay');
@@ -1754,6 +1832,7 @@ function setRunPhase(p,btn){
 
   if(btn)btn.classList.add('active');
   renderRun();
+  updateRunTimingBar();
   saveStorage();
 }
 
@@ -1790,7 +1869,7 @@ function updateCockpit(){
   }
   // Event name in banner
   const evName=document.getElementById('cockpit-event-name');
-  if(evName){const ev=S.events.find(e=>e.id===S.currentEventId);evName.textContent=ev?ev.nom:'— Événement —';}
+  if(evName){const ev=S.events.find(e=>e.id===S.currentEventId)||S.events[0];evName.textContent=ev?ev.nom:'— Événement —';if(ev&&!S.events.find(e=>e.id===S.currentEventId))S.currentEventId=ev.id;}
   // Matos list in cockpit
   const cwMatos=document.getElementById('cw-matos-list');
   if(cwMatos){
@@ -1814,7 +1893,7 @@ function updateCockpit(){
     const li=filtered.findIndex(s=>s.active);
     const next=filtered[li+1];
     if(next){document.getElementById('cw-next-title').textContent=next.title;document.getElementById('cw-next-time').textContent=next.time;document.getElementById('cw-next-resp').textContent=next.resp||'—';}
-    else{document.getElementById('cw-next-title').textContent='Fin de programme';document.getElementById('cw-next-time').textContent='—';document.getElementById('cw-next-resp').textContent='—';}
+    else{document.getElementById('cw-next-title').textContent='— Fin du programme —';document.getElementById('cw-next-time').textContent='—';document.getElementById('cw-next-resp').textContent='—';}
   } else {
     document.getElementById('live-dot-label').textContent='EN ATTENTE';
     document.getElementById('live-dot-label').style.color='var(--tx3)';
@@ -1826,15 +1905,15 @@ function updateCockpit(){
 
 // updateEventDetails — bannière cockpit
 function updateEventDetails() {
-  const ev = S.events.find(e => e.id === S.currentEventId);
+  let ev = S.events.find(e => e.id === S.currentEventId)||S.events[0];
   if (!ev) return;
+  if(!S.events.find(e=>e.id===S.currentEventId)&&ev)S.currentEventId=ev.id;
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  set('cockpit-event-name', ev.nom||'— Événement —');
   set('cockpit-event-type', ev.type||'—');
-  set('cockpit-event-date', ev.date?new Date(ev.date+'T12:00').toLocaleDateString('fr-FR',{weekday:'short',day:'2-digit',month:'short',year:'2-digit'}):'—');
-  set('cockpit-event-location', ev.lieu?(ev.lieu.length>22?ev.lieu.slice(0,22)+'…':ev.lieu):'—');
+  set('cockpit-event-date', ev.date?new Date(ev.date+'T12:00').toLocaleDateString('fr-FR',{weekday:'short',day:'2-digit',month:'short'}):'—');
+  set('cockpit-event-location', ev.lieu?(ev.lieu.length>20?ev.lieu.slice(0,20)+'…':ev.lieu):'—');
   set('cockpit-event-capacity', ev.jauge?ev.jauge+' pers.':'—');
-  const nameEl=document.getElementById('cockpit-event-name');
-  if(nameEl)nameEl.textContent=ev.nom||'— Événement —';
 }
 function toggleEventDetails(){} // kept for compat
 
@@ -1848,14 +1927,7 @@ function renderRun(){
     body.innerHTML=`<div class="empty"><i class="fas fa-film"></i><p>Aucune séquence pour cette phase — Cliquez sur Ajouter</p></div>`;
     return;
   }
-  // Delay tracking
-  let totalDelay=S.runDelay||0;
-  const delayBanner=document.getElementById('run-delay-banner');
-  if(delayBanner){
-    delayBanner.style.display=totalDelay>0?'flex':'none';
-    const dv=document.getElementById('run-delay-val');
-    if(dv)dv.textContent=totalDelay+'s';
-  }
+  updateRunTimingBar();
   body.innerHTML=filtered.map(s=>{
     const ri=S.sequences.indexOf(s);
     const sonOk=s.sonOn;const lumOk=s.lumOn;const vidOk=s.vidOn;
@@ -1863,7 +1935,8 @@ function renderRun(){
     const delayS=s.delay||0;
     const delayDisp=delayS>0?`<span style="font-family:var(--mono);font-size:11px;color:var(--warning);font-weight:700">+${delayS}s</span>`:`<span style="font-size:11px;color:var(--tx3)">—</span>`;
     const isPaused=s.paused;
-    return `<div class="run-row ${s.active?'live-row':''} ${s.done?'done-row':''}">
+    return `<div class="run-row ${s.active?'live-row':''} ${s.done?'done-row':''}" draggable="true" data-ri="${ri}" ondragstart="seqDragStart(event,${ri})" ondragover="seqDragOver(event)" ondrop="seqDrop(event,${ri})" ondragend="seqDragEnd(event)">
+      <div class="run-drag-handle"><i class="fas fa-grip-vertical"></i></div>
       <div style="display:flex;justify-content:center">
         <button onclick="toggleLive(${ri})" style="width:34px;height:34px;border-radius:7px;background:${s.active?'var(--danger)':'var(--accent)'};color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;transition:var(--tr)">
           <i class="fas ${s.active?'fa-stop':'fa-play'}" style="${!s.active?'margin-left:2px':''}"></i>
@@ -1895,6 +1968,24 @@ function renderRun(){
   }).join('');
 }
 
+// ── CONDUCTEUR DRAG TO REORDER ──
+let seqDragIdx=null;
+function seqDragStart(e,ri){seqDragIdx=ri;e.dataTransfer.effectAllowed='move';setTimeout(()=>e.target.style.opacity='.4',0);}
+function seqDragOver(e){e.preventDefault();e.dataTransfer.dropEffect='move';document.querySelectorAll('.run-row').forEach(r=>r.classList.remove('drag-over'));e.currentTarget.classList.add('drag-over');}
+function seqDragEnd(e){e.target.style.opacity='';document.querySelectorAll('.run-row').forEach(r=>r.classList.remove('drag-over'));}
+function seqDrop(e,targetRi){
+  e.preventDefault();
+  if(seqDragIdx===null||seqDragIdx===targetRi)return;
+  const arr=S.sequences.filter(s=>s.phase===S.runPhase);
+  const allIdxSrc=S.sequences.indexOf(arr[seqDragIdx]);
+  const allIdxTgt=S.sequences.indexOf(arr[targetRi]);
+  if(allIdxSrc<0||allIdxTgt<0)return;
+  const [moved]=S.sequences.splice(allIdxSrc,1);
+  S.sequences.splice(allIdxTgt,0,moved);
+  seqDragIdx=null;
+  renderRun();saveStorage();
+}
+
 function toggleCue(ri,type){const s=S.sequences[ri];if(!s)return;if(type==='son')s.sonOn=!s.sonOn;if(type==='lum')s.lumOn=!s.lumOn;if(type==='vid')s.vidOn=!s.vidOn;renderRun();saveStorage();}
 
 function toggleLive(ri){
@@ -1923,9 +2014,18 @@ function markDone(ri){S.sequences[ri].done=!S.sequences[ri].done;S.sequences[ri]
 function pauseSeq(ri){
   const s=S.sequences[ri];if(!s||!s.active)return;
   s.paused=!s.paused;
+  if(!s.paused&&s.pauseElapsed){
+    // En reprenant, convertir les secondes de pause en retard sur ce séquence
+    s.delay=(s.delay||0)+s.pauseElapsed;
+    s.pauseElapsed=0;
+    updateRunTimingBar();
+    toast('▶ Reprise — Retard : +'+Math.round(s.delay/60)+'min','i');
+  } else {
+    toast('⏸ Pause — retard en cours...','i');
+  }
   const btn=document.getElementById('run-pause-btn');
   if(btn){btn.innerHTML=s.paused?'<i class="fas fa-play"></i> Reprendre':'<i class="fas fa-pause"></i> Pause';btn.className=s.paused?'btn btn-warning btn-sm':'btn btn-ghost btn-sm';}
-  renderRun();toast(s.paused?'⏸ Pause':'▶ Reprise','i');
+  renderRun();
 }
 
 // Override tick to respect pause
@@ -1947,7 +2047,41 @@ function addDelay(ri){
   addActivity('Délai +'+mins+'s : '+s.title,'i');
 }
 
-function resetDelay(){S.runDelay=0;S.sequences.forEach(s=>s.delay=0);renderRun();saveStorage();toast('Délais réinitialisés','i');}
+function resetDelay(){S.runDelay=0;S.sequences.forEach(s=>{s.delay=0;s.pauseElapsed=0;});renderRun();updateRunTimingBar();saveStorage();toast('Retard réinitialisé','i');}
+
+function addMinutes(timeStr, mins){
+  if(!timeStr||!timeStr.includes(':'))return'—';
+  const [h,m]=timeStr.split(':').map(Number);
+  const total=h*60+m+Math.round(mins);
+  return String(Math.floor(total/60)%24).padStart(2,'0')+':'+String(total%60).padStart(2,'0');
+}
+
+function updateRunTimingBar(){
+  const seqs=S.sequences.filter(s=>s.phase===S.runPhase);
+  const el=(id)=>document.getElementById(id);
+  if(!seqs.length){
+    if(el('run-end-planned'))el('run-end-planned').textContent='—';
+    if(el('run-total-dur'))el('run-total-dur').textContent='—';
+    return;
+  }
+  // Durée totale
+  const totalMin=seqs.reduce((a,s)=>a+(s.dur||0),0);
+  if(el('run-total-dur'))el('run-total-dur').textContent=totalMin+'min';
+  // Heure de fin prévue = heure de début première séq + durée totale
+  const firstTime=seqs[0].time||'00:00';
+  const planned=addMinutes(firstTime,totalMin);
+  if(el('run-end-planned'))el('run-end-planned').textContent=planned;
+  // Retard
+  const delayMin=(S.runDelay||0)/60;
+  const delayBlock=el('run-delay-block');
+  if(delayMin>0){
+    if(el('run-delay-val'))el('run-delay-val').textContent=Math.round(delayMin)+'min';
+    if(el('run-end-estimated'))el('run-end-estimated').textContent=addMinutes(planned,delayMin);
+    if(delayBlock)delayBlock.style.display='flex';
+  } else {
+    if(delayBlock)delayBlock.style.display='none';
+  }
+}
 
 function deleteSeq(ri){if(!confirm('Supprimer cette séquence ?'))return;S.sequences.splice(ri,1);renderRun();addActivity('Séquence supprimée','i');saveStorage();toast('Séquence supprimée','i');}
 
@@ -2067,62 +2201,35 @@ function selectPosteColor(el, color) {
 function renderPostes() {
   const grid = document.getElementById('postes-grid');
   if (!S.postes || !S.postes.length) {
-    grid.innerHTML = '<div class="empty"><i class="fas fa-tags"></i><p>Aucun poste — Créez vos premiers postes (Sécurité, Artiste, Staff...)</p></div>';
+    grid.innerHTML = '<div class="empty"><i class="fas fa-tags"></i><p>Aucun poste — Créez vos premiers postes</p></div>';
     return;
   }
-  const sortVal = document.getElementById('postes-sort')?.value || 'cat';
+  const sortVal = document.getElementById('postes-sort')?.value || 'nom';
   let postes = [...S.postes];
-  if (sortVal === 'nom') postes.sort((a,b)=>a.nom.localeCompare(b.nom));
-  else if (sortVal === 'count') postes.sort((a,b)=>(S.staff||[]).filter(s=>s.posteId===b.id).length-(S.staff||[]).filter(s=>s.posteId===a.id).length);
-  else if (sortVal === 'color') postes.sort((a,b)=>a.color.localeCompare(b.color));
-  else { // cat grouping
-    postes.sort((a,b)=>{const ca=a.cat||'Autre',cb=b.cat||'Autre';const ci=POSTE_CATEGORIES.indexOf(ca),cj=POSTE_CATEGORIES.indexOf(cb);return ci-cj||a.nom.localeCompare(b.nom);});
-  }
-  if (sortVal === 'cat') {
-    // Group by category
-    const groups = {};
-    postes.forEach(p=>{const c=p.cat||'Autre';if(!groups[c])groups[c]=[];groups[c].push(p);});
-    grid.innerHTML = Object.entries(groups).map(([cat, items])=>`
-      <div style="grid-column:1/-1;margin-top:10px">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-          <i class="fas ${POSTE_CAT_ICONS[cat]||'fa-circle'}" style="font-size:12px;color:var(--tx3)"></i>
-          <span style="font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.1em">${cat}</span>
-          <div style="flex:1;height:1px;background:var(--border)"></div>
-          <span style="font-size:10px;color:var(--tx3)">${items.length} poste${items.length>1?'s':''}</span>
+  if (sortVal === 'count') postes.sort((a,b)=>(S.staff||[]).filter(s=>s.posteId===b.id).length-(S.staff||[]).filter(s=>s.posteId===a.id).length);
+  else if (sortVal === 'cat') postes.sort((a,b)=>(a.cat||'Autre').localeCompare(b.cat||'Autre')||a.nom.localeCompare(b.nom));
+  else postes.sort((a,b)=>a.nom.localeCompare(b.nom));
+  grid.innerHTML = postes.map(p=>{
+    const count = (S.staff||[]).filter(s=>s.posteId===p.id).length;
+    const icon = POSTE_CAT_ICONS[p.cat||'Autre']||'fa-circle';
+    return `<div class="poste-card" style="border-left-color:${p.color}">
+      <div style="width:40px;height:40px;border-radius:10px;background:${p.color}20;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <i class="fas ${icon}" style="color:${p.color};font-size:16px"></i>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:6px">
+          <span class="poste-nom">${p.nom}</span>
+          <span style="width:8px;height:8px;border-radius:50%;background:${p.color};flex-shrink:0;display:inline-block"></span>
         </div>
+        <div style="font-size:11px;color:var(--tx3);margin-top:2px">${p.cat||''} · ${count} membre${count!==1?'s':''}</div>
       </div>
-      ${items.map(p=>posteCardHTML(p)).join('')}
-    `).join('');
-  } else {
-    grid.innerHTML = postes.map(p=>posteCardHTML(p)).join('');
-  }
+      <div class="poste-actions">
+        <button onclick="editPoste(${p.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-pen" style="font-size:10px"></i></button>
+        <button onclick="deletePoste(${p.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
+      </div>
+    </div>`;
+  }).join('');
   populatePosteSelects();
-}
-
-function posteCardHTML(p) {
-  const count = (S.staff || []).filter(s => s.posteId === p.id).length;
-  const icon = POSTE_CAT_ICONS[p.cat||'Autre'] || 'fa-circle';
-  const pct = count > 0 ? Math.min(count * 20, 100) : 0;
-  return `<div class="poste-card" style="--pc:${p.color}">
-    <div style="width:44px;height:44px;border-radius:10px;background:${p.color}22;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid ${p.color}55">
-      <i class="fas ${icon}" style="color:${p.color};font-size:18px"></i>
-    </div>
-    <div style="flex:1;min-width:0">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
-        <div class="poste-nom">${p.nom}</div>
-        <div style="width:10px;height:10px;border-radius:50%;background:${p.color};flex-shrink:0"></div>
-      </div>
-      <div style="font-size:11px;color:var(--tx3);margin-bottom:6px">${p.cat||'Autre'}</div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <div style="flex:1;height:3px;background:var(--bg4);border-radius:3px;overflow:hidden"><div style="width:${Math.min(count*15,100)}%;height:100%;background:${p.color};border-radius:3px;transition:.4s ease"></div></div>
-        <div class="poste-count">${count} membre${count!==1?'s':''}</div>
-      </div>
-    </div>
-    <div class="poste-actions">
-      <button onclick="editPoste(${p.id})" class="btn btn-ghost btn-sm btn-icon" title="Modifier"><i class="fas fa-pen" style="font-size:10px"></i></button>
-      <button onclick="deletePoste(${p.id})" class="btn btn-ghost btn-sm btn-icon" title="Supprimer"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
-    </div>
-  </div>`;
 }
 
 function savePoste() {
@@ -2185,6 +2292,17 @@ function populatePosteSelects() {
 // STAFF
 // ═══════════════════════════════════════════
 let editingStaffId = -1;
+function openAddStaffModal(){
+  editingStaffId=-1;
+  staffPhotoData=null;
+  clearStaffPhoto();
+  document.getElementById('staff-modal-title').textContent='Ajouter un membre';
+  document.getElementById('staff-save-btn').innerHTML='<i class="fas fa-plus"></i> Ajouter';
+  ['st-prenom','st-nom','st-tel','st-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  populatePosteSelects();
+  document.getElementById('st-poste').value='';
+  openModal('modal-add-staff');
+}
 
 function renderStaff() {
   if (!S.staff) S.staff = [];
@@ -2276,7 +2394,7 @@ function saveStaff() {
     editingStaffId = -1;
   }
   closeModal('modal-add-staff');
-  renderStaff(); renderPostes(); renderMatorola(); renderHollyland(); renderMegaphone(); updateMatosStats(); saveStorage();
+  renderStaff(); renderPostes(); renderMatorola(); renderHollyland(); renderMegaphone(); updateMatosStats(); updateCockpit(); saveStorage();
 }
 
 function editStaff(id) {
@@ -2308,7 +2426,7 @@ function deleteStaff(id) {
     if (S.megaphone.assigneA === name) S.megaphone.assigneA = '';
   }
   S.staff = S.staff.filter(s => s.id !== id);
-  renderStaff(); renderPostes(); renderMatorola(); renderHollyland(); renderMegaphone(); updateMatosStats(); saveStorage();
+  renderStaff(); renderPostes(); renderMatorola(); renderHollyland(); renderMegaphone(); updateMatosStats(); updateCockpit(); saveStorage();
   toast('Membre supprimé', 'i');
 }
 
@@ -2474,7 +2592,7 @@ function renderMatorola(){
           </div>`
       }
       <div style="display:flex;gap:6px">
-        <select style="flex:2;font-size:11px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:5px 7px;color:var(--tx);font-family:var(--font)" onchange="S.motorola[${i}].assigneA=this.value;renderMatorola();renderStaff();updateMatosStats();saveStorage()">
+        <select style="flex:2;font-size:11px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:5px 7px;color:var(--tx);font-family:var(--font)" onchange="S.motorola[${i}].assigneA=this.value;renderMatorola();renderStaff();updateMatosStats();updateCockpit();saveStorage()">
           ${matosStaffOpts(m.assigneA)}
         </select>
         <select style="flex:1;font-size:11px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:5px 7px;color:var(--accent);font-family:var(--mono);font-weight:700" onchange="S.motorola[${i}].canal=parseInt(this.value);renderMatorola();saveStorage()">
@@ -2532,7 +2650,7 @@ function renderHollyland(){
             <span style="font-size:11px;color:var(--tx3)">Non assigné</span>
           </div>`
       }
-      <select style="width:100%;font-size:11px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 8px;color:var(--tx);font-family:var(--font)" onchange="S.hollyland[${i}].assigneA=this.value;renderHollyland();renderStaff();updateMatosStats();saveStorage()">
+      <select style="width:100%;font-size:11px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 8px;color:var(--tx);font-family:var(--font)" onchange="S.hollyland[${i}].assigneA=this.value;renderHollyland();renderStaff();updateMatosStats();updateCockpit();saveStorage()">
         ${matosStaffOpts(h.assigneA)}
       </select>
     </div>`;
@@ -2559,7 +2677,7 @@ function renderMegaphone(){
         </div>`
       :`<div style="border:1px dashed var(--border2);border-radius:var(--r-sm);padding:8px 10px;margin-bottom:8px;text-align:center"><span style="font-size:11px;color:var(--tx3)">Non assigné</span></div>`
     }
-    <select style="width:100%;font-size:11px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 8px;color:var(--tx);font-family:var(--font)" onchange="S.megaphone.assigneA=this.value;renderMegaphone();renderStaff();updateMatosStats();saveStorage()">
+    <select style="width:100%;font-size:11px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 8px;color:var(--tx);font-family:var(--font)" onchange="S.megaphone.assigneA=this.value;renderMegaphone();renderStaff();updateMatosStats();updateCockpit();saveStorage()">
       ${matosStaffOpts(S.megaphone.assigneA)}
     </select>
   </div>`;
@@ -2781,7 +2899,7 @@ function renderBudget(){
     const dispReel=isHT?fmt(reelHT):fmt(reelTTC);
     const color=isRec?'var(--success)':'var(--danger)';
     return `<tr>
-      <td><span class="badge" style="background:${isRec?'rgba(22,163,74,.12)':'rgba(220,38,38,.1)';};color:${color};font-size:10px">${l.cat}</span></td>
+      <td><span class="badge" style="background:${isRec?'rgba(22,163,74,.12)':'rgba(220,38,38,.1)'};color:${color};font-size:10px">${l.cat}</span></td>
       <td><div style="font-weight:700;font-size:13px">${l.desc}</div>${l.note?`<div style="font-size:10px;color:var(--tx3)">${l.note}</div>`:''}</td>
       <td style="color:var(--tx2);font-size:11px">${l.fourn||'—'}</td>
       <td style="font-family:var(--mono);color:var(--tx2)">${fmt(prevuHT)}</td>
@@ -3298,28 +3416,23 @@ document.addEventListener('click', e => {
 
 // ── INIT AUTH ──
 async function initAuth() {
-  // Essayer Supabase
+  // 1. Supabase
   try {
     sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     const { data: { session } } = await sb.auth.getSession();
     if (session?.user) {
       currentUser = buildUser(session.user);
-      sb.auth.onAuthStateChange((event) => {
-        if (event === 'SIGNED_OUT') { window.location.href = getEnvPath('/login'); }
-      });
       return true;
     }
-  } catch(e) { console.warn('Supabase:', e); }
-
-  // Fallback session locale (mode local depuis login.html)
-  const local = localStorage.getItem('aintercom_session');
-  if (local) {
-    try { currentUser = JSON.parse(local); return true; } catch(e) {}
-  }
-
-  // Pas de session → redirect login
-  window.location.href = getEnvPath('/login');
-  return false;
+  } catch(e) {}
+  // 2. Session locale
+  try {
+    const local = localStorage.getItem('aintercom_session');
+    if (local) { currentUser = JSON.parse(local); return true; }
+  } catch(e) {}
+  // 3. Mode local — jamais de redirect
+  currentUser = { id:'local', name:'Utilisateur', email:'', initials:'U', isLocal:true };
+  return true;
 }
 
 function buildUser(u) {
@@ -3354,7 +3467,7 @@ function updateUserUI() {
 async function logout() {
   if (sb && !currentUser?.isLocal) { try { await sb.auth.signOut(); } catch(e) {} }
   localStorage.removeItem('aintercom_session');
-  window.location.href = getEnvPath('/login');
+  location.reload();
 }
 
 // ── LOAD PROJECT FROM INDEX.HTML ──
