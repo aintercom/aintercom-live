@@ -1,0 +1,32 @@
+# Activation du module de réécriture
+RewriteEngine On
+
+# Redirection de /login vers /login.html
+RewriteRule ^login/?$ login.html [L]
+
+# Redirection de /app vers /app.html
+RewriteRule ^app/?$ app.html [L]
+
+# Redirection de /test-button vers /test-button.html
+RewriteRule ^test-button/?$ test-button.html [L]
+
+# Redirection de l'index
+RewriteRule ^$ index.html [L]
+
+# Compression GZIP pour améliorer les performances
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+# Cache des fichiers statiques
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+</IfModule>
