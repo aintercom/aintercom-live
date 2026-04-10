@@ -162,7 +162,7 @@ async function signInWithGoogle() {
     const { data, error } = await supabaseClient.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'https://live.aintercom.fr/index.html'
+        redirectTo: 'https://live.aintercom.fr/projets'
       }
     });
     
@@ -190,7 +190,7 @@ async function checkAuth() {
     
     if (session && session.user) {
       // Déjà connecté, rediriger vers le sélecteur de projets
-      window.location.href = 'index.html';
+      window.location.href = 'projets';
     }
   } catch (error) {
     console.error('❌ Erreur de vérification d\'authentification:', error);

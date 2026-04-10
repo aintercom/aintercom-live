@@ -294,7 +294,7 @@ async function resolveUser() {
   }
 
   // 3. Pas de session → redirect login
-  window.location.href = 'login.html';
+  window.location.href = 'login';
 }
 
 function buildUser(supaUser) {
@@ -315,7 +315,7 @@ function setupAuthListener() {
   sb.auth.onAuthStateChange((event, session) => {
     if (event === 'SIGNED_OUT') {
       localStorage.removeItem('aintercom_session');
-      window.location.href = 'login.html';
+      window.location.href = 'login';
     }
   });
 }
@@ -367,7 +367,7 @@ async function logout() {
     await sb.auth.signOut();
   }
   localStorage.removeItem('aintercom_session');
-  window.location.href = 'login.html';
+  window.location.href = 'login';
 }
 
 // ═══════════════════════════════════════════
@@ -525,7 +525,7 @@ function renderProjects() {
 }
 
 // ═══════════════════════════════════════════
-// OPEN PROJECT → app.html
+// OPEN PROJECT → /
 // ═══════════════════════════════════════════
 function openProject(index) {
   const project = projects[index];
@@ -536,7 +536,7 @@ function openProject(index) {
     _uid: currentUser?.id || 'local',
     _index: index
   }));
-  window.location.href = 'app.html';
+  window.location.href = '/';
 }
 
 // ═══════════════════════════════════════════

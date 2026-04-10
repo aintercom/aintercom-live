@@ -4,14 +4,14 @@ RewriteEngine On
 # Redirection de /login vers /login.html
 RewriteRule ^login/?$ login.html [L]
 
-# Redirection de /app vers /app.html
-RewriteRule ^app/?$ app.html [L]
+# Redirection de /projets vers /index.html
+RewriteRule ^projets/?$ index.html [L]
 
 # Redirection de /test-button vers /test-button.html
 RewriteRule ^test-button/?$ test-button.html [L]
 
-# Redirection de l'index
-RewriteRule ^$ index.html [L]
+# Redirection de la racine vers /app.html
+RewriteRule ^$ app.html [L]
 
 # Compression GZIP pour améliorer les performances
 <IfModule mod_deflate.c>

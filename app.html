@@ -2499,7 +2499,7 @@ async function initAuth() {
     if (session?.user) {
       currentUser = buildUser(session.user);
       sb.auth.onAuthStateChange((event) => {
-        if (event === 'SIGNED_OUT') { window.location.href = 'login.html'; }
+        if (event === 'SIGNED_OUT') { window.location.href = 'login'; }
       });
       return true;
     }
@@ -2512,7 +2512,7 @@ async function initAuth() {
   }
 
   // Pas de session → redirect login
-  window.location.href = 'login.html';
+  window.location.href = 'login';
   return false;
 }
 
@@ -2541,7 +2541,7 @@ function updateUserUI() {
 async function logout() {
   if (sb && !currentUser?.isLocal) { try { await sb.auth.signOut(); } catch(e) {} }
   localStorage.removeItem('aintercom_session');
-  window.location.href = 'login.html';
+  window.location.href = 'login';
 }
 
 // ── LOAD PROJECT FROM INDEX.HTML ──
