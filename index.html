@@ -555,7 +555,7 @@ function renderProjects() {
 }
 
 // ═══════════════════════════════════════════
-// OPEN PROJECT → /
+// OPEN PROJECT → app.html
 // ═══════════════════════════════════════════
 function openProject(index) {
   const project = projects[index];
@@ -566,7 +566,7 @@ function openProject(index) {
     _uid: currentUser?.id || 'local',
     _index: index
   }));
-  window.location.href = '/';
+  window.location.href = 'app.html';
 }
 
 // ═══════════════════════════════════════════
