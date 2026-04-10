@@ -65,6 +65,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .hdr-retard.ok{background:var(--success-bg);color:var(--success)}
 .hdr-retard.late{background:var(--danger-bg);color:var(--danger)}
 .hdr-spacer{flex:1}
+.hdr-time-container{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
 
 /* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:var(--r-sm);font-size:11px;font-weight:700;letter-spacing:.02em;border:none;cursor:pointer;transition:var(--tr);white-space:nowrap;font-family:var(--font)}
@@ -481,7 +482,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
   <header id="hdr">
     <div class="hdr-logo" onclick="goHome()">AINTERCOM <span>PRO</span></div>
     <div class="hdr-sep"></div>
-    <div>
+    <div class="hdr-time-container">
       <div class="hdr-clock" id="hdr-clock">00:00:00</div>
       <div class="hdr-date" id="hdr-date">-- --- 2026</div>
     </div>
