@@ -2711,11 +2711,11 @@ window.onload = async () => {
   const ok = await initAuth();
   if (!ok) return;
 
-  // Lancer l'interface originale
-  if (_originalOnload) _originalOnload();
-
-  // Appliquer UI utilisateur
+  // Appliquer UI utilisateur IMMÉDIATEMENT
   updateUserUI();
+
+  // Lancer l'interface originale (qui appelle startClock, etc.)
+  if (_originalOnload) _originalOnload();
 
   // Charger le projet sélectionné depuis index.html
   loadProjectFromSession();
@@ -2723,6 +2723,11 @@ window.onload = async () => {
   // Masquer la page home, afficher app directement
   document.getElementById('page-home').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
+
+  // Démarrer l'horloge si elle n'a pas été démarrée
+  if (typeof startClock === 'function') {
+    startClock();
+  }
 
   // Activité
   addActivity('Connecté : ' + (currentUser?.name || currentUser?.email || ''), 's');
