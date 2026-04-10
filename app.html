@@ -546,9 +546,22 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
       <!-- ══ COCKPIT ══ -->
       <section class="tab active" id="tab-cockpit">
         <div class="sec-hdr">
-          <div><div class="sec-title">🎛️ Cockpit</div><div class="sec-sub" id="cockpit-event-sub">Vision globale en temps réel</div></div>
+          <div>
+            <div class="sec-title">🎛️ Cockpit</div>
+            <div class="sec-sub" id="cockpit-event-sub">Vision globale en temps réel</div>
+            <!-- Détails événement améliorés -->
+            <div id="cockpit-event-details" style="margin-top:8px;display:none">
+              <div style="display:flex;gap:12px;flex-wrap:wrap">
+                <span class="badge b-accent" id="cockpit-event-type">—</span>
+                <span class="badge b-neutral" id="cockpit-event-date">—</span>
+                <span class="badge b-neutral" id="cockpit-event-location">—</span>
+                <span class="badge b-neutral" id="cockpit-event-capacity">—</span>
+              </div>
+            </div>
+          </div>
           <div class="sec-actions">
             <button class="btn btn-ghost btn-sm" onclick="openModal('modal-event-edit')"><i class="fas fa-pen"></i> Modifier événement</button>
+            <button class="btn btn-ghost btn-sm" onclick="toggleEventDetails()" id="toggle-event-details-btn"><i class="fas fa-chevron-down"></i> Détails</button>
           </div>
         </div>
 
@@ -698,7 +711,22 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
         <div class="sec-hdr">
           <div><div class="sec-title">📡 Matos</div><div class="sec-sub">Dashboard 360 — Vue complète du matériel</div></div>
           <div class="sec-actions">
-            <button class="btn btn-ghost btn-sm" onclick="openModal('modal-add-matos')"><i class="fas fa-plus"></i> Équipement</button>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+              <select id="matos-filter-type" style="width:120px" onchange="filterMatos()">
+                <option value="">Tous types</option>
+                <option value="talkie">Talkies</option>
+                <option value="casque">Casques</option>
+                <option value="megaphone">Mégaphone</option>
+                <option value="autre">Autres</option>
+              </select>
+              <select id="matos-filter-status" style="width:120px" onchange="filterMatos()">
+                <option value="">Tous statuts</option>
+                <option value="assigned">Assignés</option>
+                <option value="libre">Libres</option>
+              </select>
+              <button class="btn btn-ghost btn-sm" onclick="toggleMatosView()" id="matos-view-toggle"><i class="fas fa-list"></i> Vue liste</button>
+              <button class="btn btn-ghost btn-sm" onclick="openModal('modal-add-matos')"><i class="fas fa-plus"></i> Équipement</button>
+            </div>
           </div>
         </div>
 
@@ -1573,6 +1601,60 @@ function updateCockpit(){
   } else {
     document.getElementById('live-dot-label').textContent='EN ATTENTE';
     document.getElementById('live-dot-label').style.color='var(--tx3)';
+  }
+  
+  // Mettre à jour les détails de l'événement
+  updateEventDetails();
+}
+
+// Fonction pour basculer l'affichage des détails de l'événement
+function toggleEventDetails() {
+  const detailsEl = document.getElementById('cockpit-event-details');
+  const btn = document.getElementById('toggle-event-details-btn');
+  const isVisible = detailsEl.style.display === 'block';
+  
+  if (isVisible) {
+    detailsEl.style.display = 'none';
+    btn.innerHTML = '<i class="fas fa-chevron-down"></i> Détails';
+  } else {
+    detailsEl.style.display = 'block';
+    btn.innerHTML = '<i class="fas fa-chevron-up"></i> Détails';
+    updateEventDetails();
+  }
+}
+
+// Mettre à jour les détails de l'événement
+function updateEventDetails() {
+  const ev = S.events.find(e => e.id === S.currentEventId);
+  if (!ev) return;
+  
+  // Type d'événement
+  const typeEl = document.getElementById('cockpit-event-type');
+  if (typeEl) {
+    typeEl.textContent = ev.type || '—';
+  }
+  
+  // Date
+  const dateEl = document.getElementById('cockpit-event-date');
+  if (dateEl) {
+    if (ev.date) {
+      const date = new Date(ev.date + 'T12:00');
+      dateEl.textContent = date.toLocaleDateString('fr-FR', { weekday: 'short', day: '2-digit', month: 'short' });
+    } else {
+      dateEl.textContent = '—';
+    }
+  }
+  
+  // Lieu
+  const locationEl = document.getElementById('cockpit-event-location');
+  if (locationEl) {
+    locationEl.textContent = ev.lieu ? (ev.lieu.length > 20 ? ev.lieu.substring(0, 20) + '...' : ev.lieu) : '—';
+  }
+  
+  // Capacité
+  const capacityEl = document.getElementById('cockpit-event-capacity');
+  if (capacityEl) {
+    capacityEl.textContent = ev.jauge ? `${ev.jauge} pers.` : '—';
   }
 }
 
@@ -2568,6 +2650,137 @@ function printBudget(){doPrint();}
 // FEEDBACK
 // ═══════════════════════════════════════════
 function submitFeedback(){const t=document.getElementById('fb-text').value;if(!t)return;closeModal('modal-feedback');document.getElementById('fb-text').value='';toast('Merci pour votre suggestion !','s');addActivity('Feedback envoyé','i');}
+
+// ═══════════════════════════════════════════
+// MATOS FILTER & VIEW
+// ═══════════════════════════════════════════
+let matosViewMode = 'grid'; // 'grid' ou 'list'
+
+function filterMatos() {
+  const typeFilter = document.getElementById('matos-filter-type').value;
+  const statusFilter = document.getElementById('matos-filter-status').value;
+  
+  // Filtrer les talkies
+  const motorolaGrid = document.getElementById('motorola-grid');
+  if (motorolaGrid) {
+    const cards = motorolaGrid.querySelectorAll('.matos-card-v2');
+    cards.forEach(card => {
+      const assigned = card.classList.contains('assigned');
+      let show = true;
+      
+      // Filtre par type
+      if (typeFilter === 'talkie') {
+        show = true;
+      } else if (typeFilter === 'casque' || typeFilter === 'megaphone' || typeFilter === 'autre') {
+        show = false;
+      }
+      
+      // Filtre par statut
+      if (statusFilter === 'assigned' && !assigned) show = false;
+      if (statusFilter === 'libre' && assigned) show = false;
+      
+      card.style.display = show ? 'block' : 'none';
+    });
+  }
+  
+  // Filtrer les casques
+  const hollylandGrid = document.getElementById('hollyland-grid');
+  if (hollylandGrid) {
+    const cards = hollylandGrid.querySelectorAll('.matos-card-v2');
+    cards.forEach(card => {
+      const assigned = card.classList.contains('assigned');
+      let show = true;
+      
+      // Filtre par type
+      if (typeFilter === 'casque') {
+        show = true;
+      } else if (typeFilter === 'talkie' || typeFilter === 'megaphone' || typeFilter === 'autre') {
+        show = false;
+      }
+      
+      // Filtre par statut
+      if (statusFilter === 'assigned' && !assigned) show = false;
+      if (statusFilter === 'libre' && assigned) show = false;
+      
+      card.style.display = show ? 'block' : 'none';
+    });
+  }
+  
+  // Filtrer le mégaphone
+  const megaCard = document.getElementById('mega-card');
+  if (megaCard) {
+    const card = megaCard.querySelector('.matos-card-v2');
+    if (card) {
+      const assigned = card.classList.contains('assigned');
+      let show = true;
+      
+      // Filtre par type
+      if (typeFilter === 'megaphone') {
+        show = true;
+      } else if (typeFilter === 'talkie' || typeFilter === 'casque' || typeFilter === 'autre') {
+        show = false;
+      }
+      
+      // Filtre par statut
+      if (statusFilter === 'assigned' && !assigned) show = false;
+      if (statusFilter === 'libre' && assigned) show = false;
+      
+      card.style.display = show ? 'block' : 'none';
+    }
+  }
+  
+  // Mettre à jour les statistiques
+  updateMatosStats();
+}
+
+function toggleMatosView() {
+  const btn = document.getElementById('matos-view-toggle');
+  const motorolaGrid = document.getElementById('motorola-grid');
+  const hollylandGrid = document.getElementById('hollyland-grid');
+  const megaCard = document.getElementById('mega-card');
+  
+  if (matosViewMode === 'grid') {
+    // Passer en vue liste
+    matosViewMode = 'list';
+    btn.innerHTML = '<i class="fas fa-th-large"></i> Vue grille';
+    
+    // Appliquer le style de liste
+    if (motorolaGrid) {
+      motorolaGrid.style.gridTemplateColumns = '1fr';
+      motorolaGrid.style.gap = '8px';
+    }
+    if (hollylandGrid) {
+      hollylandGrid.style.gridTemplateColumns = '1fr';
+      hollylandGrid.style.gap = '8px';
+    }
+    if (megaCard) {
+      megaCard.style.gridTemplateColumns = '1fr';
+      megaCard.style.gap = '8px';
+    }
+    
+    toast('Vue liste activée', 'i');
+  } else {
+    // Passer en vue grille
+    matosViewMode = 'grid';
+    btn.innerHTML = '<i class="fas fa-list"></i> Vue liste';
+    
+    // Rétablir le style de grille
+    if (motorolaGrid) {
+      motorolaGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
+      motorolaGrid.style.gap = '12px';
+    }
+    if (hollylandGrid) {
+      hollylandGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
+      hollylandGrid.style.gap = '12px';
+    }
+    if (megaCard) {
+      megaCard.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
+      megaCard.style.gap = '12px';
+    }
+    
+    toast('Vue grille activée', 'i');
+  }
+}
 
 // ═══════════════════════════════════════════
 // KEYBOARD SHORTCUTS
