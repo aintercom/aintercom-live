@@ -21,7 +21,7 @@
   --success:#16A34A; --success-bg:rgba(22,163,74,.08);
   --warning:#D97706; --warning-bg:rgba(217,119,6,.08);
   --info:#0891B2;
-  --font:'DM Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; --mono:'JetBrains Mono',monospace;
   --r:10px; --r-sm:6px; --r-lg:16px;
   --tr:.15s ease;
 }
@@ -42,15 +42,16 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 /* ── LAYOUT ── */
 #page-home{display:none}
 #app{display:flex;flex-direction:column;height:100vh}
-#hdr{height:64px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;padding:0 20px;z-index:100;flex-shrink:0;box-shadow:0 1px 0 var(--border)}
+#hdr{height:72px;background:rgba(14,17,23,.85);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;padding:0 20px;z-index:100;flex-shrink:0;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--border),0 4px 24px rgba(0,0,0,.25)}
+html.light #hdr{background:rgba(244,246,249,.85)}
 #body{display:flex;flex:1;overflow:hidden}
 #nav{width:210px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:10px 6px;gap:1px;overflow-y:auto;flex-shrink:0}
 #main{flex:1;overflow-y:auto;background:var(--bg)}
 #ftr{height:32px;background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex-shrink:0}
 
 /* ── HEADER ── */
-.hdr-logo{font-size:20px;font-weight:900;letter-spacing:-1px;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:8px}
-.hdr-logo span{color:var(--tx)}
+.hdr-logo{font-size:20px;font-weight:900;letter-spacing:-1.5px;background:linear-gradient(135deg,var(--accent),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.hdr-logo span{-webkit-text-fill-color:var(--tx);background:none;-webkit-background-clip:unset;background-clip:unset;color:var(--tx)}
 .hdr-logo::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);flex-shrink:0}
 .hdr-sep{width:1px;height:32px;background:var(--border);flex-shrink:0}
 .hdr-clock{font-family:var(--mono);font-size:26px;font-weight:700;letter-spacing:-1px;color:var(--tx);line-height:1}
@@ -146,7 +147,37 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 .modal-close:hover{color:var(--tx)}
 .modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
 
-/* ── TOAST ── */
+/* ── PRINT ── */
+@media print {
+  @page { size: A4 landscape; margin: 10mm 14mm; }
+  #hdr, #nav, #ftr, #toasts, #nav-overlay,
+  .btn, .sec-actions, .modal, .overlay,
+  .nav-btn, .phase-sel, [draggable],
+  .staff-actions, .poste-actions, .run-drag-handle { display: none !important; }
+  html, body { height: auto !important; overflow: visible !important; background: #fff !important; color: #111 !important; font-family: Arial, sans-serif !important; }
+  #app { display: block !important; height: auto !important; }
+  #body { display: block !important; overflow: visible !important; }
+  #main { overflow: visible !important; background: #fff !important; }
+  .tab { display: none !important; }
+  .tab.active { display: block !important; padding: 0 !important; }
+  .card, .cw, .tbl-wrap { background: #fff !important; border: 1px solid #ccc !important; box-shadow: none !important; }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: #f0f0f0 !important; color: #111 !important; font-size: 9px; border-bottom: 2px solid #111; }
+  td { font-size: 10px; border-bottom: 1px solid #ddd; color: #111 !important; }
+  .badge { border: 1px solid #ccc; color: #333 !important; background: #f5f5f5 !important; }
+  /* Bandeau d'entête print */
+  #main::before {
+    content: 'AINTERCOM PRO — Export';
+    display: block;
+    font-size: 18px;
+    font-weight: 900;
+    color: #1D4ED8;
+    border-bottom: 3px solid #111;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+    letter-spacing: -0.5px;
+  }
+}
 #toasts{position:fixed;top:60px;right:16px;z-index:2000;display:flex;flex-direction:column;gap:6px}
 .toast{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:8px;min-width:220px;animation:toastIn .2s ease;box-shadow:0 4px 20px rgba(0,0,0,.25)}
 .toast-s{border-left:3px solid var(--success)}.toast-d{border-left:3px solid var(--danger)}.toast-i{border-left:3px solid var(--accent)}
@@ -568,11 +599,15 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
               <button class="btn btn-ghost btn-sm" onclick="gtReset()" title="Reset"><i class="fas fa-rotate-left"></i></button>
             </div>
           </div>
-          <div class="cw" style="background:linear-gradient(135deg,var(--bg3),var(--bg4));text-align:center;border-color:var(--border2);position:relative;overflow:hidden">
-            <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(37,99,235,.08),transparent 70%);pointer-events:none"></div>
-            <div class="cw-label" style="letter-spacing:.2em;color:var(--tx3)">🕐 HEURE</div>
-            <div id="cockpit-clock" style="font-family:var(--mono);font-size:38px;font-weight:700;color:var(--tx);letter-spacing:-2px;line-height:1;margin:4px 0">00:00:00</div>
-            <div style="font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-top:2px" id="cockpit-date"></div>
+          <div class="cw" style="background:linear-gradient(135deg,#0a0f1a,#0e1a2e);border:1px solid rgba(37,99,235,.35);text-align:center;position:relative;overflow:hidden;padding:16px 14px">
+            <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(37,99,235,.18),transparent 70%);pointer-events:none"></div>
+            <div style="position:absolute;top:8px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:5px">
+              <span style="width:6px;height:6px;border-radius:50%;background:var(--danger);animation:blink .8s infinite;display:inline-block;box-shadow:0 0 6px var(--danger)"></span>
+              <span style="font-size:8px;font-weight:800;color:var(--tx3);letter-spacing:.18em;text-transform:uppercase">RÉGIE</span>
+            </div>
+            <div id="cockpit-clock" style="font-family:'JetBrains Mono',monospace;font-size:42px;font-weight:700;color:#fff;letter-spacing:-2px;line-height:1;margin:18px 0 4px;text-shadow:0 0 20px rgba(37,99,235,.5)">00:00:00</div>
+            <div style="font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.12em;text-transform:uppercase" id="cockpit-date"></div>
+            <div style="position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.5"></div>
           </div>
         </div>
 
@@ -954,15 +989,57 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
               <button class="btn btn-ghost btn-sm" onclick="addPower(3500)">+3.5kW Chauffage</button>
             </div>
             <!-- Section éducative -->
-            <div style="margin-top:14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px">
-              <div style="font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">📚 Aide-mémoire électrique</div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px;color:var(--tx2)">
-                <div><span style="color:var(--tx);font-weight:700">P = U × I</span> — Puissance = Tension × Intensité</div>
-                <div><span style="color:var(--tx);font-weight:700">1 prise 16A</span> = max 3 680 W à 230V</div>
-                <div><span style="color:var(--tx);font-weight:700">Disjoncteur 32A</span> = max 7 360 W mono</div>
-                <div><span style="color:var(--tx);font-weight:700">Triphasé 400V</span> = ×√3 ≈ 1,73× plus de puissance</div>
-                <div><span style="color:var(--warning);font-weight:700">⚠ Ne jamais</span> cumuler sono + lumière + machines sur même circuit</div>
-                <div><span style="color:var(--success);font-weight:700">Règle des 80%</span> — Ne pas dépasser 80% de la capacité nominale</div>
+            <div style="margin-top:14px">
+              <div style="font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">📚 Guide Électrique</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                <!-- Prises -->
+                <div style="background:var(--bg3);border:1px solid var(--border);border-top:3px solid var(--accent);border-radius:var(--r-sm);padding:10px 12px">
+                  <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+                    <span style="font-size:16px">🔌</span>
+                    <span style="font-size:11px;font-weight:800;color:var(--tx)">Prises standard</span>
+                  </div>
+                  <div style="font-size:10px;color:var(--tx2);line-height:1.8">
+                    <div><strong style="color:var(--tx)">Prise 16A</strong> → max <strong>3 680 W</strong></div>
+                    <div><strong style="color:var(--tx)">Prise 32A</strong> → max <strong>7 360 W</strong></div>
+                    <div><strong style="color:var(--tx)">Prise 63A</strong> → max <strong>14 490 W</strong></div>
+                  </div>
+                </div>
+                <!-- Puissance -->
+                <div style="background:var(--bg3);border:1px solid var(--border);border-top:3px solid var(--warning);border-radius:var(--r-sm);padding:10px 12px">
+                  <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+                    <span style="font-size:16px">⚡</span>
+                    <span style="font-size:11px;font-weight:800;color:var(--tx)">Puissance</span>
+                  </div>
+                  <div style="font-size:10px;color:var(--tx2);line-height:1.8">
+                    <div><strong style="color:var(--accent);font-family:'JetBrains Mono',monospace">P = U × I</strong></div>
+                    <div>Puissance = Tension × Intensité</div>
+                    <div><strong style="color:var(--warning)">⚠ Règle des 80%</strong> — Ne jamais dépasser</div>
+                  </div>
+                </div>
+                <!-- Voltage -->
+                <div style="background:var(--bg3);border:1px solid var(--border);border-top:3px solid var(--info);border-radius:var(--r-sm);padding:10px 12px">
+                  <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+                    <span style="font-size:16px">🔋</span>
+                    <span style="font-size:11px;font-weight:800;color:var(--tx)">Voltage</span>
+                  </div>
+                  <div style="font-size:10px;color:var(--tx2);line-height:1.8">
+                    <div><strong style="color:var(--tx)">Monophasé</strong> → <strong>230 V</strong></div>
+                    <div><strong style="color:var(--tx)">Triphasé</strong> → <strong>400 V</strong> (×√3)</div>
+                    <div>Triphasé ≈ <strong>1,73×</strong> plus de puissance</div>
+                  </div>
+                </div>
+                <!-- Calcul de charge -->
+                <div style="background:var(--bg3);border:1px solid var(--border);border-top:3px solid var(--success);border-radius:var(--r-sm);padding:10px 12px">
+                  <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+                    <span style="font-size:16px">🧮</span>
+                    <span style="font-size:11px;font-weight:800;color:var(--tx)">Calcul de charge</span>
+                  </div>
+                  <div style="font-size:10px;color:var(--tx2);line-height:1.8">
+                    <div><strong style="color:var(--accent);font-family:'JetBrains Mono',monospace">I = P ÷ U</strong></div>
+                    <div>Ex : 3 000 W ÷ 230 V = <strong>13 A</strong></div>
+                    <div><strong style="color:var(--danger)">🚫</strong> Jamais sono + lumière sur même circuit</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1015,6 +1092,11 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
               <div class="card-title" style="margin-bottom:0">✅ Checklist Conformité</div>
               <span style="font-size:11px;font-weight:700;color:var(--success)" id="conform-count">0/0</span>
+            </div>
+            <!-- Zone d'ajout -->
+            <div style="display:flex;gap:6px;margin-bottom:10px">
+              <input type="text" id="conform-new-item" placeholder="Ajouter une vérification…" style="flex:1;font-size:11px" onkeydown="if(event.key==='Enter')addConformItem()">
+              <button class="btn btn-primary btn-sm" onclick="addConformItem()"><i class="fas fa-plus"></i> Ajouter</button>
             </div>
             <div id="conform-list"></div>
           </div>
@@ -1909,11 +1991,11 @@ function updateCockpit(){
     const colors=['#2563EB','#16A34A','#D97706','#DC2626','#0891B2','#7C3AED','#DB2777'];
     let ci=0;
     const assigned=[
-      ...S.motorola.filter(m=>m.assigneA).map(m=>{const c=colors[ci++%colors.length];return`<div style="display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:5px 8px;border-left:3px solid ${c}"><div style="font-family:var(--mono);font-size:10px;font-weight:700;color:${c};flex-shrink:0">CH${m.canal}</div><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.assigneA}</div><div style="font-size:9px;color:var(--tx3)">📻 Talkie #${m.id}</div></div></div>`;}),
-      ...S.hollyland.filter(h=>h.assigneA).map(h=>{const c=colors[ci++%colors.length];return`<div style="display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:5px 8px;border-left:3px solid ${c}"><div style="font-size:14px;flex-shrink:0">🎧</div><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${h.assigneA}</div><div style="font-size:9px;color:var(--tx3)">${h.label}</div></div></div>`;}),
-      S.megaphone.assigneA?`<div style="display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:5px 8px;border-left:3px solid var(--warning)"><div style="font-size:14px;flex-shrink:0">📢</div><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:700">${S.megaphone.assigneA}</div><div style="font-size:9px;color:var(--tx3)">Mégaphone</div></div></div>`:null
+      ...S.motorola.filter(m=>m.assigneA).map(m=>{const c=colors[ci++%colors.length];return`<div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-left:3px solid ${c};border-radius:var(--r-sm);padding:7px 10px;box-shadow:0 1px 4px rgba(0,0,0,.1)"><div style="width:30px;height:30px;border-radius:7px;background:${c}22;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fas fa-walkie-talkie" style="font-size:13px;color:${c}"></i></div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tx)">${m.assigneA}</div><div style="font-size:9px;color:var(--tx3);margin-top:1px;font-family:'JetBrains Mono',monospace">CH${m.canal} · Talkie #${m.id}</div></div><span style="background:${c}22;color:${c};font-size:9px;font-weight:800;padding:2px 5px;border-radius:4px;flex-shrink:0">CH${m.canal}</span></div>`;}),
+      ...S.hollyland.filter(h=>h.assigneA).map(h=>{const c=colors[ci++%colors.length];return`<div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-left:3px solid ${c};border-radius:var(--r-sm);padding:7px 10px;box-shadow:0 1px 4px rgba(0,0,0,.1)"><div style="width:30px;height:30px;border-radius:7px;background:${c}22;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fas fa-headphones" style="font-size:13px;color:${c}"></i></div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tx)">${h.assigneA}</div><div style="font-size:9px;color:var(--tx3);margin-top:1px">${h.label} · Hollyland</div></div></div>`;}),
+      S.megaphone.assigneA?`<div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--warning);border-radius:var(--r-sm);padding:7px 10px;box-shadow:0 1px 4px rgba(0,0,0,.1)"><div style="width:30px;height:30px;border-radius:7px;background:rgba(217,119,6,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fas fa-bullhorn" style="font-size:13px;color:var(--warning)"></i></div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tx)">${S.megaphone.assigneA}</div><div style="font-size:9px;color:var(--tx3);margin-top:1px">Mégaphone 65W</div></div></div>`:null
     ].filter(Boolean);
-    cwMatos.innerHTML=assigned.length?assigned.join(''):'<div style="font-size:11px;color:var(--tx3);font-style:italic;text-align:center;padding:12px 0"><i class="fas fa-walkie-talkie" style="display:block;font-size:20px;margin-bottom:4px;opacity:.3"></i>Aucun matos assigné</div>';
+    cwMatos.innerHTML=assigned.length?assigned.join(''):'<div style="font-size:11px;color:var(--tx3);font-style:italic;text-align:center;padding:16px 0"><i class="fas fa-walkie-talkie" style="display:block;font-size:24px;margin-bottom:6px;opacity:.25"></i>Aucun matos assigné</div>';
   }
   // Live sequence
   const live=S.sequences.find(s=>s.active);
@@ -2200,6 +2282,23 @@ function saveSeq(){
     // Runtime state (preserve if editing)
     active:false, done:false, elapsed:0, paused:false
   };
+
+  // ── SÉCURITÉ ANTI-CHEVAUCHEMENT ──
+  function timeToMin(t){if(!t||!t.includes(':'))return-1;const[h,m]=t.split(':').map(Number);return h*60+m;}
+  const newStart=timeToMin(data.time);
+  const newEnd=newStart+data.dur;
+  const seqsInPhase=S.sequences.filter((s,i)=>s.phase===data.phase&&(editingSeqIdx===-1||i!==editingSeqIdx));
+  const overlap=seqsInPhase.find(s=>{
+    const sStart=timeToMin(s.time);
+    const sEnd=sStart+(s.dur||0);
+    return newStart<sEnd&&newEnd>sStart;
+  });
+  if(overlap){
+    const overlapEnd=addMinutes(overlap.time,overlap.dur);
+    alert(`⚠️ Chevauchement détecté !\n\nLa séquence "${data.title}" (${data.time} → ${addMinutes(data.time,data.dur)}) chevauche "${overlap.title}" (${overlap.time} → ${overlapEnd}).\n\nModifiez l'heure ou la durée pour éviter le conflit.`);
+    return;
+  }
+
   if(editingSeqIdx===-1){data.id=S.nextId++;S.sequences.push(data);toast('Séquence ajoutée','s');addActivity('Ajout: '+data.title,'i');}
   else{const prev=S.sequences[editingSeqIdx];data.active=prev.active;data.done=prev.done;data.elapsed=prev.elapsed;data.paused=prev.paused;Object.assign(S.sequences[editingSeqIdx],data);toast('Séquence mise à jour','s');}
   closeModal('modal-seq');renderRun();saveStorage();
@@ -2503,25 +2602,7 @@ function populateCrewSelects() { populateAllStaffSelects(); }
 function getMatos(name) { return getMatosForStaff(name); }
 
 function renderOrgChart(){
-  const org=document.getElementById('org-chart');
-  if(!S.crew.length){org.innerHTML='<div class="empty" style="padding:20px"><i class="fas fa-sitemap"></i><p>Ajoutez des membres pour voir l\'organigramme</p></div>';return;}
-  const metierColors={Technique:'var(--accent)',Accueil:'var(--warning)',Sécurité:'var(--danger)',Staff:'var(--success)'};
-  const statutColors={'En poste':'var(--success)','En pause':'var(--warning)','Off':'var(--tx3)','Injoignable':'var(--danger)'};
-  // Group by metier
-  const metiers=['Technique','Accueil','Sécurité','Staff'];
-  const groups={};
-  metiers.forEach(m=>{groups[m]=S.crew.filter(c=>c.metier===m);});
-  // Top: first Technique person or first crew member
-  const top=S.crew.find(c=>c.role.toLowerCase().includes('régisseur général')||c.role.toLowerCase().includes('director'))||S.crew[0];
-  const makeCard=(c,isTop=false)=>`<div class="org-node"><div class="org-card ${isTop?'top':''}" onclick="openCrewDetail(${c.id})"><div class="org-status" style="background:${statutColors[c.statut]||'var(--tx3)'}"></div><div class="org-avatar" style="background:${metierColors[c.metier]||'var(--accent)'}">${(c.prenom[0]||'?')+(c.nom[0]||'')}</div><div class="org-name">${c.prenom} ${c.nom}</div><div class="org-role">${c.role}</div></div></div>`;
-  let html=`<div class="org-wrap"><div class="org-level">${makeCard(top,true)}</div><div class="org-line"></div><div style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap">`;
-  metiers.forEach(m=>{
-    const members=groups[m].filter(c=>c.id!==top.id);
-    if(!members.length)return;
-    html+=`<div style="display:flex;flex-direction:column;align-items:center"><div style="font-size:9px;font-weight:800;color:${metierColors[m]};text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;padding:3px 8px;background:${metierColors[m]}18;border-radius:4px">${m}</div><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">${members.map(c=>makeCard(c)).join('')}</div></div>`;
-  });
-  html+='</div></div>';
-  org.innerHTML=html;
+  // legacy — kept for compat, org tab uses renderOrg()
 }
 
 function openCrewDetail(id){
@@ -2818,13 +2899,45 @@ function renderElec(){
 // ═══════════════════════════════════════════
 // CHECKLIST CONFORMITÉ
 // ═══════════════════════════════════════════
+function addConformItem(){
+  const input=document.getElementById('conform-new-item');
+  const val=(input?.value||'').trim();
+  if(!val)return;
+  S.conformItems.push(val);
+  input.value='';
+  renderConform();
+  saveStorage();
+  toast('Ligne ajoutée','s');
+}
+
+function deleteConformItem(i){
+  S.conformItems.splice(i,1);
+  // Rebuild conformDone indices
+  const newDone={};
+  Object.entries(S.conformDone).forEach(([k,v])=>{
+    const ki=parseInt(k);
+    if(ki<i)newDone[ki]=v;
+    else if(ki>i)newDone[ki-1]=v;
+  });
+  S.conformDone=newDone;
+  renderConform();
+  saveStorage();
+}
+
 function renderConform(){
   const list=document.getElementById('conform-list');
+  if(!list)return;
+  if(!S.conformItems.length){
+    list.innerHTML='<div style="font-size:11px;color:var(--tx3);font-style:italic;padding:8px 0">Aucune vérification — Ajoutez des lignes ci-dessus</div>';
+    updateConformCount();
+    return;
+  }
   list.innerHTML=S.conformItems.map((item,i)=>`
-    <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:var(--r-sm);cursor:pointer;transition:var(--tr)" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='transparent'">
+    <div style="display:flex;align-items:center;gap:6px;padding:5px 6px;border-radius:var(--r-sm);transition:var(--tr)" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='transparent'">
       <input type="checkbox" ${S.conformDone[i]?'checked':''} onchange="S.conformDone[${i}]=this.checked;updateConformCount();saveStorage()" style="width:15px;height:15px;accent-color:var(--accent);cursor:pointer;flex-shrink:0">
-      <span style="font-size:12px;font-weight:500;${S.conformDone[i]?'text-decoration:line-through;color:var(--tx3)':''}">${item}</span>
-    </label>`).join('');
+      <span style="flex:1;font-size:12px;font-weight:500;${S.conformDone[i]?'text-decoration:line-through;color:var(--tx3)':''}">${item}</span>
+      <button onclick="deleteConformItem(${i})" class="btn btn-ghost btn-sm btn-icon" style="opacity:0.4;padding:1px 4px" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.4" title="Supprimer"><i class="fas fa-times" style="font-size:9px;color:var(--danger)"></i></button>
+    </div>`).join('');
   updateConformCount();
 }
 
@@ -3323,7 +3436,18 @@ function printBudget(){doPrint();}
 // ═══════════════════════════════════════════
 // FEEDBACK
 // ═══════════════════════════════════════════
-function submitFeedback(){const t=document.getElementById('fb-text').value;if(!t)return;closeModal('modal-feedback');document.getElementById('fb-text').value='';toast('Merci pour votre suggestion !','s');addActivity('Feedback envoyé','i');}
+function submitFeedback(){
+  const t=document.getElementById('fb-text').value.trim();
+  const cat=document.getElementById('fb-cat').value;
+  if(!t)return;
+  const subject=encodeURIComponent('Suggestion Aintercom — '+cat);
+  const body=encodeURIComponent('['+cat+']\n\n'+t+'\n\n---\nEnvoyé depuis Aintercom PRO');
+  window.location.href='mailto:contact@aintercom.fr?subject='+subject+'&body='+body;
+  closeModal('modal-feedback');
+  document.getElementById('fb-text').value='';
+  toast('Ouverture du client mail…','s');
+  addActivity('Feedback envoyé','i');
+}
 
 // ═══════════════════════════════════════════
 // MATOS FILTER & VIEW
@@ -3521,12 +3645,99 @@ function editOrgNode(id){
 
 function renderOrg(){
   const canvas=document.getElementById('org-canvas');if(!canvas)return;
-  const nodes=S.orgNodes||[];
-  if(!nodes.length){
-    canvas.innerHTML='<div class="empty" style="padding:60px"><i class="fas fa-sitemap" style="font-size:32px;margin-bottom:12px"></i><p>Aucun nœud — Cliquez sur Ajouter pour construire votre organigramme</p></div>';
+
+  // ── Priorité 1 : nœuds manuels (orgNodes) ──
+  const manualNodes=S.orgNodes||[];
+
+  // ── Priorité 2 : générer depuis Staff si aucun nœud manuel ──
+  if(!manualNodes.length){
+    const staff=S.staff||[];
+    const postes=S.postes||[];
+    if(!staff.length){
+      canvas.innerHTML=`<div style="text-align:center;padding:60px 20px;color:var(--tx3)">
+        <i class="fas fa-sitemap" style="font-size:40px;margin-bottom:16px;opacity:.3;display:block"></i>
+        <div style="font-size:14px;font-weight:700;margin-bottom:6px">Organigramme vide</div>
+        <div style="font-size:12px">Ajoutez des membres dans l'onglet <strong>Staff</strong> pour générer automatiquement la hiérarchie,<br>ou utilisez le bouton <strong>Ajouter</strong> pour construire manuellement.</div>
+      </div>`;
+      return;
+    }
+
+    // Catégories hiérarchiques : Direction > Encadrement > Terrain
+    const CAT_LEVEL={Management:0,Direction:0,Technique:1,Son:1,Lumière:1,Vidéo:1,Sécurité:1,Médical:1,Presse:1,Staff:2,Accueil:2,Logistique:2,Restauration:2,Bénévole:2,Artiste:2,Autre:2};
+    const CAT_LABEL=['Direction','Encadrement & Technique','Terrain & Support'];
+    const CAT_COLOR=['var(--accent)','var(--warning)','var(--success)'];
+    const CAT_BG=['rgba(37,99,235,.12)','rgba(217,119,6,.10)','rgba(22,163,74,.10)'];
+
+    // Trier les membres par niveau de poste
+    const withLevel=staff.map(s=>{
+      const poste=postes.find(p=>p.id===s.posteId);
+      const cat=poste?.cat||'Autre';
+      const lv=CAT_LEVEL[cat]??2;
+      return{...s,poste,cat,lv};
+    });
+
+    // Grouper par niveau
+    const groups=[0,1,2].map(lv=>withLevel.filter(s=>s.lv===lv));
+
+    // Stats globaux
+    const totalStaff=staff.length;
+    const totalMatos=S.motorola.filter(m=>m.assigneA).length+S.hollyland.filter(h=>h.assigneA).length+(S.megaphone.assigneA?1:0);
+
+    let html=`
+    <div style="margin-bottom:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 16px;display:flex;gap:16px">
+        <div style="text-align:center"><div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--tx)">${totalStaff}</div><div style="font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em">Membres</div></div>
+        <div style="width:1px;background:var(--border)"></div>
+        <div style="text-align:center"><div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--accent)">${groups[0].length}</div><div style="font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em">Direction</div></div>
+        <div style="width:1px;background:var(--border)"></div>
+        <div style="text-align:center"><div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--warning)">${groups[1].length}</div><div style="font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em">Encadrement</div></div>
+        <div style="width:1px;background:var(--border)"></div>
+        <div style="text-align:center"><div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--success)">${groups[2].length}</div><div style="font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em">Terrain</div></div>
+      </div>
+      <div style="font-size:10px;color:var(--tx3);font-style:italic">Organigramme généré depuis l'onglet Staff · <a href="#" onclick="renderOrg();return false;" style="color:var(--accent)">Rafraîchir</a></div>
+    </div>`;
+
+    // Construire chaque niveau
+    groups.forEach((members,lv)=>{
+      if(!members.length)return;
+
+      // Connecteur vertical entre niveaux
+      if(lv>0&&groups.slice(0,lv).some(g=>g.length)){
+        html+=`<div style="display:flex;justify-content:center;margin:4px 0"><div style="width:2px;height:24px;background:linear-gradient(${CAT_COLOR[lv-1]},${CAT_COLOR[lv]})"></div></div>`;
+      }
+
+      html+=`<div style="margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;padding:6px 12px;background:${CAT_BG[lv]};border-left:3px solid ${CAT_COLOR[lv]};border-radius:0 var(--r-sm) var(--r-sm) 0">
+          <span style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:${CAT_COLOR[lv]}">${CAT_LABEL[lv]}</span>
+          <span style="font-size:10px;font-weight:700;color:var(--tx3)">${members.length} membre${members.length>1?'s':''}</span>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:${lv===0?'center':'flex-start'}">`;
+
+      members.forEach(s=>{
+        const initials=((s.prenom[0]||'')+(s.nom[0]||'')).toUpperCase();
+        const color=s.poste?s.poste.color:CAT_COLOR[lv];
+        const matos=getMatosForStaff(s.prenom+' '+s.nom);
+        const matosIcon=matos?`<div style="margin-top:7px;padding-top:7px;border-top:1px solid ${color}30;font-size:9px;color:${color};font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><i class="fas fa-walkie-talkie" style="font-size:8px"></i> ${matos}</div>`:'';
+        const photoHTML=s.photo
+          ?`<div style="width:44px;height:44px;border-radius:10px;background:${color};overflow:hidden;flex-shrink:0;border:2px solid ${color}44;margin:0 auto 8px"><img src="${s.photo}" style="width:100%;height:100%;object-fit:cover"></div>`
+          :`<div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,${color},${color}99);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff;margin:0 auto 8px;box-shadow:0 2px 8px ${color}44">${initials}</div>`;
+        html+=`<div style="background:var(--bg2);border:1px solid var(--border);border-top:3px solid ${color};border-radius:var(--r);padding:14px;text-align:center;min-width:140px;max-width:160px;flex:0 0 auto;transition:var(--tr);cursor:pointer;position:relative" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.18)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+          ${photoHTML}
+          <div style="font-size:13px;font-weight:800;color:var(--tx);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.prenom} ${s.nom}</div>
+          <div style="font-size:10px;font-weight:600;color:${color};margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.poste?s.poste.nom:'—'}</div>
+          ${s.tel?`<a href="tel:${s.tel}" style="display:inline-flex;align-items:center;gap:3px;margin-top:6px;font-size:9px;color:var(--success);font-weight:700;text-decoration:none"><i class="fas fa-phone" style="font-size:8px"></i>${s.tel}</a>`:''}
+          ${matosIcon}
+        </div>`;
+      });
+      html+='</div></div>';
+    });
+
+    canvas.innerHTML=html;
     return;
   }
-  // Group by level
+
+  // ── Rendu nœuds manuels (comportement original) ──
+  const nodes=manualNodes;
   const maxLevel=Math.max(...nodes.map(n=>n.level||0));
   let html='<div style="display:flex;flex-direction:column;align-items:center;gap:0;min-width:max-content">';
   for(let lv=0;lv<=maxLevel;lv++){
