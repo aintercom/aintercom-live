@@ -358,7 +358,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 .org-free-actions{display:flex;flex-direction:column;gap:2px;opacity:0;transition:opacity .15s;flex-shrink:0}
 .org-free-card:hover .org-free-actions{opacity:1}
 #org-canvas-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--tx3);pointer-events:none}
-.org-canvas-hint{position:absolute;bottom:10px;right:12px;font-size:9px;color:var(--tx3);font-style:italic;display:flex;align-items:center;gap:4px}
+.org-canvas-hint{position:absolute;bottom:10px;right:12px;font-size:9px;color:var(--tx3);font-style:italic;display:flex;align-items:center;gap:4px;z-index:1}
 
 /* ── PLANNING & LIVRAISONS ── */
 .plan-timeline{position:relative;padding-left:32px}
@@ -405,7 +405,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 #postes-sort{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 10px;font-size:11px;font-weight:600;color:var(--tx);cursor:pointer;transition:var(--tr);outline:none}
 #postes-sort:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
 /* ── STAFF CARD ── */
-.staff-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:12px;transition:var(--tr);position:relative}
+.staff-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:12px;transition:var(--tr);position:relative;cursor:pointer}
 .staff-card:hover{border-color:var(--border2);box-shadow:0 4px 16px rgba(0,0,0,.1)}
 .staff-avatar{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
 .staff-info{flex:1;min-width:0}
@@ -2317,11 +2317,20 @@ function switchTab(id,btn){
   if(btn)btn.classList.add('active');
   // Ferme nav mobile
   if(window.innerWidth<=768){const n=document.getElementById('nav');const o=document.getElementById('nav-overlay');if(n&&n.classList.contains('open')){n.classList.remove('open');if(o)o.classList.remove('open');}}
-  // Si retour cockpit → sync météo cockpit + init drag
+  // Re-render selon l'onglet activé
   if(id==='cockpit'){
     const cwCity=document.getElementById('cw-meteo-city');const mCity=document.getElementById('meteo-city');if(cwCity&&mCity&&mCity.value)cwCity.value=mCity.value;
     setTimeout(initCockpitDrag,30);
+    updateCockpit();
   }
+  if(id==='org'){renderOrg();}
+  if(id==='staff'){renderStaff();}
+  if(id==='postes'){renderPostes();}
+  if(id==='planning'){renderPlanning();}
+  if(id==='budget'){if(S.budgetUnlocked)renderBudget();}
+  if(id==='tech'){renderIncidents();renderElec();renderConform();renderContacts();}
+  if(id==='matos'){renderMatorola();renderHollyland();renderMegaphone();renderExtraMatos();updateMatosStats();}
+  if(id==='conducteur'){renderRun();}
 }
 function navBtnByTab(id){return document.querySelector('.nav-btn[onclick*="\''+id+'\'"]');}
 
@@ -2886,7 +2895,7 @@ function renderPostes() {
   grid.innerHTML = postes.map(p=>{
     const count = (S.staff||[]).filter(s=>s.posteId===p.id).length;
     const icon = POSTE_CAT_ICONS[p.cat||'Autre']||'fa-circle';
-    return `<div class="poste-card" style="--pc:${p.color}">
+    return `<div class="poste-card" style="--pc:${p.color};cursor:pointer" onclick="editPoste(${p.id})" title="Cliquer pour modifier">
       <div class="poste-icon-wrap" style="background:${p.color}22">
         <i class="fas ${icon}" style="color:${p.color};font-size:18px"></i>
       </div>
@@ -2896,8 +2905,8 @@ function renderPostes() {
       </div>
       <div class="poste-count" title="${count} membre${count!==1?'s':''}">${count}</div>
       <div class="poste-actions">
-        <button onclick="editPoste(${p.id})" class="btn btn-ghost btn-sm btn-icon" title="Modifier"><i class="fas fa-pen" style="font-size:10px"></i></button>
-        <button onclick="deletePoste(${p.id})" class="btn btn-ghost btn-sm btn-icon" title="Supprimer"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
+        <button onclick="event.stopPropagation();editPoste(${p.id})" class="btn btn-ghost btn-sm btn-icon" title="Modifier"><i class="fas fa-pen" style="font-size:10px"></i></button>
+        <button onclick="event.stopPropagation();deletePoste(${p.id})" class="btn btn-ghost btn-sm btn-icon" title="Supprimer"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
       </div>
     </div>`;
   }).join('');
@@ -3003,7 +3012,7 @@ function renderStaff() {
     const avatarHTML = s.photo
       ? `<div class="staff-avatar" style="background:${color};padding:0;overflow:hidden"><img src="${s.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:10px"></div>`
       : `<div class="staff-avatar" style="background:${color}">${initials}</div>`;
-    return `<div class="staff-card" style="border-left:3px solid ${color}">
+    return `<div class="staff-card" style="border-left:3px solid ${color};cursor:pointer" onclick="editStaff(${s.id})" title="Cliquer pour modifier">
       ${avatarHTML}
       <div class="staff-info">
         <div class="staff-name">${s.prenom} ${s.nom}</div>
@@ -3011,9 +3020,9 @@ function renderStaff() {
         ${matos ? `<div class="staff-matos"><i class="fas fa-walkie-talkie" style="font-size:9px;margin-right:4px"></i>${matos}</div>` : ''}
       </div>
       <div class="staff-actions">
-        ${s.tel ? `<button onclick="window.open('tel:${s.tel}')" class="btn btn-ghost btn-sm btn-icon" title="${s.tel}"><i class="fas fa-phone" style="font-size:10px;color:var(--success)"></i></button>` : ''}
-        <button onclick="editStaff(${s.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-pen" style="font-size:10px"></i></button>
-        <button onclick="deleteStaff(${s.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
+        ${s.tel ? `<button onclick="event.stopPropagation();window.open('tel:${s.tel}')" class="btn btn-ghost btn-sm btn-icon" title="${s.tel}"><i class="fas fa-phone" style="font-size:10px;color:var(--success)"></i></button>` : ''}
+        <button onclick="event.stopPropagation();editStaff(${s.id})" class="btn btn-ghost btn-sm btn-icon" title="Modifier"><i class="fas fa-pen" style="font-size:10px"></i></button>
+        <button onclick="event.stopPropagation();deleteStaff(${s.id})" class="btn btn-ghost btn-sm btn-icon" title="Supprimer"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
       </div>
     </div>`;
   }).join('');
@@ -3073,7 +3082,7 @@ function saveStaff() {
     editingStaffId = -1;
   }
   closeModal('modal-add-staff');
-  renderStaff(); renderPostes(); renderMatorola(); renderHollyland(); renderMegaphone(); updateMatosStats(); updateCockpit(); saveStorage();
+  renderStaff(); renderPostes(); renderMatorola(); renderHollyland(); renderMegaphone(); updateMatosStats(); updateCockpit(); if(document.getElementById('tab-org').classList.contains('active'))renderOrg(); saveStorage();
 }
 
 function editStaff(id) {
@@ -3105,7 +3114,7 @@ function deleteStaff(id) {
     if (S.megaphone.assigneA === name) S.megaphone.assigneA = '';
   }
   S.staff = S.staff.filter(s => s.id !== id);
-  renderStaff(); renderPostes(); renderMatorola(); renderHollyland(); renderMegaphone(); updateMatosStats(); updateCockpit(); saveStorage();
+  renderStaff(); renderPostes(); renderMatorola(); renderHollyland(); renderMegaphone(); updateMatosStats(); updateCockpit(); if(document.getElementById('tab-org').classList.contains('active'))renderOrg(); saveStorage();
   toast('Membre supprimé', 'i');
 }
 
@@ -4339,7 +4348,7 @@ function renderOrg(){
       orgId:n.id, isManual:true
     }));
   } else {
-    // Généré depuis Staff
+    // Généré depuis Staff — hiérarchie par niveau de catégorie
     const staff=S.staff||[];
     const postes=S.postes||[];
     if(!staff.length){
@@ -4347,20 +4356,38 @@ function renderOrg(){
       return;
     }
     const CAT_LEVEL={Management:0,Direction:0,Technique:1,Son:1,Lumière:1,Vidéo:1,Sécurité:1,Médical:1,Presse:1,Staff:2,Accueil:2,Logistique:2,Restauration:2,Bénévole:2,Artiste:2,Autre:2};
-    const CAT_COLORS=['#2563EB','#D97706','#16A34A'];
-    // Construire hiérarchie : niveau 0 en haut, liaisons parent->enfant par poste cat
-    let prevLvlIds=[];
+    // Regrouper les membres par niveau
+    // Pour chaque niveau > 0, on cherche le(s) nœud(s) de niveau N-1 dans le même groupe de poste/cat
+    // Pour simplifier : trouver le premier membre du niveau immédiatement supérieur comme parent
+    const byLevel={};
     staff.forEach(s=>{
       const poste=postes.find(p=>p.id===s.posteId);
       const cat=poste?.cat||'Autre';
       const lv=CAT_LEVEL[cat]??2;
-      const color=poste?.color||CAT_COLORS[lv]||'#4A5568';
+      if(!byLevel[lv])byLevel[lv]=[];
+      byLevel[lv].push({s,poste,cat,lv});
+    });
+    // Trouver le parent : pour chaque membre niveau N, parent = 1er membre niveau N-1 (du même groupe fonctionnel si possible)
+    const allLevels=Object.keys(byLevel).map(Number).sort((a,b)=>a-b);
+    const firstOfLevel={};
+    allLevels.forEach(lv=>{firstOfLevel[lv]='st_'+(byLevel[lv][0]?.s?.id);});
+    staff.forEach(s=>{
+      const poste=postes.find(p=>p.id===s.posteId);
+      const cat=poste?.cat||'Autre';
+      const lv=CAT_LEVEL[cat]??2;
+      const color=poste?.color||'#4A5568';
       const matos=getMatosForStaff(s.prenom+' '+s.nom);
       const id='st_'+s.id;
-      // Parent = premier nœud du niveau précédent (liaison simple)
-      const parentId=lv>0&&prevLvlIds[lv-1]?prevLvlIds[lv-1]:null;
+      // Parent = premier membre du niveau N-1
+      let parentId=null;
+      if(lv>0){
+        for(let pl=lv-1;pl>=0;pl--){
+          if(firstOfLevel[pl]){parentId=firstOfLevel[pl];break;}
+        }
+      }
+      // Ne pas se lier à soi-même
+      if(parentId===id)parentId=null;
       nodes.push({id,label:s.prenom+' '+s.nom,sub:poste?poste.nom:'—',color,parentId,level:lv,matos,photo:s.photo,staffId:s.id});
-      prevLvlIds[lv]=id;
     });
   }
 
@@ -4393,7 +4420,9 @@ function renderOrg(){
   canvas.style.minHeight=maxY+'px';
 
   // ── SVG liaisons ──
-  canvas.innerHTML=`<svg class="org-lines" id="org-svg"></svg><div class="org-canvas-hint"><i class="fas fa-magnet"></i> Grille magnétique 40px — Glissez pour réorganiser</div>`;
+  // Recalculer largeur réelle du canvas
+  const canvasW=Math.max(...nodes.map(n=>(S.orgPositions[n.id]?.x||0)+CARD_W+PAD), canvas.offsetWidth||860);
+  canvas.innerHTML=`<svg class="org-lines" id="org-svg" style="position:absolute;inset:0;width:${canvasW}px;height:${maxY}px;pointer-events:none;z-index:0"></svg><div class="org-canvas-hint"><i class="fas fa-magnet"></i> Grille magnétique 40px · Cliquer sur une carte pour l'éditer</div>`;
 
   // ── Cartes ──
   nodes.forEach(n=>{
@@ -4411,6 +4440,11 @@ function renderOrg(){
     card.style.left=pos.x+'px';
     card.style.top=pos.y+'px';
     card.style.borderLeft=`3px solid ${n.color}`;
+    if(n.isManual){
+      card.style.cursor='pointer';
+      card.title='Cliquer pour modifier';
+      card.addEventListener('click',e=>{if(!e.target.closest('button'))editOrgNode(n.orgId);});
+    }
     card.innerHTML=`
       ${photoHTML}
       <div class="org-free-info">
@@ -4434,36 +4468,40 @@ function orgDrawLines(nodes){
   const canvas=document.getElementById('org-canvas');
   const svg=document.getElementById('org-svg');
   if(!svg||!canvas)return;
-  const isDark=!document.getElementById('root').classList.contains('light');
   const CARD_W=200, CARD_H=56;
+  // Mettre à jour les dimensions du SVG dynamiquement
+  const maxX=Math.max(...nodes.map(n=>(S.orgPositions[n.id]?.x||0)+CARD_W+24),canvas.offsetWidth||860);
+  const maxY=Math.max(...nodes.map(n=>(S.orgPositions[n.id]?.y||0)+CARD_H+24),520);
+  svg.style.width=maxX+'px';
+  svg.style.height=maxY+'px';
+  canvas.style.minHeight=maxY+'px';
   let paths='';
   nodes.forEach(n=>{
     if(!n.parentId)return;
     const from=S.orgPositions[n.parentId];
     const to=S.orgPositions[n.id];
     if(!from||!to)return;
-    const sameRow=Math.abs(from.y-to.y)<CARD_H; // même ligne visuelle
+    const sameRow=Math.abs(from.y-to.y)<CARD_H;
     if(sameRow){
-      // Lien horizontal : centre gauche/droite
       const goRight=to.x>from.x;
       const x1=goRight?from.x+CARD_W:from.x;
       const y1=from.y+CARD_H/2;
       const x2=goRight?to.x:to.x+CARD_W;
       const y2=to.y+CARD_H/2;
       const mx=(x1+x2)/2;
-      paths+=`<path d="M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}" stroke="rgba(37,99,235,.4)" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arr)"/>`;
+      paths+=`<path d="M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}" stroke="rgba(37,99,235,.45)" stroke-width="2" fill="none" stroke-dasharray="5,4" marker-end="url(#arr)"/>`;
     } else {
-      // Lien vertical : bas parent → haut enfant
+      // Lien vertical bezier : bas parent → haut enfant
       const x1=from.x+CARD_W/2;
       const y1=from.y+CARD_H;
       const x2=to.x+CARD_W/2;
       const y2=to.y;
       const cy=(y1+y2)/2;
-      paths+=`<path d="M${x1},${y1} C${x1},${cy} ${x2},${cy} ${x2},${y2}" stroke="rgba(37,99,235,.35)" stroke-width="2" fill="none" stroke-dasharray="5,3" marker-end="url(#arr)"/>`;
+      paths+=`<path d="M${x1},${y1} C${x1},${cy} ${x2},${cy} ${x2},${y2}" stroke="rgba(37,99,235,.5)" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>`;
     }
   });
-  const accentColor='rgba(37,99,235,.5)';
-  svg.innerHTML=`<defs><marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="${accentColor}"/></marker></defs>`+paths;
+  const accentColor='rgba(37,99,235,.7)';
+  svg.innerHTML=`<defs><marker id="arr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="${accentColor}"/></marker></defs>`+paths;
 }
 
 // ── État drag org global (évite l'accumulation de listeners) ──
@@ -4523,14 +4561,26 @@ function orgGetNodes(){
   }
   const staff=S.staff||[];const postes=S.postes||[];
   const CAT_LEVEL={Management:0,Direction:0,Technique:1,Son:1,Lumière:1,Vidéo:1,Sécurité:1,Médical:1,Presse:1,Staff:2,Accueil:2,Logistique:2,Restauration:2,Bénévole:2,Artiste:2,Autre:2};
-  let prevLvlIds=[];
+  // Même logique que renderOrg pour cohérence
+  const byLevel={};
+  staff.forEach(s=>{
+    const poste=postes.find(p=>p.id===s.posteId);
+    const cat=poste?.cat||'Autre';
+    const lv=CAT_LEVEL[cat]??2;
+    if(!byLevel[lv])byLevel[lv]=[];
+    byLevel[lv].push(s.id);
+  });
+  const allLevels=Object.keys(byLevel).map(Number).sort((a,b)=>a-b);
+  const firstOfLevel={};
+  allLevels.forEach(lv=>{if(byLevel[lv]?.length)firstOfLevel[lv]='st_'+byLevel[lv][0];});
   return staff.map(s=>{
     const poste=postes.find(p=>p.id===s.posteId);
     const cat=poste?.cat||'Autre';
     const lv=CAT_LEVEL[cat]??2;
     const id='st_'+s.id;
-    const parentId=lv>0&&prevLvlIds[lv-1]?prevLvlIds[lv-1]:null;
-    prevLvlIds[lv]=id;
+    let parentId=null;
+    if(lv>0){for(let pl=lv-1;pl>=0;pl--){if(firstOfLevel[pl]){parentId=firstOfLevel[pl];break;}}}
+    if(parentId===id)parentId=null;
     return{id,parentId,level:lv};
   });
 }
