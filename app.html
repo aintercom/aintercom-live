@@ -254,10 +254,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 .meteo-hour{flex-shrink:0;text-align:center;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 12px;min-width:64px}
 .meteo-day{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px;text-align:center;flex:1}
 
-/* ── PAGE ACCUEIL ── */
-#page-home{display:flex;flex-direction:column;min-height:100vh;background:var(--bg)}
-.home-hdr{height:52px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px}
-.home-body{flex:1;padding:32px;max-width:1100px;margin:0 auto;width:100%}
+
 .event-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:var(--tr)}
 .event-card:hover{border-color:var(--accent);transform:translateY(-1px)}
 .event-card-icon{width:48px;height:48px;border-radius:12px;background:var(--accent-glow);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
@@ -268,7 +265,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 
 /* ── PRINT ── */
 @media print{
-  #app,#page-home{display:none}
+  #app{display:none}
   #print-zone{display:block!important}
 }
 #print-zone{display:none}
@@ -443,36 +440,6 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 </head>
 <body>
 
-<!-- ═══════════════════════════════
-     PAGE 0 — MES ÉVÉNEMENTS
-═══════════════════════════════ -->
-<div id="page-home">
-  <div class="home-hdr">
-    <div style="font-size:18px;font-weight:900;letter-spacing:-.5px;color:var(--accent)">AINTERCOM <span style="color:var(--tx)">PRO</span></div>
-    <div style="display:flex;gap:8px">
-      <button class="btn btn-ghost btn-icon btn-sm" onclick="toggleTheme()" id="home-theme-btn" title="Dark/Light"><i class="fas fa-moon"></i></button>
-    </div>
-  </div>
-  <div class="home-body">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
-      <div>
-        <div style="font-size:26px;font-weight:900;letter-spacing:-.5px">Mes Événements</div>
-        <div style="font-size:12px;color:var(--tx2);margin-top:3px">Gérez et pilotez vos événements depuis un seul endroit</div>
-      </div>
-      <button class="btn btn-primary btn-lg" onclick="openModal('modal-new-event')"><i class="fas fa-plus"></i> Nouvel événement</button>
-    </div>
-
-    <!-- Events list -->
-    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px" id="home-events-list"></div>
-
-    <!-- Templates -->
-    <div style="margin-top:28px">
-      <div style="font-size:13px;font-weight:800;color:var(--tx2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">Modèles / Templates</div>
-      <div id="home-templates-list" class="g-auto"></div>
-      <div class="empty" id="home-templates-empty" style="display:none"><i class="fas fa-copy"></i><p>Aucun template — Dupliquez un événement comme template depuis sa carte</p></div>
-    </div>
-  </div>
-</div>
 
 <!-- ═══════════════════════════════
      INTERFACE PRINCIPALE
@@ -1676,16 +1643,13 @@ function getEnvPath(basePath) {
 }
 
 function goHome(){
-  document.getElementById('page-home').style.display='flex';
-  document.getElementById('app').style.display='none';
-  renderHomeEvents();
+  saveStorage();
+  const isLocal=window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1';
+  const isGitHubPages=window.location.hostname.includes('github.io')||window.location.hostname==='live.aintercom.fr';
+  window.location.href=(isLocal||isGitHubPages)?'index.html':'/';
 }
 
-function goBackToProjects(){
-  document.getElementById('page-home').style.display='flex';
-  document.getElementById('app').style.display='none';
-  renderHomeEvents();
-}
+function goBackToProjects(){goHome();}
 
 function deleteEvent(id){
   if(!confirm('Supprimer cet événement ?'))return;
@@ -1771,7 +1735,7 @@ function renderAll(){
 function toggleTheme(){
   S.theme=S.theme==='dark'?'light':'dark';
   document.getElementById('root').className=S.theme==='light'?'light':'';
-  ['home-theme-btn','app-theme-btn'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=S.theme==='light'?'<i class="fas fa-sun"></i>':'<i class="fas fa-moon"></i>';});
+  const el=document.getElementById('app-theme-btn');if(el)el.innerHTML=S.theme==='light'?'<i class="fas fa-sun"></i>':'<i class="fas fa-moon"></i>';
   saveStorage();
 }
 
@@ -3177,6 +3141,16 @@ function saveStorage(){
     if(S.currentEventId){
       const {events,theme,...eventData}=S;
       localStorage.setItem('aintercom_event_' + uid + '_' + S.currentEventId, JSON.stringify(eventData));
+      // Synchroniser aintercom_current_project pour que index.html reste cohérent
+      const ev=S.events.find(e=>e.id===S.currentEventId);
+      if(ev){
+        const existing=JSON.parse(localStorage.getItem('aintercom_current_project')||'{}');
+        localStorage.setItem('aintercom_current_project',JSON.stringify({
+          ...existing,...ev,
+          id:ev.id,name:ev.nom,venue:ev.lieu,date:ev.date,time:ev.heure,type:ev.type,
+          _uid:uid,_index:existing._index
+        }));
+      }
     }
     const now=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
     const el=document.getElementById('ftr-save');if(el)el.textContent='Sauvegardé à '+now;
@@ -3189,7 +3163,7 @@ function loadStorage(){
     const uid = currentUser?.id || 'local';
     const global=localStorage.getItem('aintercom_global_' + uid);
     if(global){const d=JSON.parse(global);S.events=d.events||[];S.theme=d.theme||'dark';}
-    if(S.theme==='light'){document.getElementById('root').className='light';['home-theme-btn','app-theme-btn'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<i class="fas fa-sun"></i>';});}
+    if(S.theme==='light'){document.getElementById('root').className='light';const el=document.getElementById('app-theme-btn');if(el)el.innerHTML='<i class="fas fa-sun"></i>';}
   }catch(e){console.warn('Load error',e);}
 }
 
@@ -3511,29 +3485,35 @@ function loadProjectFromSession() {
 // ── OVERRIDE WINDOW.ONLOAD ──
 const _originalOnload = window.onload;
 window.onload = async () => {
-  // Auth first (bloque si pas de session)
+  // 1. Auth
   const ok = await initAuth();
   if (!ok) return;
 
-  // Appliquer UI utilisateur IMMÉDIATEMENT
+  // 2. UI utilisateur immédiatement
   updateUserUI();
 
-  // Lancer l'interface originale (qui appelle startClock, etc.)
-  if (_originalOnload) _originalOnload();
-
-  // Charger le projet sélectionné depuis index.html
-  loadProjectFromSession();
-
-  // Masquer la page home, afficher app directement
-  document.getElementById('page-home').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-
-  // Démarrer l'horloge si elle n'a pas été démarrée
-  if (typeof startClock === 'function') {
-    startClock();
+  // 3. Vérifier qu'un projet est bien sélectionné depuis index.html
+  const raw = localStorage.getItem('aintercom_current_project');
+  if (!raw) {
+    const isLocal=window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1';
+    const isGitHubPages=window.location.hostname.includes('github.io')||window.location.hostname==='live.aintercom.fr';
+    window.location.href=(isLocal||isGitHubPages)?'index.html':'/';
+    return;
   }
 
-  // Activité
+  // 4. Lancer l'interface originale (startClock, etc.)
+  if (_originalOnload) _originalOnload();
+
+  // 5. Charger le projet sélectionné depuis index.html
+  loadProjectFromSession();
+
+  // 6. Afficher l'app directement
+  document.getElementById('app').style.display = 'flex';
+
+  // 7. Démarrer l'horloge si besoin
+  if (typeof startClock === 'function') startClock();
+
+  // 8. Activité
   addActivity('Connecté : ' + (currentUser?.name || currentUser?.email || ''), 's');
 };
 </script>
