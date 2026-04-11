@@ -340,20 +340,25 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 .run-countdown.warn{color:var(--warning)}
 .run-countdown.over{color:var(--danger)}
 
-/* ── CREW ORG — Canvas Libre ── */
-#org-canvas{position:relative;min-height:520px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:default}
+/* ── CREW ORG — Canvas Libre — v2 ── */
+#org-canvas{position:relative;min-height:520px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:default;background-image:radial-gradient(circle,var(--border) 1px,transparent 1px);background-size:40px 40px}
 #org-canvas svg.org-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
-.org-free-card{position:absolute;background:var(--bg2);border:2px solid var(--border);border-radius:var(--r);padding:12px 14px;text-align:center;min-width:140px;max-width:170px;cursor:grab;user-select:none;z-index:2;box-shadow:0 2px 12px rgba(0,0,0,.15);transition:box-shadow .15s,border-color .15s}
-.org-free-card:hover{border-color:var(--accent);box-shadow:0 6px 24px rgba(37,99,235,.18)}
-.org-free-card.dragging{cursor:grabbing;box-shadow:0 12px 36px rgba(0,0,0,.35);z-index:100;border-color:var(--accent)}
-.org-free-avatar{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;margin:0 auto 8px}
+/* Cartes RECTANGULAIRES compactes */
+.org-free-card{position:absolute;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 14px;display:flex;align-items:center;gap:10px;width:200px;cursor:grab;user-select:none;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.12);transition:box-shadow .15s,border-color .15s}
+.org-free-card:hover{border-color:var(--accent);box-shadow:0 4px 18px rgba(37,99,235,.15)}
+.org-free-card.dragging{cursor:grabbing;box-shadow:0 10px 32px rgba(0,0,0,.3);z-index:100;border-color:var(--accent);transform:scale(1.02)}
+/* Snap ghost overlay */
+.org-free-card.snap-preview{border-color:var(--accent);opacity:.6}
+/* Avatar plus petit pour format horizontal */
+.org-free-avatar{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+.org-free-info{flex:1;min-width:0}
 .org-free-name{font-size:12px;font-weight:800;color:var(--tx);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.org-free-role{font-size:10px;color:var(--tx2);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.org-free-matos{font-size:9px;color:var(--accent);margin-top:5px;padding-top:5px;border-top:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.org-free-actions{display:flex;gap:3px;justify-content:center;margin-top:8px;opacity:0;transition:opacity .15s}
+.org-free-role{font-size:10px;color:var(--tx2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.org-free-matos{font-size:9px;color:var(--accent);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.org-free-actions{display:flex;flex-direction:column;gap:2px;opacity:0;transition:opacity .15s;flex-shrink:0}
 .org-free-card:hover .org-free-actions{opacity:1}
 #org-canvas-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--tx3);pointer-events:none}
-.org-canvas-hint{position:absolute;bottom:10px;right:12px;font-size:9px;color:var(--tx3);font-style:italic}
+.org-canvas-hint{position:absolute;bottom:10px;right:12px;font-size:9px;color:var(--tx3);font-style:italic;display:flex;align-items:center;gap:4px}
 
 /* ── PLANNING & LIVRAISONS ── */
 .plan-timeline{position:relative;padding-left:32px}
@@ -384,16 +389,18 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 .mc-libre-label{font-size:14px;font-weight:700;color:var(--tx3);margin-bottom:12px;min-height:48px;display:flex;align-items:center}
 .mc-select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;font-family:var(--font);font-size:13px;font-weight:600;color:var(--tx);cursor:pointer;transition:var(--tr)}
 .mc-select:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-glow)}
-/* ── POSTE CARD V2 ── */
+/* ── POSTE CARD V2 — Pro ── */
 .poste-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;display:flex;align-items:center;gap:14px;transition:var(--tr);position:relative;overflow:hidden}
 .poste-card:hover{border-color:var(--border2);box-shadow:0 4px 20px rgba(0,0,0,.12);transform:translateY(-1px)}
 .poste-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--pc,var(--accent))}
 .poste-icon-wrap{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.poste-nom{font-size:15px;font-weight:800;flex:1;color:var(--tx);letter-spacing:-.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.poste-nom{font-size:15px;font-weight:800;color:var(--tx);letter-spacing:-.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .poste-cat-lbl{font-size:10px;color:var(--tx3);font-weight:600;margin-top:2px}
-.poste-count{font-size:11px;font-weight:800;color:var(--tx2);background:var(--bg3);padding:4px 10px;border-radius:20px;border:1px solid var(--border);flex-shrink:0;white-space:nowrap}
+/* Chiffre membre massif à droite */
+.poste-count{font-family:'JetBrains Mono',Arial,monospace;font-size:42px;font-weight:900;color:var(--tx);opacity:.18;line-height:1;letter-spacing:-2px;min-width:56px;text-align:right;flex-shrink:0;margin-left:auto;padding-right:4px}
 .poste-actions{display:flex;gap:4px;opacity:0;transition:var(--tr);flex-shrink:0}
 .poste-card:hover .poste-actions{opacity:1}
+.poste-card:hover .poste-count{opacity:.35}
 /* ── SORT SELECT ── */
 #postes-sort{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 10px;font-size:11px;font-weight:600;color:var(--tx);cursor:pointer;transition:var(--tr);outline:none}
 #postes-sort:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
@@ -1988,7 +1995,8 @@ let S = {
   activityFeed: [],
   note: '',
   nextId: 200,
-  weatherCache: null,
+  weatherCache: null, // réservé pour usage futur
+  _weatherLastFetch: 0,
   runDelay: 0,
 };
 
@@ -2016,16 +2024,13 @@ let _clockStarted=false;
 function startClock(){
   if(_clockStarted)return;
   _clockStarted=true;
-  let _lastTick=Date.now();
   function tick(){
     const now=new Date();
-    const delta=Date.now()-_lastTick;
-    _lastTick=Date.now();
     const hms=now.toLocaleTimeString('fr-FR');
     const hm=now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
     const dateShort=now.toLocaleDateString('fr-FR',{weekday:'short',day:'2-digit',month:'short'}).toUpperCase();
     const dateLong=now.toLocaleDateString('fr-FR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}).toUpperCase();
-    // Header + Cockpit
+    // Header + Cockpit — mise à jour immédiate et synchronisée
     const hdrClock=document.getElementById('hdr-clock');if(hdrClock)hdrClock.textContent=hms;
     const hdrDate=document.getElementById('hdr-date');if(hdrDate)hdrDate.textContent=dateShort;
     const cpClock=document.getElementById('cockpit-clock');if(cpClock)cpClock.textContent=hms;
@@ -2572,7 +2577,7 @@ function renderRun(){
           ${s.cues?`<div style="font-size:10px;color:var(--tx3);margin-left:18px">${s.cues}</div>`:''}
         </div>
         <div style="font-size:11px;color:var(--tx2)">${s.resp||'—'}</div>
-        <div>${s.active?`<span class="badge b-danger">LIVE${isPaused?' ⏸':''}</span>`:s.done?'<span class="badge b-success">DONE</span>':'<span class="badge b-neutral">WAIT</span>'}</div>
+        <div>${s.active?`<span class="badge b-danger">LIVE${isPaused?' ⏸':''}</span>`:s.done?'<span class="badge b-success">TERMINÉ</span>':'<span class="badge b-neutral">En attente</span>'}</div>
         <div class="run-countdown ${cdClass}" id="seq-chrono-${ri}">${cdVal}</div>
         <div style="display:flex;gap:2px">
           ${s.active?`<button onclick="pauseSeq(${ri})" class="btn btn-ghost btn-sm btn-icon" title="${isPaused?'Reprendre':'Pause'}"><i class="fas ${isPaused?'fa-play':'fa-pause'}" style="font-size:10px;color:var(--warning)"></i></button>`:''}
@@ -2637,24 +2642,27 @@ function toggleLive(ri){
     if(activeSeq){
       const timeToEnd=(activeSeq.dur||0)*60 - (activeSeq.elapsed||0);
       if(timeToEnd>0){
-        // Séquence précédente non terminée — demander confirmation
         if(!confirm(`⚠️ La séquence "${activeSeq.title}" est encore active (${Math.ceil(timeToEnd/60)}min restantes).\n\nForcer le démarrage de "${S.sequences[ri].title}" ?`))return;
       }
     }
   }
   S.sequences.forEach(s=>{s.active=false;s.paused=false;});
   if(!was){
-    S.sequences[ri].active=true;
-    S.sequences[ri].elapsed=0;
-    addActivity('LIVE: '+S.sequences[ri].title,'s');
-    const hc=document.getElementById('hdr-cue-name');if(hc)hc.textContent=S.sequences[ri].title;
+    const seq=S.sequences[ri];
+    seq.active=true;
+    // ── FIX COUNTDOWN : réinitialiser elapsed à 0 au démarrage ──
+    seq.elapsed=0;
+    seq.pauseElapsed=0;
+    seq.delay=seq.delay||0;
+    addActivity('LIVE: '+seq.title,'s');
+    const hc=document.getElementById('hdr-cue-name');if(hc)hc.textContent=seq.title;
     const pb=document.getElementById('run-pause-btn');if(pb){pb.style.display='inline-flex';pb.innerHTML='<i class="fas fa-pause"></i> Pause';pb.className='btn btn-ghost btn-sm';}
-    // Auto-trigger next seq (mode auto ou autoTrig individuel)
+    // Auto-trigger next seq
     const filtered=S.sequences.filter(s=>s.day===S.runCurrentDay&&s.scene===S.runCurrentScene).slice().sort((a,b)=>{const toMin=t=>{if(!t||!t.includes(':'))return9999;const[h,m]=t.split(':').map(Number);return h*60+m;};return toMin(a.time)-toMin(b.time);});
-    const curIdx=filtered.findIndex(s=>s.id===S.sequences[ri].id);
+    const curIdx=filtered.findIndex(s=>s.id===seq.id);
     const next=filtered[curIdx+1];
     const shouldAutoTrig=next&&(next.autoTrig||S.runMode==='auto');
-    if(shouldAutoTrig){const delay=next.delay||0;setTimeout(()=>{const nri=S.sequences.indexOf(next);if(nri>=0)toggleLive(nri);},((S.sequences[ri].dur||0)*60+delay)*1000);toast('⚡ Auto-trigger: '+next.title+' dans '+(S.sequences[ri].dur||0)+'min','i');}
+    if(shouldAutoTrig){const delay=next.delay||0;setTimeout(()=>{const nri=S.sequences.indexOf(next);if(nri>=0)toggleLive(nri);},(((seq.dur||0)*60)+delay)*1000);toast('⚡ Auto-trigger: '+next.title+' dans '+(seq.dur||0)+'min','i');}
   } else {
     const hc=document.getElementById('hdr-cue-name');if(hc)hc.textContent='En attente';
     const pb=document.getElementById('run-pause-btn');if(pb)pb.style.display='none';
@@ -2890,7 +2898,7 @@ function renderPostes() {
         <div class="poste-nom">${p.nom}</div>
         <div class="poste-cat-lbl">${p.cat||'Autre'}</div>
       </div>
-      <div class="poste-count">${count} membre${count!==1?'s':''}</div>
+      <div class="poste-count" title="${count} membre${count!==1?'s':''}">${count}</div>
       <div class="poste-actions">
         <button onclick="editPoste(${p.id})" class="btn btn-ghost btn-sm btn-icon" title="Modifier"><i class="fas fa-pen" style="font-size:10px"></i></button>
         <button onclick="deletePoste(${p.id})" class="btn btn-ghost btn-sm btn-icon" title="Supprimer"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
@@ -2915,6 +2923,8 @@ function savePoste() {
     editingPosteId = -1;
   }
   closeModal('modal-add-poste');
+  // ── LIAISON IMMÉDIATE : mise à jour des selects Staff dès la création/modif ──
+  populatePosteSelects();
   renderPostes(); renderStaff(); saveStorage();
 }
 
@@ -2967,6 +2977,7 @@ function openAddStaffModal(){
   document.getElementById('staff-modal-title').textContent='Ajouter un membre';
   document.getElementById('staff-save-btn').innerHTML='<i class="fas fa-plus"></i> Ajouter';
   ['st-prenom','st-nom','st-tel','st-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  // ── LIAISON IMMÉDIATE : toujours recharger la liste des postes à l'ouverture ──
   populatePosteSelects();
   document.getElementById('st-poste').value='';
   openModal('modal-add-staff');
@@ -3658,7 +3669,7 @@ function geolocate(){
 async function fetchWeather(){
   const cwCity=document.getElementById('cw-meteo-city');if(cwCity&&cwCity.value)document.getElementById('meteo-city').value=cwCity.value;
   const city=document.getElementById('meteo-city')?.value||'Lyon';
-  // Use open-meteo geocoding (free, no key)
+  // Toujours actualiser — pas de cache bloquant
   try{
     const geoRes=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=fr`);
     const geoData=await geoRes.json();
@@ -4338,8 +4349,9 @@ function renderOrg(){
     });
   }
 
-  // ── Positions : assigner auto si non définies ──
-  const CARD_W=160, CARD_H=110, GAP_X=40, GAP_Y=60, PAD=24;
+  // ── Positions : assigner auto si non définies — grille magnétique 40px ──
+  const SNAP=40; // taille de grille magnétique (px)
+  const CARD_W=200, CARD_H=56, GAP_X=40, GAP_Y=60, PAD=24;
   const byLevel={};
   nodes.forEach(n=>{
     const lv=n.level||0;
@@ -4350,10 +4362,12 @@ function renderOrg(){
   Object.keys(byLevel).sort((a,b)=>a-b).forEach(lv=>{
     const lvNodes=byLevel[lv];
     const totalW=lvNodes.length*(CARD_W+GAP_X)-GAP_X;
-    const startX=Math.max(PAD,(canvas.offsetWidth||800)/2-totalW/2);
+    const startX=Math.max(PAD,Math.round(((canvas.offsetWidth||860)/2-totalW/2)/SNAP)*SNAP);
     lvNodes.forEach((n,i)=>{
       if(!S.orgPositions[n.id]){
-        S.orgPositions[n.id]={x:startX+i*(CARD_W+GAP_X), y:yOffset};
+        const rawX=startX+i*(CARD_W+GAP_X);
+        const rawY=yOffset;
+        S.orgPositions[n.id]={x:Math.round(rawX/SNAP)*SNAP, y:Math.round(rawY/SNAP)*SNAP};
       }
     });
     yOffset+=CARD_H+GAP_Y;
@@ -4364,34 +4378,36 @@ function renderOrg(){
   canvas.style.minHeight=maxY+'px';
 
   // ── SVG liaisons ──
-  canvas.innerHTML=`<svg class="org-lines" id="org-svg"></svg><div class="org-canvas-hint"><i class="fas fa-arrows-up-down-left-right"></i> Glissez les cartes pour réorganiser</div>`;
+  canvas.innerHTML=`<svg class="org-lines" id="org-svg"></svg><div class="org-canvas-hint"><i class="fas fa-magnet"></i> Grille magnétique 40px — Glissez pour réorganiser</div>`;
 
   // ── Cartes ──
   nodes.forEach(n=>{
     const pos=S.orgPositions[n.id]||{x:PAD,y:PAD};
     const initials=n.label.split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2);
     const photoHTML=n.photo
-      ?`<div class="org-free-avatar" style="background:${n.color};overflow:hidden;padding:0"><img src="${n.photo}" style="width:100%;height:100%;object-fit:cover"></div>`
+      ?`<div class="org-free-avatar" style="background:${n.color};overflow:hidden;padding:0"><img src="${n.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:7px"></div>`
       :`<div class="org-free-avatar" style="background:${n.color}">${initials}</div>`;
     const matosHTML=n.matos?`<div class="org-free-matos"><i class="fas fa-walkie-talkie" style="font-size:8px"></i> ${n.matos}</div>`:'';
     const card=document.createElement('div');
     card.className='org-free-card';
     card.id='orgcard_'+n.id;
     card.dataset.nid=n.id;
+    card.dataset.level=n.level||0;
     card.style.left=pos.x+'px';
     card.style.top=pos.y+'px';
-    card.style.borderTopColor=n.color;
-    card.style.borderTopWidth='3px';
+    card.style.borderLeft=`3px solid ${n.color}`;
     card.innerHTML=`
       ${photoHTML}
-      <div class="org-free-name">${n.label}</div>
-      <div class="org-free-role" style="color:${n.color}">${n.sub}</div>
-      ${matosHTML}
+      <div class="org-free-info">
+        <div class="org-free-name">${n.label}</div>
+        <div class="org-free-role" style="color:${n.color}">${n.sub}</div>
+        ${matosHTML}
+      </div>
       <div class="org-free-actions">
         ${n.isManual?`<button onclick="event.stopPropagation();editOrgNode(${n.orgId})" class="btn btn-ghost btn-sm btn-icon" title="Modifier"><i class="fas fa-pen" style="font-size:9px"></i></button><button onclick="event.stopPropagation();deleteOrgNode(${n.orgId})" class="btn btn-ghost btn-sm btn-icon" title="Supprimer"><i class="fas fa-trash" style="font-size:9px;color:var(--danger)"></i></button>`:''}
       </div>`;
     canvas.appendChild(card);
-    // Drag natif
+    // Drag natif avec snap magnétique
     orgMakeDraggable(card, n.id);
   });
 
@@ -4404,24 +4420,39 @@ function orgDrawLines(nodes){
   const svg=document.getElementById('org-svg');
   if(!svg||!canvas)return;
   const isDark=!document.getElementById('root').classList.contains('light');
-  const lineColor=isDark?'rgba(255,255,255,.12)':'rgba(0,0,0,.12)';
-  const accentColor='rgba(37,99,235,.35)';
+  const CARD_W=200, CARD_H=56;
   let paths='';
   nodes.forEach(n=>{
     if(!n.parentId)return;
     const from=S.orgPositions[n.parentId];
     const to=S.orgPositions[n.id];
     if(!from||!to)return;
-    const CARD_W=160,CARD_H=110;
-    const x1=from.x+CARD_W/2, y1=from.y+CARD_H;
-    const x2=to.x+CARD_W/2, y2=to.y;
-    const cy=(y1+y2)/2;
-    paths+=`<path d="M${x1},${y1} C${x1},${cy} ${x2},${cy} ${x2},${y2}" stroke="${accentColor}" stroke-width="2" fill="none" stroke-dasharray="5,3"/>`;
+    const sameRow=Math.abs(from.y-to.y)<CARD_H; // même ligne visuelle
+    if(sameRow){
+      // Lien horizontal : centre gauche/droite
+      const goRight=to.x>from.x;
+      const x1=goRight?from.x+CARD_W:from.x;
+      const y1=from.y+CARD_H/2;
+      const x2=goRight?to.x:to.x+CARD_W;
+      const y2=to.y+CARD_H/2;
+      const mx=(x1+x2)/2;
+      paths+=`<path d="M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}" stroke="rgba(37,99,235,.4)" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arr)"/>`;
+    } else {
+      // Lien vertical : bas parent → haut enfant
+      const x1=from.x+CARD_W/2;
+      const y1=from.y+CARD_H;
+      const x2=to.x+CARD_W/2;
+      const y2=to.y;
+      const cy=(y1+y2)/2;
+      paths+=`<path d="M${x1},${y1} C${x1},${cy} ${x2},${cy} ${x2},${y2}" stroke="rgba(37,99,235,.35)" stroke-width="2" fill="none" stroke-dasharray="5,3" marker-end="url(#arr)"/>`;
+    }
   });
-  svg.innerHTML=`<defs><marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="${accentColor}"/></marker></defs>`+paths;
+  const accentColor='rgba(37,99,235,.5)';
+  svg.innerHTML=`<defs><marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="${accentColor}"/></marker></defs>`+paths;
 }
 
 function orgMakeDraggable(card, nid){
+  const SNAP=40;
   let dragging=false, ox=0, oy=0;
   card.addEventListener('mousedown',e=>{
     if(e.target.closest('button')||e.target.closest('a'))return;
@@ -4439,12 +4470,14 @@ function orgMakeDraggable(card, nid){
     const canvas=document.getElementById('org-canvas');
     if(!canvas)return;
     const rect=canvas.getBoundingClientRect();
-    const x=Math.max(0,e.clientX-rect.left-ox);
-    const y=Math.max(0,e.clientY-rect.top-oy);
+    // ── SNAP MAGNÉTIQUE ──
+    const rawX=Math.max(0,e.clientX-rect.left-ox);
+    const rawY=Math.max(0,e.clientY-rect.top-oy);
+    const x=Math.round(rawX/SNAP)*SNAP;
+    const y=Math.round(rawY/SNAP)*SNAP;
     S.orgPositions[nid]={x,y};
     card.style.left=x+'px';
     card.style.top=y+'px';
-    // Mettre à jour les lignes en temps réel
     const nodes=orgGetNodes();
     orgDrawLines(nodes);
   });
@@ -4514,7 +4547,8 @@ function initCockpitDrag(){
     el.style.left=pos.x+'px';
     el.style.top=pos.y+'px';
 
-    // Drag logic
+    // Drag logic avec SNAP MAGNÉTIQUE COCKPIT
+    const COCKPIT_SNAP=8; // grille fine 8px pour cockpit
     let dragging=false, ox=0, oy=0;
     el.addEventListener('mousedown',e=>{
       // Seulement si clic sur le handle ou sur le widget directement (pas sur boutons/inputs)
@@ -4533,6 +4567,7 @@ function initCockpitDrag(){
     document.addEventListener('mousemove',e=>{
       if(!dragging)return;
       const rect=canvas.getBoundingClientRect();
+      // Déplacement libre pendant le drag (fluide)
       const x=Math.max(0,e.clientX-rect.left-ox);
       const y=Math.max(0,e.clientY-rect.top-oy);
       el.style.left=x+'px';
@@ -4544,6 +4579,12 @@ function initCockpitDrag(){
         dragging=false;
         el.classList.remove('dragging');
         el.style.zIndex='';
+        // ── SNAP sur relâchement : aimantation sur grille ──
+        const snapX=Math.round(parseFloat(el.style.left)/COCKPIT_SNAP)*COCKPIT_SNAP;
+        const snapY=Math.round(parseFloat(el.style.top)/COCKPIT_SNAP)*COCKPIT_SNAP;
+        el.style.left=snapX+'px';
+        el.style.top=snapY+'px';
+        S.cockpitLayout[id]={x:snapX,y:snapY};
         updateCanvasHeight();
         saveStorage();
       }
