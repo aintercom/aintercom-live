@@ -2006,14 +2006,10 @@ let S = {
 window.onload = () => {
   loadStorage();
   ensureStateDefaults();
-  S.currentEventId = 'default';
-  renderAll();
-  fetchWeather();
-  startClock();
+  S.currentEventId = S.currentEventId || 'default';
+  // NB: renderAll, fetchWeather, startClock sont déclenchés par le override window.onload
+  // du bloc auth en bas du fichier — pas de double appel ici
   startAutoSave();
-  setTimeout(initCockpitDrag, 50); // après rendu DOM
-  addActivity('Interface chargée','i');
-  switchTab('cockpit', null);
   document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
 };
 
@@ -3915,18 +3911,38 @@ function ensureStateDefaults(){
   if(S.cueLocked===undefined)S.cueLocked=false;
   if(!S.runMode)S.runMode='manual';
   if(!S.orgPositions)S.orgPositions={};
+  if(!S.orgNodes)S.orgNodes=[];
   if(!S.cockpitLayout)S.cockpitLayout={};
   if(!S.planning)S.planning=[];
   if(!S.planningView)S.planningView='timeline';
+  if(!S.staff)S.staff=[];
+  if(!S.postes||!S.postes.length)S.postes=[
+    {id:1,nom:'Sécurité',color:'#DC2626',cat:'Sécurité'},
+    {id:2,nom:'Staff',color:'#2563EB',cat:'Staff'},
+    {id:3,nom:'Technique',color:'#D97706',cat:'Technique'},
+    {id:4,nom:'Artiste',color:'#7C3AED',cat:'Artiste'},
+    {id:5,nom:'Accueil',color:'#16A34A',cat:'Accueil'},
+  ];
+  if(!S.sequences)S.sequences=[];
+  if(!S.incidents)S.incidents=[];
+  if(!S.extraMatos)S.extraMatos=[];
+  if(!S.activityFeed)S.activityFeed=[];
+  if(!S.budget)S.budget={alloue:10000,lignes:[]};
+  if(!S.contacts||!S.contacts.length)S.contacts=[
+    {id:1,nom:'🚒 Pompiers',tel:'18',cat:'Urgence'},
+    {id:2,nom:'🚑 SAMU',tel:'15',cat:'Urgence'},
+    {id:3,nom:'🚔 Police',tel:'17',cat:'Urgence'}
+  ];
+  if(!S.signHistory)S.signHistory=[];
+  if(!S.nextId||S.nextId<200)S.nextId=200;
   // Migrer les anciennes séquences avec phase → day/scene
   if(S.sequences){
     S.sequences.forEach(s=>{
       if(!s.day){
-        if(s.phase==='montage')s.day='J1';
-        else if(s.phase==='demo')s.day='J1';
-        else s.day='J1';
+        s.day='J1';
         s.scene=s.scene||'Scène 1';
       }
+      if(s.id===undefined)s.id=S.nextId++;
     });
   }
 }
@@ -3984,7 +4000,7 @@ function doPrint(){
           <td style="font-size:8pt">${s.sonOn?(s.sonSrc||'ON'):'—'}</td>
           <td style="font-size:8pt">${s.lumOn?(s.lumScene||'ON'):'—'}</td>
           <td style="font-size:8pt">${s.vidOn?(s.vidSrc||'ON'):'—'}</td>
-          <td><span style="padding:1pt 5pt;border:1pt solid #ccc;border-radius:2pt;font-size:8pt;font-weight:700">${s.done?'DONE':s.active?'LIVE':'WAIT'}</span></td>
+          <td><span style="padding:1pt 5pt;border:1pt solid #ccc;border-radius:2pt;font-size:8pt;font-weight:700">${s.done?'TERMINÉ':s.active?'LIVE':'EN ATTENTE'}</span></td>
         </tr>`).join('')}
         </tbody></table>`;
       });
@@ -4248,7 +4264,6 @@ function toggleMatosView() {
 // ═══════════════════════════════════════════
 // ORGANIGRAMME
 // ═══════════════════════════════════════════
-if(!S.orgNodes)S.orgNodes=[];
 let editingOrgId=-1;
 
 function openModal_org(){
@@ -4451,39 +4466,53 @@ function orgDrawLines(nodes){
   svg.innerHTML=`<defs><marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="${accentColor}"/></marker></defs>`+paths;
 }
 
+// ── État drag org global (évite l'accumulation de listeners) ──
+let _orgDragState={dragging:false,nid:null,ox:0,oy:0,card:null};
+let _orgDragInited=false;
+
 function orgMakeDraggable(card, nid){
-  const SNAP=40;
-  let dragging=false, ox=0, oy=0;
+  // mousedown par carte (OK)
   card.addEventListener('mousedown',e=>{
     if(e.target.closest('button')||e.target.closest('a'))return;
-    dragging=true;
-    const pos=S.orgPositions[nid]||{x:0,y:0};
     const canvas=document.getElementById('org-canvas');
+    if(!canvas)return;
+    const pos=S.orgPositions[nid]||{x:0,y:0};
     const rect=canvas.getBoundingClientRect();
-    ox=e.clientX-rect.left-pos.x;
-    oy=e.clientY-rect.top-pos.y;
+    _orgDragState={
+      dragging:true, nid, card,
+      ox:e.clientX-rect.left-pos.x,
+      oy:e.clientY-rect.top-pos.y
+    };
     card.classList.add('dragging');
     e.preventDefault();
   });
-  document.addEventListener('mousemove',e=>{
-    if(!dragging)return;
-    const canvas=document.getElementById('org-canvas');
-    if(!canvas)return;
-    const rect=canvas.getBoundingClientRect();
-    // ── SNAP MAGNÉTIQUE ──
-    const rawX=Math.max(0,e.clientX-rect.left-ox);
-    const rawY=Math.max(0,e.clientY-rect.top-oy);
-    const x=Math.round(rawX/SNAP)*SNAP;
-    const y=Math.round(rawY/SNAP)*SNAP;
-    S.orgPositions[nid]={x,y};
-    card.style.left=x+'px';
-    card.style.top=y+'px';
-    const nodes=orgGetNodes();
-    orgDrawLines(nodes);
-  });
-  document.addEventListener('mouseup',()=>{
-    if(dragging){dragging=false;card.classList.remove('dragging');saveStorage();}
-  });
+
+  // Enregistrer les listeners document une seule fois globalement
+  if(!_orgDragInited){
+    _orgDragInited=true;
+    const SNAP=40;
+    document.addEventListener('mousemove',e=>{
+      if(!_orgDragState.dragging)return;
+      const canvas=document.getElementById('org-canvas');
+      if(!canvas)return;
+      const {nid,card,ox,oy}=_orgDragState;
+      const rect=canvas.getBoundingClientRect();
+      const rawX=Math.max(0,e.clientX-rect.left-ox);
+      const rawY=Math.max(0,e.clientY-rect.top-oy);
+      const x=Math.round(rawX/SNAP)*SNAP;
+      const y=Math.round(rawY/SNAP)*SNAP;
+      S.orgPositions[nid]={x,y};
+      card.style.left=x+'px';
+      card.style.top=y+'px';
+      orgDrawLines(orgGetNodes());
+    });
+    document.addEventListener('mouseup',()=>{
+      if(!_orgDragState.dragging)return;
+      _orgDragState.card?.classList.remove('dragging');
+      _orgDragState={dragging:false,nid:null,ox:0,oy:0,card:null};
+      saveStorage();
+    });
+  }
 }
 
 function orgGetNodes(){
@@ -4525,12 +4554,16 @@ const CW_DEFAULT_LAYOUT = {
   'cw-w11': {x:472, y:330},
 };
 
+// ── État drag cockpit global (un seul listener sur document) ──
+let _cwDragState={el:null,id:null,ox:0,oy:0,canvas:null};
+let _cwDragInited=false;
+
 function initCockpitDrag(){
   if(!S.cockpitLayout)S.cockpitLayout={};
   const canvas=document.getElementById('cockpit-drag-canvas');
   if(!canvas)return;
+  const COCKPIT_SNAP=8;
 
-  // Calculer hauteur canvas
   function updateCanvasHeight(){
     let maxY=0;
     document.querySelectorAll('.cw-draggable').forEach(el=>{
@@ -4539,35 +4572,36 @@ function initCockpitDrag(){
     canvas.style.minHeight=Math.max(600,maxY)+'px';
   }
 
+  // Positionner + mousedown par widget (pas de cumul sur document)
   document.querySelectorAll('.cw-draggable').forEach(el=>{
     const id=el.id;
-    // Appliquer position sauvegardée ou défaut
     const pos=S.cockpitLayout[id]||CW_DEFAULT_LAYOUT[id]||{x:0,y:0};
     if(!S.cockpitLayout[id])S.cockpitLayout[id]={...pos};
     el.style.left=pos.x+'px';
     el.style.top=pos.y+'px';
 
-    // Drag logic avec SNAP MAGNÉTIQUE COCKPIT
-    const COCKPIT_SNAP=8; // grille fine 8px pour cockpit
-    let dragging=false, ox=0, oy=0;
     el.addEventListener('mousedown',e=>{
-      // Seulement si clic sur le handle ou sur le widget directement (pas sur boutons/inputs)
       const onHandle=e.target.closest('.cw-drag-handle');
       const onInteractive=e.target.closest('button,input,textarea,select,a');
       if(!onHandle&&onInteractive)return;
-      dragging=true;
-      const rect=canvas.getBoundingClientRect();
-      const elRect=el.getBoundingClientRect();
-      ox=e.clientX-elRect.left;
-      oy=e.clientY-elRect.top;
+      _cwDragState={
+        el,id,canvas,
+        ox:e.clientX-el.getBoundingClientRect().left,
+        oy:e.clientY-el.getBoundingClientRect().top
+      };
       el.classList.add('dragging');
       el.style.zIndex=100;
       e.preventDefault();
     });
+  });
+
+  // UN SEUL listener global (guard _cwDragInited evite la duplication)
+  if(!_cwDragInited){
+    _cwDragInited=true;
     document.addEventListener('mousemove',e=>{
-      if(!dragging)return;
+      const {el,id,ox,oy,canvas}=_cwDragState;
+      if(!el)return;
       const rect=canvas.getBoundingClientRect();
-      // Déplacement libre pendant le drag (fluide)
       const x=Math.max(0,e.clientX-rect.left-ox);
       const y=Math.max(0,e.clientY-rect.top-oy);
       el.style.left=x+'px';
@@ -4575,21 +4609,20 @@ function initCockpitDrag(){
       S.cockpitLayout[id]={x,y};
     });
     document.addEventListener('mouseup',()=>{
-      if(dragging){
-        dragging=false;
-        el.classList.remove('dragging');
-        el.style.zIndex='';
-        // ── SNAP sur relâchement : aimantation sur grille ──
-        const snapX=Math.round(parseFloat(el.style.left)/COCKPIT_SNAP)*COCKPIT_SNAP;
-        const snapY=Math.round(parseFloat(el.style.top)/COCKPIT_SNAP)*COCKPIT_SNAP;
-        el.style.left=snapX+'px';
-        el.style.top=snapY+'px';
-        S.cockpitLayout[id]={x:snapX,y:snapY};
-        updateCanvasHeight();
-        saveStorage();
-      }
+      const {el,id}=_cwDragState;
+      if(!el)return;
+      el.classList.remove('dragging');
+      el.style.zIndex='';
+      const snapX=Math.round(parseFloat(el.style.left)/COCKPIT_SNAP)*COCKPIT_SNAP;
+      const snapY=Math.round(parseFloat(el.style.top)/COCKPIT_SNAP)*COCKPIT_SNAP;
+      el.style.left=snapX+'px';
+      el.style.top=snapY+'px';
+      S.cockpitLayout[id]={x:snapX,y:snapY};
+      _cwDragState={el:null,id:null,ox:0,oy:0,canvas:null};
+      updateCanvasHeight();
+      saveStorage();
     });
-  });
+  }
   updateCanvasHeight();
 }
 
@@ -5023,6 +5056,8 @@ function loadProjectFromSession() {
     }
     renderAll();
     addActivity('Projet chargé : ' + project.name, 's');
+    // Init cockpit drag après rendu complet
+    setTimeout(initCockpitDrag, 60);
   } catch(e) { console.warn('loadProjectFromSession:', e); }
 }
 
@@ -5033,10 +5068,13 @@ window.onload = async () => {
   const ok = await initAuth();
   if (!ok) return;
 
-  // 2. UI utilisateur immédiatement
+  // 2. Base init (loadStorage + ensureStateDefaults, sans renderAll)
+  if (_originalOnload) _originalOnload();
+
+  // 3. UI utilisateur
   updateUserUI();
 
-  // 3. Vérifier qu'un projet est bien sélectionné depuis index.html
+  // 4. Vérifier qu'un projet est bien sélectionné depuis index.html
   const raw = localStorage.getItem('aintercom_current_project');
   if (!raw) {
     const isLocal=window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1';
@@ -5045,20 +5083,24 @@ window.onload = async () => {
     return;
   }
 
-  // 4. Lancer l'interface originale (startClock, etc.)
-  if (_originalOnload) _originalOnload();
-
-  // 5. Charger le projet sélectionné depuis index.html
-  loadProjectFromSession();
-
-  // 6. Afficher l'app directement
+  // 5. Afficher l'app
   document.getElementById('app').style.display = 'flex';
 
-  // 7. Démarrer l'horloge si besoin
-  if (typeof startClock === 'function') startClock();
+  // 6. Charger le projet + renderAll (unique)
+  loadProjectFromSession();
 
-  // 8. Activité
-  addActivity('Connecté : ' + (currentUser?.name || currentUser?.email || ''), 's');
+  // 7. Horloge (guard interne empêche double démarrage)
+  startClock();
+
+  // 8. Météo immédiate
+  fetchWeather();
+
+  // 9. Cockpit drag après rendu DOM
+  setTimeout(initCockpitDrag, 60);
+
+  // 10. Onglet par défaut + activité
+  switchTab('cockpit', null);
+  addActivity('Connecté : ' + (currentUser?.name || currentUser?.email || 'local'), 's');
 };
 </script>
 
