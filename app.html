@@ -458,8 +458,9 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 /* ── Cockpit Dashboard Draggable ── */
 #cockpit-drag-canvas {
   position: relative;
-  min-height: 600px;
+  min-height: 500px;
   padding: 0;
+  overflow: visible;
 }
 /* Taille uniforme des widgets cockpit */
 .cw-draggable {
@@ -468,8 +469,14 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
   user-select: none;
   transition: box-shadow .15s, border-color .15s;
   width: 240px !important;
-  min-height: 120px;
+  height: 140px !important;
+  overflow: hidden;
+  box-sizing: border-box;
 }
+.cw-draggable:hover { border-color: var(--border2); box-shadow: 0 6px 20px rgba(0,0,0,.18); }
+.cw-draggable.dragging { cursor: grabbing; box-shadow: 0 12px 36px rgba(0,0,0,.35); z-index: 100; border-color: var(--accent); opacity:.92; }
+/* Exception : widget horloge et widget "En direct" peuvent être plus hauts */
+#cw-w1, #cw-w4 { height: 140px !important; }
 .cw-draggable:hover { border-color: var(--border2); box-shadow: 0 6px 20px rgba(0,0,0,.18); }
 .cw-draggable.dragging { cursor: grabbing; box-shadow: 0 12px 36px rgba(0,0,0,.35); z-index: 100; border-color: var(--accent); opacity:.92; }
 /* Ghost de collision */
@@ -934,18 +941,22 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
       <!-- ══ CONDUCTEUR ══ -->
       <section class="tab" id="tab-conducteur">
         <div class="sec-hdr">
-          <div><div class="sec-title">🎬 Conducteur</div><div class="sec-sub">Timeline de show · Tri chronologique · Auto-trigger · Count-down</div></div>
+          <div><div class="sec-title">🎬 Conducteur</div><div class="sec-sub">Timeline de show · Tri chronologique · Count-down temps réel</div></div>
           <div class="sec-actions">
-            <!-- Verrou CUE -->
             <button class="btn btn-ghost btn-sm" id="run-lock-btn" onclick="toggleCueLock()" title="Verrouiller les CUEs pendant le direct"><i class="fas fa-unlock" id="run-lock-ico"></i> CUE</button>
             <div id="run-mode-toggle" class="phase-sel">
-              <button class="phase-btn active" id="runmode-manual" onclick="setRunMode('manual',this)">Manuel</button>
-              <button class="phase-btn" id="runmode-auto" onclick="setRunMode('auto',this)">Auto</button>
+              <button class="phase-btn active" id="runmode-manual" onclick="setRunMode('manual',this)">✋ Manuel</button>
+              <button class="phase-btn" id="runmode-auto" onclick="setRunMode('auto',this)">⚡ Auto</button>
             </div>
             <button class="btn btn-ghost btn-sm" id="run-pause-btn" onclick="toggleRunPause()" style="display:none"><i class="fas fa-pause"></i> Pause</button>
             <button class="btn btn-primary btn-sm" onclick="openAddSeq()"><i class="fas fa-plus"></i> Ajouter</button>
             <button class="btn btn-ghost btn-sm" onclick="printConducteur()"><i class="fas fa-print"></i></button>
           </div>
+        </div>
+
+        <!-- Bandeau mode actif -->
+        <div id="run-mode-info" style="display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:var(--r-sm);margin-bottom:10px;font-size:12px;font-weight:600;background:var(--bg3);border:1px solid var(--border)">
+          <i class="fas fa-hand-pointer" style="color:var(--accent)"></i> <strong>Mode MANUEL</strong> — Vous déclenchez chaque séquence manuellement en cliquant sur le bouton CUE
         </div>
 
         <!-- Sélecteur Jours -->
@@ -999,22 +1010,23 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
       <!-- ══ ORGANIGRAMME ══ -->
       <section class="tab" id="tab-org">
         <div class="sec-hdr">
-          <div><div class="sec-title">🗂️ Organigramme</div><div class="sec-sub">Drag & Drop libre · Liaisons hiérarchiques · Connexion parent→enfant</div></div>
+          <div><div class="sec-title">🗂️ Organigramme</div><div class="sec-sub">Représentation visuelle des profils Staff · Liaisons hiérarchiques uniquement</div></div>
           <div class="sec-actions">
-            <button class="btn btn-ghost btn-sm" onclick="resetOrgPositions()" title="Réorganiser en grille"><i class="fas fa-grid-2"></i> Reset layout</button>
-            <button class="btn btn-primary btn-sm" onclick="openOrgNodeModal()"><i class="fas fa-plus"></i> Ajouter un nœud</button>
-            <button class="btn btn-ghost btn-sm" onclick="renderOrg()"><i class="fas fa-rotate"></i> Rafraîchir</button>
+            <button class="btn btn-ghost btn-sm" onclick="resetOrgPositions()" title="Réorganiser"><i class="fas fa-grid-2"></i> Reset layout</button>
+            <button class="btn btn-primary btn-sm" onclick="openOrgLinkModal()"><i class="fas fa-link"></i> Créer un lien</button>
+            <button class="btn btn-ghost btn-sm" onclick="openOrgLinksPanel()"><i class="fas fa-list"></i> Liens</button>
+            <button class="btn btn-ghost btn-sm" onclick="renderOrg()"><i class="fas fa-rotate"></i></button>
             <button class="btn btn-ghost btn-sm" onclick="doPrint()"><i class="fas fa-print"></i></button>
           </div>
         </div>
-        <!-- Légende connexions -->
+        <!-- Info bar -->
         <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 14px;margin-bottom:10px;display:flex;align-items:center;gap:16px;font-size:11px;color:var(--tx3)">
-          <span><i class="fas fa-mouse-pointer" style="color:var(--accent)"></i> Cliquer sur une carte pour l'éditer</span>
-          <span><i class="fas fa-arrows-up-down-left-right" style="color:var(--tx3)"></i> Glisser pour repositionner</span>
-          <span><i class="fas fa-link" style="color:var(--info)"></i> Le parent est défini dans le formulaire</span>
-          <span id="org-node-count" style="margin-left:auto;font-weight:700;color:var(--tx2)">0 nœud</span>
+          <span style="display:flex;align-items:center;gap:5px"><i class="fas fa-info-circle" style="color:var(--accent)"></i> Les profils viennent uniquement de <strong style="color:var(--tx)">Staff</strong> — Créez des liens hiérarchiques entre eux</span>
+          <span style="display:flex;align-items:center;gap:5px"><i class="fas fa-arrows-up-down-left-right" style="color:var(--tx3)"></i> Glisser pour repositionner</span>
+          <span style="display:flex;align-items:center;gap:5px"><i class="fas fa-pen" style="color:var(--tx3)"></i> Clic = éditer le profil Staff</span>
+          <span id="org-node-count" style="margin-left:auto;font-weight:700;color:var(--tx2)">0 profil</span>
         </div>
-        <div id="org-canvas" style="min-height:520px"></div>
+        <div id="org-canvas" style="position:relative;min-height:520px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:auto"></div>
       </section>
 
       <!-- ══ POSTES ══ -->
@@ -1531,7 +1543,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
       <div class="fg"><label>Date</label><input type="date" id="plan-date"></div>
       <div class="fg"><label>Heure</label><input type="time" id="plan-heure" value="09:00"></div>
     </div>
-    <div class="fg"><label>Responsable</label><input type="text" id="plan-resp" placeholder="Nom du responsable"></div>
+    <div class="fg"><label>Responsable <span style="font-size:9px;color:var(--tx3);font-weight:500;text-transform:none;letter-spacing:0">(depuis Staff)</span></label><select id="plan-resp"><option value="">— Sélectionner —</option></select></div>
     <!-- Champs Livraison -->
     <div id="plan-livraison-fields">
       <div class="fg"><label>Prestataire / Fournisseur</label><input type="text" id="plan-presta" placeholder="Ex: Durand Sons, Sono Event..."></div>
@@ -1552,17 +1564,27 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 <!-- ORGANIGRAMME NODE -->
 <div class="overlay" id="modal-org-node">
   <div class="modal">
-    <div class="modal-hdr"><div class="modal-title" id="org-modal-title">Ajouter un nœud</div><button class="modal-close" onclick="closeModal('modal-org-node')">✕</button></div>
-    <div class="fg"><label>Nom / Rôle</label><input id="org-nom" placeholder="Ex: Directeur Technique"></div>
-    <div class="fg"><label>Prénom Nom de la personne</label><input id="org-person" placeholder="Ex: Jean Dupont"></div>
-    <div class="fg-row">
-      <div class="fg"><label>Niveau hiérarchique</label><select id="org-level"><option value="0">Direction (niveau 1)</option><option value="1">Encadrement (niveau 2)</option><option value="2">Terrain (niveau 3)</option><option value="3">Support (niveau 4)</option></select></div>
-      <div class="fg"><label>Couleur</label><input type="color" id="org-color" value="#2563EB" style="height:36px;padding:2px 4px;cursor:pointer"></div>
+    <div class="modal-hdr"><div class="modal-title">Créer un lien hiérarchique</div><button class="modal-close" onclick="document.getElementById('modal-org-node').classList.remove('open')">✕</button></div>
+    <div style="background:var(--accent-glow);border:1px solid rgba(37,99,235,.2);border-radius:var(--r-sm);padding:10px 14px;margin-bottom:14px;font-size:11px;color:var(--tx2)">
+      <i class="fas fa-info-circle" style="color:var(--accent)"></i> Les profils viennent <strong>uniquement de l'onglet Staff</strong>. Ce formulaire crée uniquement des liens hiérarchiques entre profils existants.
     </div>
-    <div class="fg"><label>Parent (supérieur hiérarchique)</label><select id="org-parent"><option value="">— Aucun (racine) —</option></select></div>
+    <div class="fg"><label>Profil Staff (subordonné)</label><select id="org-link-child"><option value="">— Sélectionner un profil —</option></select></div>
+    <div class="fg"><label>Supérieur hiérarchique (parent)</label><select id="org-link-parent"><option value="">— Aucun (racine / sommet) —</option></select></div>
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('modal-org-node')">Annuler</button>
-      <button class="btn btn-primary" onclick="saveOrgNode()"><i class="fas fa-check"></i> Enregistrer</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('modal-org-node').classList.remove('open')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveOrgLink()"><i class="fas fa-link"></i> Créer le lien</button>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL LIENS ORG -->
+<div class="overlay" id="modal-org-links">
+  <div class="modal modal-lg">
+    <div class="modal-hdr"><div class="modal-title">Liens hiérarchiques</div><button class="modal-close" onclick="closeModal('modal-org-links')">✕</button></div>
+    <div id="org-links-body" style="max-height:60vh;overflow-y:auto"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-org-links')">Fermer</button>
+      <button class="btn btn-primary btn-sm" onclick="closeModal('modal-org-links');openOrgLinkModal()"><i class="fas fa-plus"></i> Nouveau lien</button>
     </div>
   </div>
 </div>
@@ -2005,6 +2027,7 @@ let S = {
   cueLocked: false,
   runMode: 'manual',
   orgPositions: {},
+  orgLinks: [],
   cockpitLayout: {},
   planning: [],
   planningView: 'timeline',
@@ -2069,7 +2092,7 @@ function startClock(){
         anyActive=true;
         if(!s.paused){
           s.elapsed=(s.elapsed||0)+1;
-          // Countdown = durée totale - écoulé
+          // Countdown actif = durée totale - écoulé
           const totalSec=(s.dur||0)*60;
           const rem=totalSec-(s.elapsed||0);
           const cdDisp=fmtCountdown(rem);
@@ -2090,12 +2113,22 @@ function startClock(){
           if(ee&&planned&&planned!=='—')ee.textContent=addMinutes(planned,S.runDelay/60);
           const db=document.getElementById('run-delay-block');if(db)db.style.display='flex';
         }
+      } else {
+        // ── COUNTDOWN LIVE pour séquences futures ──
+        const el=document.getElementById('seq-chrono-'+i);
+        if(el&&!s.done){
+          const cd=computeCountdown(s);
+          if(cd.rem!==null){
+            el.textContent=fmtCountdown(cd.rem);
+            el.className='run-countdown'+(cd.rem<0?' over':cd.rem<120?' warn':'');
+          }
+        }
       }
     });
-    // AUTO-TRIGGER À L'HEURE EXACTE
-    if(!anyActive){
+    // AUTO-TRIGGER À L'HEURE EXACTE — mode AUTO uniquement
+    if(!anyActive&&S.runMode==='auto'){
       S.sequences.forEach((s,i)=>{
-        if(!s.done && !s.active && s.autoTrig && s.time && s.time===hm && s.day===S.runCurrentDay && s.scene===S.runCurrentScene){
+        if(!s.done && !s.active && s.time && s.time===hm && s.day===S.runCurrentDay && s.scene===S.runCurrentScene){
           toggleLive(i);
           toast('⚡ Auto-trigger : '+s.title,'s');
         }
@@ -2556,13 +2589,27 @@ function toggleCueLock(){
   saveStorage();
 }
 
-// ── Mode Auto ──
+// ── Mode Auto / Manuel — strictement séparés ──
 function setRunMode(mode,el){
   S.runMode=mode;
   document.querySelectorAll('#run-mode-toggle .phase-btn').forEach(b=>b.classList.remove('active'));
   if(el)el.classList.add('active');
-  toast(mode==='auto'?'⚡ Mode Auto activé — les séquences s\'enchaînent':'Mode Manuel activé','i');
+  // Afficher / masquer la colonne autoTrig selon le mode
+  const autoTrigCol=document.getElementById('run-autotrig-col');
+  if(autoTrigCol)autoTrigCol.style.display=mode==='auto'?'none':'';
+  const modeInfo=document.getElementById('run-mode-info');
+  if(modeInfo){
+    if(mode==='auto'){
+      modeInfo.innerHTML='<i class="fas fa-bolt" style="color:var(--warning)"></i> <strong>Mode AUTO</strong> — Les séquences s\'enchaînent automatiquement à la fin de chaque durée';
+      modeInfo.style.display='flex';
+    } else {
+      modeInfo.innerHTML='<i class="fas fa-hand-pointer" style="color:var(--accent)"></i> <strong>Mode MANUEL</strong> — Vous déclenchez chaque séquence manuellement';
+      modeInfo.style.display='flex';
+    }
+  }
+  toast(mode==='auto'?'⚡ Mode AUTO — enchaînement automatique':'✋ Mode MANUEL — déclenchement manuel','i');
   saveStorage();
+  renderRun();
 }
 
 // ── Countdown helper ──
@@ -2596,10 +2643,27 @@ function fmtCountdown(rem){
 // ── renderRun principal ──
 function renderRun(){
   renderRunDayTabs();
+
+  // Mettre à jour UI mode
+  const modeInfo=document.getElementById('run-mode-info');
+  if(modeInfo){
+    if(S.runMode==='auto'){
+      modeInfo.innerHTML='<i class="fas fa-bolt" style="color:var(--warning)"></i> <strong>Mode AUTO</strong> — Les séquences s\'enchaînent automatiquement à la fin de chaque durée';
+      modeInfo.style.background='rgba(217,119,6,.08)';
+      modeInfo.style.borderColor='rgba(217,119,6,.2)';
+    } else {
+      modeInfo.innerHTML='<i class="fas fa-hand-pointer" style="color:var(--accent)"></i> <strong>Mode MANUEL</strong> — Vous déclenchez chaque séquence manuellement en cliquant sur le bouton CUE';
+      modeInfo.style.background='var(--bg3)';
+      modeInfo.style.borderColor='var(--border)';
+    }
+  }
+  // Sync boutons mode
+  document.querySelectorAll('#run-mode-toggle .phase-btn').forEach(b=>b.classList.remove('active'));
+  const activeBtn=document.getElementById(S.runMode==='auto'?'runmode-auto':'runmode-manual');
+  if(activeBtn)activeBtn.classList.add('active');
+
   const body=document.getElementById('run-body');
-  // Filtrer par jour ET scène
   let filtered=S.sequences.filter(s=>s.day===S.runCurrentDay&&s.scene===S.runCurrentScene);
-  // Tri chronologique automatique
   filtered=filtered.slice().sort((a,b)=>{
     const toMin=t=>{if(!t||!t.includes(':'))return9999;const[h,m]=t.split(':').map(Number);return h*60+m;};
     return toMin(a.time)-toMin(b.time);
@@ -2629,7 +2693,8 @@ function renderRun(){
         </div>
         <div>
           <div style="font-family:'JetBrains Mono',Arial,monospace;font-size:13px;font-weight:700;color:var(--accent)">${s.time}</div>
-          ${s.autoTrig?'<div style="font-size:9px;color:var(--warning)"><i class="fas fa-bolt"></i> auto</div>':''}
+          ${(S.runMode==='manual'&&s.autoTrig)?'<div style="font-size:9px;color:var(--warning)"><i class="fas fa-bolt"></i> auto</div>':''}
+          ${S.runMode==='auto'?'<div style="font-size:9px;color:var(--warning)"><i class="fas fa-bolt"></i> auto</div>':''}
         </div>
         <div style="font-size:11px;color:var(--tx2);font-family:'JetBrains Mono',Arial,monospace">${s.dur}m</div>
         <div>
@@ -2721,12 +2786,24 @@ function toggleLive(ri){
     addActivity('LIVE: '+seq.title,'s');
     const hc=document.getElementById('hdr-cue-name');if(hc)hc.textContent=seq.title;
     const pb=document.getElementById('run-pause-btn');if(pb){pb.style.display='inline-flex';pb.innerHTML='<i class="fas fa-pause"></i> Pause';pb.className='btn btn-ghost btn-sm';}
-    // Auto-trigger next seq
+    // Auto-trigger logique stricte selon le mode
+    // MODE AUTO : chaîner automatiquement TOUTES les séquences
+    // MODE MANUEL : ignorer autoTrig, l'utilisateur déclenche manuellement
     const filtered=S.sequences.filter(s=>s.day===S.runCurrentDay&&s.scene===S.runCurrentScene).slice().sort((a,b)=>{const toMin=t=>{if(!t||!t.includes(':'))return9999;const[h,m]=t.split(':').map(Number);return h*60+m;};return toMin(a.time)-toMin(b.time);});
     const curIdx=filtered.findIndex(s=>s.id===seq.id);
     const next=filtered[curIdx+1];
-    const shouldAutoTrig=next&&(next.autoTrig||S.runMode==='auto');
-    if(shouldAutoTrig){const delay=next.delay||0;setTimeout(()=>{const nri=S.sequences.indexOf(next);if(nri>=0)toggleLive(nri);},(((seq.dur||0)*60)+delay)*1000);toast('⚡ Auto-trigger: '+next.title+' dans '+(seq.dur||0)+'min','i');}
+    // En mode AUTO uniquement : programmer le déclenchement automatique de la suivante
+    if(S.runMode==='auto'&&next){
+      const delaySec=((seq.dur||0)*60)+(next.delay||0);
+      setTimeout(()=>{
+        const nri=S.sequences.indexOf(next);
+        if(nri>=0&&!next.done){
+          toggleLive(nri);
+          toast('⚡ Auto : '+next.title,'s');
+        }
+      },delaySec*1000);
+      toast('⚡ Mode AUTO — '+next.title+' dans '+(seq.dur||0)+'min','i');
+    }
   } else {
     const hc=document.getElementById('hdr-cue-name');if(hc)hc.textContent='En attente';
     const pb=document.getElementById('run-pause-btn');if(pb)pb.style.display='none';
@@ -2946,29 +3023,68 @@ function renderPostes() {
     grid.innerHTML = '<div class="empty"><i class="fas fa-tags"></i><p>Aucun poste — Créez vos premiers postes</p></div>';
     return;
   }
-  const sortVal = document.getElementById('postes-sort')?.value || 'nom';
+  const sortVal = document.getElementById('postes-sort')?.value || 'cat';
   let postes = [...S.postes];
   if (sortVal === 'count') postes.sort((a,b)=>(S.staff||[]).filter(s=>s.posteId===b.id).length-(S.staff||[]).filter(s=>s.posteId===a.id).length);
   else if (sortVal === 'cat') postes.sort((a,b)=>(a.cat||'Autre').localeCompare(b.cat||'Autre')||a.nom.localeCompare(b.nom));
   else postes.sort((a,b)=>a.nom.localeCompare(b.nom));
-  grid.innerHTML = postes.map(p=>{
-    const count = (S.staff||[]).filter(s=>s.posteId===p.id).length;
-    const icon = POSTE_CAT_ICONS[p.cat||'Autre']||'fa-circle';
-    return `<div class="poste-card" style="--pc:${p.color};cursor:pointer" onclick="editPoste(${p.id})" title="Cliquer pour modifier">
-      <div class="poste-icon-wrap" style="background:${p.color}22">
-        <i class="fas ${icon}" style="color:${p.color};font-size:18px"></i>
-      </div>
-      <div style="flex:1;min-width:0">
-        <div class="poste-nom">${p.nom}</div>
-        <div class="poste-cat-lbl">${p.cat||'Autre'}</div>
-      </div>
-      <div class="poste-count" title="${count} membre${count!==1?'s':''}">${count}</div>
-      <div class="poste-actions">
-        <button onclick="event.stopPropagation();editPoste(${p.id})" class="btn btn-ghost btn-sm btn-icon" title="Modifier"><i class="fas fa-pen" style="font-size:10px"></i></button>
-        <button onclick="event.stopPropagation();deletePoste(${p.id})" class="btn btn-ghost btn-sm btn-icon" title="Supprimer"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
-      </div>
-    </div>`;
-  }).join('');
+
+  if(sortVal==='cat'){
+    // Grouper par catégorie
+    const cats=[...new Set(postes.map(p=>p.cat||'Autre'))];
+    grid.innerHTML=cats.map(cat=>{
+      const catPostes=postes.filter(p=>(p.cat||'Autre')===cat);
+      const catTotal=(S.staff||[]).filter(s=>catPostes.find(p=>p.id===s.posteId)).length;
+      const icon=POSTE_CAT_ICONS[cat]||'fa-circle';
+      return `<div style="margin-bottom:4px">
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--bg3);border-radius:var(--r-sm);margin-bottom:4px">
+          <i class="fas ${icon}" style="font-size:11px;color:var(--tx3);width:14px"></i>
+          <span style="font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;flex:1">${cat}</span>
+          <span style="font-size:10px;font-weight:700;color:var(--tx3)">${catPostes.length} poste${catPostes.length>1?'s':''} · ${catTotal} membre${catTotal>1?'s':''}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;padding-left:4px">
+          ${catPostes.map(p=>{
+            const count=(S.staff||[]).filter(s=>s.posteId===p.id).length;
+            const members=(S.staff||[]).filter(s=>s.posteId===p.id).slice(0,3);
+            const more=(S.staff||[]).filter(s=>s.posteId===p.id).length-3;
+            return `<div style="background:var(--bg2);border:1px solid var(--border);border-left:4px solid ${p.color};border-radius:var(--r-sm);padding:12px 14px;cursor:pointer;transition:var(--tr)" onclick="editPoste(${p.id})" onmouseover="this.style.borderColor='${p.color}';this.style.background='var(--bg3)'" onmouseout="this.style.borderColor='var(--border)';this.style.borderLeftColor='${p.color}';this.style.background='var(--bg2)'">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+                <div>
+                  <div style="font-size:13px;font-weight:800;color:var(--tx)">${p.nom}</div>
+                  <div style="font-size:10px;color:${p.color};font-weight:700;margin-top:2px">${p.cat||'Autre'}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px">
+                  <div style="min-width:28px;height:28px;border-radius:7px;background:${p.color};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff">${count}</div>
+                  <div style="display:flex;flex-direction:column;gap:2px">
+                    <button onclick="event.stopPropagation();editPoste(${p.id})" class="btn btn-ghost btn-sm btn-icon" title="Modifier" style="padding:2px 5px"><i class="fas fa-pen" style="font-size:9px"></i></button>
+                    <button onclick="event.stopPropagation();deletePoste(${p.id})" class="btn btn-ghost btn-sm btn-icon" title="Supprimer" style="padding:2px 5px"><i class="fas fa-trash" style="font-size:9px;color:var(--danger)"></i></button>
+                  </div>
+                </div>
+              </div>
+              ${count?`<div style="display:flex;gap:4px;flex-wrap:wrap">
+                ${members.map(s=>`<span style="font-size:10px;background:${p.color}18;color:${p.color};padding:2px 7px;border-radius:10px;font-weight:600">${s.prenom} ${s.nom[0]}.</span>`).join('')}
+                ${more>0?`<span style="font-size:10px;color:var(--tx3);padding:2px 7px">+${more}</span>`:''}
+              </div>`:`<div style="font-size:10px;color:var(--tx3);font-style:italic">Aucun membre assigné</div>`}
+            </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+    }).join('');
+  } else {
+    grid.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px">`+postes.map(p=>{
+      const count=(S.staff||[]).filter(s=>s.posteId===p.id).length;
+      const icon=POSTE_CAT_ICONS[p.cat||'Autre']||'fa-circle';
+      return `<div class="poste-card" style="--pc:${p.color};cursor:pointer" onclick="editPoste(${p.id})">
+        <div class="poste-icon-wrap" style="background:${p.color}22"><i class="fas ${icon}" style="color:${p.color};font-size:18px"></i></div>
+        <div style="flex:1;min-width:0"><div class="poste-nom">${p.nom}</div><div class="poste-cat-lbl">${p.cat||'Autre'}</div></div>
+        <div class="poste-count">${count}</div>
+        <div class="poste-actions">
+          <button onclick="event.stopPropagation();editPoste(${p.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-pen" style="font-size:10px"></i></button>
+          <button onclick="event.stopPropagation();deletePoste(${p.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
+        </div>
+      </div>`;
+    }).join('')+'</div>';
+  }
   populatePosteSelects();
 }
 
@@ -3188,9 +3304,12 @@ function populateAllStaffSelects() {
     sel.innerHTML = opts;
     if (current) sel.value = current;
   });
-  // Also update old selects for seq/inc
-  const seqOpts = '<option value="">—</option>' + (S.staff || []).map(s => `<option>${s.prenom} ${s.nom}</option>`).join('');
-  ['seq-resp', 'inc-assign'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = seqOpts; });
+  // Also update selects for seq/inc — responsable obligatoirement depuis Staff
+  const staffOpts = '<option value="">— Sélectionner dans Staff —</option>' + (S.staff || []).map(s => {
+    const p=(S.postes||[]).find(p=>p.id===s.posteId);
+    return `<option value="${s.prenom} ${s.nom}">${s.prenom} ${s.nom}${p?' · '+p.nom:''}`;
+  }).join('');
+  ['seq-resp', 'inc-assign', 'plan-resp'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = staffOpts; });
 }
 
 // ═══════════════════════════════════════════
@@ -4016,6 +4135,7 @@ function ensureStateDefaults(){
   if(!S.runMode)S.runMode='manual';
   if(!S.orgPositions)S.orgPositions={};
   if(!S.orgNodes)S.orgNodes=[];
+  if(!S.orgLinks)S.orgLinks=[];
   if(!S.cockpitLayout)S.cockpitLayout={};
   if(!S.planning)S.planning=[];
   if(!S.planningView)S.planningView='timeline';
@@ -4112,18 +4232,52 @@ function doPrint(){
     if(!content)content='<p style="color:#666;font-style:italic">Aucune séquence dans le conducteur.</p>';
 
   } else if(tabId==='org'){
-    // Organigramme : tableau liste hiérarchique
+    // Organigramme : vraie hiérarchie arborescente pour impression
     const staff=S.staff||[];const postes=S.postes||[];
+    const links=S.orgLinks||[];
     const CAT_LEVEL={Management:0,Direction:0,Technique:1,Son:1,Lumière:1,Vidéo:1,Sécurité:1,Médical:1,Presse:1,Staff:2,Accueil:2,Logistique:2,Restauration:2,Bénévole:2,Artiste:2,Autre:2};
-    const CAT_LABELS=['Direction','Encadrement','Terrain'];
-    const byLevel=[0,1,2].map(lv=>staff.filter(s=>{const p=postes.find(p=>p.id===s.posteId);return(CAT_LEVEL[p?.cat||'Autre']??2)===lv;}));
-    content=`<table><thead><tr><th>Niveau</th><th>Nom</th><th>Poste</th><th>Téléphone</th><th>Matos assigné</th></tr></thead><tbody>
-    ${[0,1,2].flatMap(lv=>byLevel[lv].map(s=>{
-      const p=postes.find(p=>p.id===s.posteId);
-      const matos=getMatosForStaff(s.prenom+' '+s.nom)||'—';
-      return`<tr><td style="font-weight:800;color:${lv===0?'#1D4ED8':lv===1?'#D97706':'#16A34A'}">${CAT_LABELS[lv]}</td><td><strong>${s.prenom} ${s.nom}</strong></td><td>${p?.nom||'—'}</td><td style="font-family:monospace">${s.tel||'—'}</td><td>${matos}</td></tr>`;
-    })).join('')}
-    </tbody></table>`;
+    const getLevel=(s)=>{const p=postes.find(p=>p.id===s.posteId);return CAT_LEVEL[p?.cat||'Autre']??2;};
+    const lvlLabels=['Direction','Encadrement','Terrain'];
+    const lvlColors=['#1D4ED8','#D97706','#16A34A'];
+
+    // Construire arbre à partir des liens
+    const byParent={};
+    staff.forEach(s=>{
+      const link=links.find(l=>String(l.childId)===String(s.id));
+      const pid=link?.parentId||'root';
+      if(!byParent[pid])byParent[pid]=[];
+      byParent[pid].push(s);
+    });
+
+    function renderTree(parentId,depth){
+      const children=byParent[parentId]||[];
+      if(!children.length)return'';
+      return children.map(s=>{
+        const p=postes.find(p=>p.id===s.posteId);
+        const lv=getLevel(s);
+        const color=p?.color||lvlColors[lv]||'#4A5568';
+        const indent=depth*24;
+        const sub=renderTree(s.id,depth+1);
+        return `<div style="margin-left:${indent}pt;margin-bottom:4pt">
+          <div style="display:flex;align-items:center;gap:6pt;padding:5pt 8pt;border-left:3pt solid ${color};background:${depth===0?'#f0f4ff':depth===1?'#f9fafb':'#fff'};border-radius:0 3pt 3pt 0">
+            <div style="width:28pt;height:28pt;border-radius:6pt;background:${color};display:flex;align-items:center;justify-content:center;font-size:11pt;font-weight:800;color:#fff;flex-shrink:0">${(s.prenom[0]||'')+(s.nom[0]||'')}</div>
+            <div>
+              <div style="font-size:10pt;font-weight:800;color:#111">${s.prenom} ${s.nom}</div>
+              <div style="font-size:8pt;color:${color};font-weight:700">${p?p.nom:'—'}</div>
+              ${s.tel?`<div style="font-size:7pt;color:#666;font-family:monospace">${s.tel}</div>`:''}
+            </div>
+            <div style="margin-left:auto"><span style="font-size:7pt;padding:1pt 5pt;border:1pt solid ${color};border-radius:10pt;color:${color};font-weight:700">${lvlLabels[lv]||'Terrain'}</span></div>
+          </div>
+          ${sub?`<div style="margin-top:3pt">${sub}</div>`:''}
+        </div>`;
+      }).join('');
+    }
+
+    content=`<h2>Organigramme hiérarchique</h2>
+    <div style="margin-bottom:8pt;font-size:9pt;color:#555">${staff.length} profil(s) · ${links.length} lien(s) hiérarchique(s)</div>
+    ${renderTree('root',0)||'<p style="color:#999;font-style:italic">Aucun lien hiérarchique défini — ajoutez des liens dans l\'organigramme.</p>'}
+    ${(byParent['root']||[]).length<staff.length?`<div style="margin-top:12pt"><div style="font-size:8pt;color:#999;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6pt">Profils sans lien hiérarchique</div><table><thead><tr><th>Nom</th><th>Poste</th><th>Catégorie</th><th>Téléphone</th></tr></thead><tbody>${staff.filter(s=>!(links.find(l=>String(l.childId)===String(s.id)))&&!(byParent['root']||[]).find(r=>r.id===s.id)).map(s=>{const p=postes.find(p=>p.id===s.posteId);return`<tr><td><strong>${s.prenom} ${s.nom}</strong></td><td>${p?.nom||'—'}</td><td>${p?.cat||'—'}</td><td style="font-family:monospace">${s.tel||'—'}</td></tr>`;}).join('')}</tbody></table></div>`:''}`;
+
 
   } else if(tabId==='matos'){
     // Matos : tableau assignations
@@ -4366,132 +4520,121 @@ function toggleMatosView() {
 }
 
 // ═══════════════════════════════════════════
-// ORGANIGRAMME
+// ORGANIGRAMME — Liaisons STAFF uniquement
+// Règle métier : on ne crée PAS de profils depuis l'organigramme.
+// Tous les profils viennent de l'onglet STAFF.
+// L'org est uniquement une vue hiérarchique des profils existants.
 // ═══════════════════════════════════════════
-let editingOrgId=-1;
 
-function openOrgNodeModal(){
-  editingOrgId=-1;
-  document.getElementById('org-modal-title').textContent='Ajouter un nœud';
-  ['org-nom','org-person'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('org-level').value='1';
-  document.getElementById('org-color').value='#2563EB';
-  populateOrgParentSelect();
-  document.getElementById('org-parent').value='';
-  // Ouvrir directement sans passer par le patch openModal
+function openOrgLinkModal(){
+  _populateOrgLinkSelects();
+  document.getElementById('org-link-child').value='';
+  document.getElementById('org-link-parent').value='';
   document.getElementById('modal-org-node').classList.add('open');
 }
 
-function openModal_org(){openOrgNodeModal();}
+// Alias compat
+function openOrgNodeModal(){openOrgLinkModal();}
+function openModal_org(){openOrgLinkModal();}
 
-function populateOrgParentSelect(){
-  const sel=document.getElementById('org-parent');
-  sel.innerHTML='<option value="">— Aucun (racine) —</option>'+(S.orgNodes||[]).map(n=>`<option value="${n.id}">${n.nom}${n.person?' ('+n.person+')':''}</option>`).join('');
+function _populateOrgLinkSelects(){
+  const staff=S.staff||[];
+  const postes=S.postes||[];
+  const opts=staff.map(s=>{
+    const p=postes.find(p=>p.id===s.posteId);
+    return`<option value="${s.id}">${s.prenom} ${s.nom}${p?' — '+p.nom:''}`;
+  }).join('');
+  const noOpt='<option value="">— Sélectionner un profil —</option>';
+  const childSel=document.getElementById('org-link-child');
+  const parentSel=document.getElementById('org-link-parent');
+  if(childSel)childSel.innerHTML=noOpt+opts;
+  if(parentSel)parentSel.innerHTML='<option value="">— Aucun (racine / sommet) —</option>'+opts;
 }
 
-function saveOrgNode(){
-  if(!S.orgNodes)S.orgNodes=[];
-  const node={
-    id:editingOrgId>=0?editingOrgId:S.nextId++,
-    nom:document.getElementById('org-nom').value||'Rôle',
-    person:document.getElementById('org-person').value||'',
-    level:parseInt(document.getElementById('org-level').value)||0,
-    color:document.getElementById('org-color').value||'#2563EB',
-    parentId:document.getElementById('org-parent').value||null,
-  };
-  if(editingOrgId>=0){const i=S.orgNodes.findIndex(n=>n.id===editingOrgId);if(i>=0)S.orgNodes[i]=node;}
-  else S.orgNodes.push(node);
-  closeModal('modal-org-node');
+function saveOrgLink(){
+  const childId=document.getElementById('org-link-child')?.value;
+  if(!childId){toast('Sélectionner un profil Staff subordonné','d');return;}
+  if(!S.orgLinks)S.orgLinks=[];
+  const parentId=document.getElementById('org-link-parent')?.value||null;
+  if(String(childId)===String(parentId)){toast('Un profil ne peut pas être son propre parent','d');return;}
+  const existing=S.orgLinks.find(l=>String(l.childId)===String(childId));
+  if(existing){existing.parentId=parentId||null;toast('Lien mis à jour','s');}
+  else{S.orgLinks.push({childId,parentId:parentId||null});toast('Lien créé','s');}
+  document.getElementById('modal-org-node').classList.remove('open');
   renderOrg();saveStorage();
-  toast(editingOrgId>=0?'Nœud mis à jour':'Nœud ajouté','s');
-  editingOrgId=-1;
 }
 
+function openOrgLinksPanel(){
+  if(!S.orgLinks)S.orgLinks=[];
+  const staff=S.staff||[];const postes=S.postes||[];
+  const getLabel=(id)=>{const s=staff.find(s=>String(s.id)===String(id));if(!s)return'Inconnu';const p=postes.find(p=>p.id===s.posteId);return s.prenom+' '+s.nom+(p?' — '+p.nom:'');};
+  const body=document.getElementById('org-links-body');
+  if(!body)return;
+  if(!S.orgLinks.length){body.innerHTML='<div style="font-size:12px;color:var(--tx3);font-style:italic;padding:16px 0;text-align:center">Aucun lien hiérarchique — Créez des liens entre profils Staff</div>';openModal('modal-org-links');return;}
+  body.innerHTML=S.orgLinks.map((l,i)=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border)">
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:700;color:var(--tx)">${getLabel(l.childId)}</div>
+        <div style="font-size:11px;color:var(--tx3);margin-top:2px"><i class="fas fa-arrow-up" style="color:var(--accent);font-size:9px"></i> Rapporte à : <strong style="color:var(--tx2)">${l.parentId?getLabel(l.parentId):'Racine (sommet)'}</strong></div>
+      </div>
+      <button onclick="deleteOrgLink(${i})" class="btn btn-ghost btn-sm btn-icon" title="Supprimer ce lien"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
+    </div>`).join('');
+  openModal('modal-org-links');
+}
+
+function deleteOrgLink(idx){
+  if(!confirm('Supprimer ce lien hiérarchique ?'))return;
+  S.orgLinks.splice(idx,1);
+  document.getElementById('org-links-body').innerHTML=''; // refresh panel
+  openOrgLinksPanel();
+  renderOrg();saveStorage();toast('Lien supprimé','i');
+}
+
+function editStaffFromOrg(staffId){
+  // Ouvrir le modal d'édition Staff directement depuis l'organigramme
+  editStaff(staffId);
+}
+
+// Stubs compat (plus utilisés mais appelés ailleurs)
+function populateOrgParentSelect(){}
+function saveOrgNode(){saveOrgLink();}
 function deleteOrgNode(id){
-  if(!confirm('Supprimer ce nœud et ses enfants ?'))return;
-  // Supprimer récursivement
-  const toDelete=new Set();
-  function collect(nid){toDelete.add(nid);(S.orgNodes||[]).filter(n=>n.parentId==nid).forEach(n=>collect(n.id));}
-  collect(id);
-  S.orgNodes=(S.orgNodes||[]).filter(n=>!toDelete.has(n.id));
-  renderOrg();saveStorage();toast('Nœud supprimé','i');
+  S.orgLinks=(S.orgLinks||[]).filter(l=>String(l.childId)!==String(id)&&String(l.parentId)!==String(id));
+  renderOrg();saveStorage();toast('Liens supprimés','i');
 }
-
-function editOrgNode(id){
-  const n=(S.orgNodes||[]).find(n=>n.id===id);if(!n)return;
-  editingOrgId=id;
-  document.getElementById('org-modal-title').textContent='Modifier le nœud';
-  document.getElementById('org-nom').value=n.nom;
-  document.getElementById('org-person').value=n.person||'';
-  document.getElementById('org-level').value=n.level||0;
-  document.getElementById('org-color').value=n.color||'#2563EB';
-  populateOrgParentSelect();
-  document.getElementById('org-parent').value=n.parentId||'';
-  openModal('modal-org-node');
-}
+function editOrgNode(id){editStaffFromOrg(id);}
 
 function renderOrg(){
   const canvas=document.getElementById('org-canvas');if(!canvas)return;
   if(!S.orgPositions)S.orgPositions={};
-  // Update node count badge
+  if(!S.orgLinks)S.orgLinks=[];
+  const staff=S.staff||[];
+  const postes=S.postes||[];
+
+  // Badge count
   const countEl=document.getElementById('org-node-count');
-  const totalNodes=(S.orgNodes||[]).length+(S.staff||[]).length*(!(S.orgNodes||[]).length?1:0);
-  if(countEl)countEl.textContent=totalNodes+' nœud'+(totalNodes>1?'s':'');
+  if(countEl)countEl.textContent=staff.length+' profil'+(staff.length>1?'s':'');
 
-  // ── Construire la liste de nœuds à afficher ──
-  let nodes=[];
-  const manualNodes=S.orgNodes||[];
-
-  if(manualNodes.length){
-    // Nœuds manuels
-    nodes=manualNodes.map(n=>({
-      id:'mn_'+n.id, label:n.nom, sub:n.person||'', color:n.color||'var(--accent)',
-      parentId:n.parentId?'mn_'+n.parentId:null, level:n.level||0,
-      orgId:n.id, isManual:true
-    }));
-  } else {
-    // Généré depuis Staff — hiérarchie par niveau de catégorie
-    const staff=S.staff||[];
-    const postes=S.postes||[];
-    if(!staff.length){
-      canvas.innerHTML=`<div id="org-canvas-empty"><i class="fas fa-sitemap" style="font-size:40px;margin-bottom:16px;opacity:.25"></i><div style="font-size:14px;font-weight:700;margin-bottom:6px">Organigramme vide</div><div style="font-size:12px;text-align:center;max-width:320px">Ajoutez des membres dans <strong>Staff</strong> pour générer automatiquement,<br>ou utilisez <strong>Nœud manuel</strong>.</div></div>`;
-      return;
-    }
-    const CAT_LEVEL={Management:0,Direction:0,Technique:1,Son:1,Lumière:1,Vidéo:1,Sécurité:1,Médical:1,Presse:1,Staff:2,Accueil:2,Logistique:2,Restauration:2,Bénévole:2,Artiste:2,Autre:2};
-    // Regrouper les membres par niveau
-    // Pour chaque niveau > 0, on cherche le(s) nœud(s) de niveau N-1 dans le même groupe de poste/cat
-    // Pour simplifier : trouver le premier membre du niveau immédiatement supérieur comme parent
-    const byLevel={};
-    staff.forEach(s=>{
-      const poste=postes.find(p=>p.id===s.posteId);
-      const cat=poste?.cat||'Autre';
-      const lv=CAT_LEVEL[cat]??2;
-      if(!byLevel[lv])byLevel[lv]=[];
-      byLevel[lv].push({s,poste,cat,lv});
-    });
-    // Trouver le parent : pour chaque membre niveau N, parent = 1er membre niveau N-1 (du même groupe fonctionnel si possible)
-    const allLevels=Object.keys(byLevel).map(Number).sort((a,b)=>a-b);
-    const firstOfLevel={};
-    allLevels.forEach(lv=>{firstOfLevel[lv]='st_'+(byLevel[lv][0]?.s?.id);});
-    staff.forEach(s=>{
-      const poste=postes.find(p=>p.id===s.posteId);
-      const cat=poste?.cat||'Autre';
-      const lv=CAT_LEVEL[cat]??2;
-      const color=poste?.color||'#4A5568';
-      const matos=getMatosForStaff(s.prenom+' '+s.nom);
-      const id='st_'+s.id;
-      // Parent = premier membre du niveau N-1
-      let parentId=null;
-      if(lv>0){
-        for(let pl=lv-1;pl>=0;pl--){
-          if(firstOfLevel[pl]){parentId=firstOfLevel[pl];break;}
-        }
-      }
-      // Ne pas se lier à soi-même
-      if(parentId===id)parentId=null;
-      nodes.push({id,label:s.prenom+' '+s.nom,sub:poste?poste.nom:'—',color,parentId,level:lv,matos,photo:s.photo,staffId:s.id});
-    });
+  if(!staff.length){
+    canvas.innerHTML=`<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--tx3)"><i class="fas fa-sitemap" style="font-size:48px;margin-bottom:16px;opacity:.2"></i><div style="font-size:15px;font-weight:700;margin-bottom:8px">Organigramme vide</div><div style="font-size:12px;text-align:center;max-width:340px;line-height:1.6">Ajoutez des membres dans <strong style="color:var(--tx)">Staff</strong>, puis revenez ici pour créer des <strong style="color:var(--tx)">liens hiérarchiques</strong>.</div></div>`;
+    return;
   }
+
+  const CAT_LEVEL={Management:0,Direction:0,Technique:1,Son:1,Lumière:1,Vidéo:1,Sécurité:1,Médical:1,Presse:1,Staff:2,Accueil:2,Logistique:2,Restauration:2,Bénévole:2,Artiste:2,Autre:2};
+
+  // Construire les nœuds depuis STAFF — relations depuis S.orgLinks
+  let nodes=staff.map(s=>{
+    const poste=postes.find(p=>p.id===s.posteId);
+    const cat=poste?.cat||'Autre';
+    const lv=CAT_LEVEL[cat]??2;
+    const color=poste?.color||'#4A5568';
+    const matos=getMatosForStaff(s.prenom+' '+s.nom);
+    // Parent depuis les liens explicites
+    const link=S.orgLinks.find(l=>String(l.childId)===String(s.id));
+    const rawParentId=link?.parentId;
+    const parentId=rawParentId?'st_'+rawParentId:null;
+    return{id:'st_'+s.id,label:s.prenom+' '+s.nom,sub:poste?poste.nom:'—',color,parentId,level:lv,matos,photo:s.photo,staffId:s.id};
+  });
 
   // ── Positions : assigner auto si non définies — grille magnétique 40px ──
   const SNAP=40; // taille de grille magnétique (px)
@@ -4524,7 +4667,7 @@ function renderOrg(){
   // ── SVG liaisons ──
   // Recalculer largeur réelle du canvas
   const canvasW=Math.max(...nodes.map(n=>(S.orgPositions[n.id]?.x||0)+CARD_W+PAD), canvas.offsetWidth||860);
-  canvas.innerHTML=`<svg class="org-lines" id="org-svg" style="position:absolute;inset:0;width:${canvasW}px;height:${maxY}px;pointer-events:none;z-index:0"></svg><div class="org-canvas-hint"><i class="fas fa-magnet"></i> Grille magnétique 40px · Cliquer sur une carte pour l'éditer</div>`;
+  canvas.innerHTML=`<svg class="org-lines" id="org-svg" style="position:absolute;inset:0;width:${canvasW}px;height:${maxY}px;pointer-events:none;z-index:0"></svg><div class="org-canvas-hint"><i class="fas fa-magnet"></i> Grille 40px · Clic = éditer profil Staff · <i class="fas fa-link" style="color:var(--accent)"></i> = modifier le lien</div>`;
 
   // ── Cartes ──
   nodes.forEach(n=>{
@@ -4542,11 +4685,9 @@ function renderOrg(){
     card.style.left=pos.x+'px';
     card.style.top=pos.y+'px';
     card.style.borderLeft=`3px solid ${n.color}`;
-    if(n.isManual){
-      card.style.cursor='pointer';
-      card.title='Cliquer pour modifier';
-      card.addEventListener('click',e=>{if(!e.target.closest('button'))editOrgNode(n.orgId);});
-    }
+    card.style.cursor='pointer';
+    card.title='Cliquer pour modifier le profil Staff';
+    card.addEventListener('click',e=>{if(!e.target.closest('button'))editStaff(n.staffId||n.id.replace('st_',''));});
     card.innerHTML=`
       ${photoHTML}
       <div class="org-free-info">
@@ -4555,7 +4696,8 @@ function renderOrg(){
         ${matosHTML}
       </div>
       <div class="org-free-actions">
-        ${n.isManual?`<button onclick="event.stopPropagation();editOrgNode(${n.orgId})" class="btn btn-ghost btn-sm btn-icon" title="Modifier"><i class="fas fa-pen" style="font-size:9px"></i></button><button onclick="event.stopPropagation();deleteOrgNode(${n.orgId})" class="btn btn-ghost btn-sm btn-icon" title="Supprimer"><i class="fas fa-trash" style="font-size:9px;color:var(--danger)"></i></button>`:''}
+        <button onclick="event.stopPropagation();editStaff(${n.staffId||n.id.replace('st_','')})" class="btn btn-ghost btn-sm btn-icon" title="Modifier le profil"><i class="fas fa-pen" style="font-size:9px"></i></button>
+        <button onclick="event.stopPropagation();_editOrgLinkFor(${n.staffId||n.id.replace('st_','')})" class="btn btn-ghost btn-sm btn-icon" title="Modifier le lien hiérarchique"><i class="fas fa-link" style="font-size:9px;color:var(--accent)"></i></button>
       </div>`;
     canvas.appendChild(card);
     // Drag natif avec snap magnétique
@@ -4656,35 +4798,26 @@ function orgMakeDraggable(card, nid){
 }
 
 function orgGetNodes(){
-  // Reconstruire la liste de nœuds (même logique que renderOrg)
-  const manualNodes=S.orgNodes||[];
-  if(manualNodes.length){
-    return manualNodes.map(n=>({id:'mn_'+n.id,parentId:n.parentId?'mn_'+n.parentId:null,level:n.level||0}));
-  }
-  const staff=S.staff||[];const postes=S.postes||[];
+  // Reconstruire la liste de nœuds (même logique que renderOrg) — pour le drag
+  const staff=S.staff||[];
+  const postes=S.postes||[];
   const CAT_LEVEL={Management:0,Direction:0,Technique:1,Son:1,Lumière:1,Vidéo:1,Sécurité:1,Médical:1,Presse:1,Staff:2,Accueil:2,Logistique:2,Restauration:2,Bénévole:2,Artiste:2,Autre:2};
-  // Même logique que renderOrg pour cohérence
-  const byLevel={};
-  staff.forEach(s=>{
-    const poste=postes.find(p=>p.id===s.posteId);
-    const cat=poste?.cat||'Autre';
-    const lv=CAT_LEVEL[cat]??2;
-    if(!byLevel[lv])byLevel[lv]=[];
-    byLevel[lv].push(s.id);
-  });
-  const allLevels=Object.keys(byLevel).map(Number).sort((a,b)=>a-b);
-  const firstOfLevel={};
-  allLevels.forEach(lv=>{if(byLevel[lv]?.length)firstOfLevel[lv]='st_'+byLevel[lv][0];});
   return staff.map(s=>{
     const poste=postes.find(p=>p.id===s.posteId);
     const cat=poste?.cat||'Autre';
     const lv=CAT_LEVEL[cat]??2;
-    const id='st_'+s.id;
-    let parentId=null;
-    if(lv>0){for(let pl=lv-1;pl>=0;pl--){if(firstOfLevel[pl]){parentId=firstOfLevel[pl];break;}}}
-    if(parentId===id)parentId=null;
-    return{id,parentId,level:lv};
+    const link=(S.orgLinks||[]).find(l=>String(l.childId)===String(s.id));
+    const parentId=link?.parentId?'st_'+link.parentId:null;
+    return{id:'st_'+s.id,parentId,level:lv};
   });
+}
+
+function _editOrgLinkFor(staffId){
+  _populateOrgLinkSelects();
+  document.getElementById('org-link-child').value=String(staffId);
+  const link=(S.orgLinks||[]).find(l=>String(l.childId)===String(staffId));
+  document.getElementById('org-link-parent').value=link?.parentId?String(link.parentId):'';
+  document.getElementById('modal-org-node').classList.add('open');
 }
 
 // ═══════════════════════════════════════════
@@ -4716,35 +4849,47 @@ function initCockpitDrag(){
   if(!S.cockpitLayout)S.cockpitLayout={};
   const canvas=document.getElementById('cockpit-drag-canvas');
   if(!canvas)return;
-  // Snap sur la grille uniforme
+
+  // Initialiser immédiatement le layout par défaut pour tous les widgets manquants
+  Object.entries(CW_DEFAULT_LAYOUT).forEach(([id,pos])=>{
+    if(!S.cockpitLayout[id])S.cockpitLayout[id]={...pos};
+  });
+
   const SNAP_X=CW_GRID_COL, SNAP_Y=CW_GRID_ROW;
+
+  function applyPositions(){
+    document.querySelectorAll('.cw-draggable').forEach(el=>{
+      const id=el.id;
+      const pos=S.cockpitLayout[id]||CW_DEFAULT_LAYOUT[id]||{x:0,y:0};
+      S.cockpitLayout[id]={...pos};
+      el.style.left=pos.x+'px';
+      el.style.top=pos.y+'px';
+    });
+    updateCanvasHeight();
+  }
 
   function updateCanvasHeight(){
     let maxY=0;
     document.querySelectorAll('.cw-draggable').forEach(el=>{
-      maxY=Math.max(maxY,(S.cockpitLayout[el.id]?.y||0)+el.offsetHeight+16);
+      maxY=Math.max(maxY,(S.cockpitLayout[el.id]?.y||0)+el.offsetHeight+32);
     });
     canvas.style.minHeight=Math.max(500,maxY)+'px';
   }
 
-  // Détecte chevauchement entre deux boîtes
-  function overlaps(ax,ay,aw,ah,bx,by,bw,bh){
-    return ax<bx+bw&&ax+aw>bx&&ay<by+bh&&ay+ah>by;
-  }
-  // Cherche si la position (nx,ny) entre en collision avec un autre widget
+  function overlaps(ax,ay,aw,ah,bx,by,bw,bh){return ax<bx+bw&&ax+aw>bx&&ay<by+bh&&ay+ah>by;}
   function hasCollision(dragId,nx,ny){
     const dragEl=document.getElementById(dragId);
-    const dw=dragEl?dragEl.offsetWidth:240;
-    const dh=dragEl?dragEl.offsetHeight:120;
+    const dw=dragEl?dragEl.offsetWidth:CW_GRID_COL-16;
+    const dh=dragEl?dragEl.offsetHeight:CW_GRID_ROW-16;
     let col=false;
     document.querySelectorAll('.cw-draggable').forEach(el=>{
       if(el.id===dragId)return;
       const p=S.cockpitLayout[el.id]||{x:0,y:0};
-      if(overlaps(nx,ny,dw,dh,p.x,p.y,el.offsetWidth,el.offsetHeight))col=true;
+      if(overlaps(nx,ny,dw,dh,p.x,p.y,el.offsetWidth||CW_GRID_COL-16,el.offsetHeight||CW_GRID_ROW-16))col=true;
     });
     return col;
   }
-  // Ghost de collision
+
   let _ghost=null;
   function showCollisionGhost(el){
     if(!_ghost){_ghost=document.createElement('div');_ghost.className='cw-collision-ghost';canvas.appendChild(_ghost);}
@@ -4754,27 +4899,30 @@ function initCockpitDrag(){
   }
   function hideGhost(){if(_ghost)_ghost.style.display='none';}
 
-  document.querySelectorAll('.cw-draggable').forEach(el=>{
-    const id=el.id;
-    const pos=S.cockpitLayout[id]||CW_DEFAULT_LAYOUT[id]||{x:0,y:0};
-    if(!S.cockpitLayout[id])S.cockpitLayout[id]={...pos};
-    el.style.left=pos.x+'px';
-    el.style.top=pos.y+'px';
-
-    el.addEventListener('mousedown',e=>{
-      const onHandle=e.target.closest('.cw-drag-handle');
-      const onInteractive=e.target.closest('button,input,textarea,select,a');
-      if(!onHandle&&onInteractive)return;
-      _cwDragState={
-        el,id,canvas,
-        ox:e.clientX-el.getBoundingClientRect().left,
-        oy:e.clientY-el.getBoundingClientRect().top,
-        startX:S.cockpitLayout[id].x,
-        startY:S.cockpitLayout[id].y
-      };
-      el.classList.add('dragging');
-      el.style.zIndex=100;
-      e.preventDefault();
+  // Appliquer positions via RAF pour garantir layout complet
+  requestAnimationFrame(()=>{
+    applyPositions();
+    // Attacher mousedown sur chaque widget
+    document.querySelectorAll('.cw-draggable').forEach(el=>{
+      const id=el.id;
+      // Supprimer ancien listener pour éviter doublons
+      const newEl=el.cloneNode(true);
+      el.parentNode.replaceChild(newEl,el);
+      newEl.addEventListener('mousedown',e=>{
+        const onHandle=e.target.closest('.cw-drag-handle');
+        const onInteractive=e.target.closest('button,input,textarea,select,a');
+        if(!onHandle&&onInteractive)return;
+        _cwDragState={
+          el:newEl,id,canvas,
+          ox:e.clientX-newEl.getBoundingClientRect().left,
+          oy:e.clientY-newEl.getBoundingClientRect().top,
+          startX:S.cockpitLayout[id]?.x||0,
+          startY:S.cockpitLayout[id]?.y||0
+        };
+        newEl.classList.add('dragging');
+        newEl.style.zIndex=100;
+        e.preventDefault();
+      });
     });
   });
 
@@ -4786,12 +4934,10 @@ function initCockpitDrag(){
       const rect=canvas.getBoundingClientRect();
       const rawX=Math.max(0,e.clientX-rect.left-ox);
       const rawY=Math.max(0,e.clientY-rect.top-oy);
-      // Snap sur grille
       const snapX=Math.round(rawX/SNAP_X)*SNAP_X;
       const snapY=Math.round(rawY/SNAP_Y)*SNAP_Y;
       el.style.left=snapX+'px';
       el.style.top=snapY+'px';
-      // Feedback collision
       if(hasCollision(id,snapX,snapY)){
         el.style.opacity='.6';
         showCollisionGhost(el);
@@ -4808,9 +4954,8 @@ function initCockpitDrag(){
       el.style.zIndex='';
       el.style.opacity='1';
       hideGhost();
-      const finalX=parseFloat(el.style.left);
-      const finalY=parseFloat(el.style.top);
-      // Si collision finale, remettre à la position de départ
+      const finalX=parseFloat(el.style.left)||0;
+      const finalY=parseFloat(el.style.top)||0;
       if(hasCollision(id,finalX,finalY)){
         el.style.left=(startX||0)+'px';
         el.style.top=(startY||0)+'px';
@@ -4830,11 +4975,13 @@ function initCockpitDrag(){
 function resetCockpitLayout(){
   if(!confirm('Réinitialiser la disposition du Cockpit ?'))return;
   S.cockpitLayout={};
-  Object.keys(CW_DEFAULT_LAYOUT).forEach(k=>S.cockpitLayout[k]={...CW_DEFAULT_LAYOUT[k]});
-  document.querySelectorAll('.cw-draggable').forEach(el=>{
-    const pos=CW_DEFAULT_LAYOUT[el.id]||{x:0,y:0};
-    el.style.left=pos.x+'px';
-    el.style.top=pos.y+'px';
+  Object.entries(CW_DEFAULT_LAYOUT).forEach(([k,v])=>{S.cockpitLayout[k]={...v};});
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('.cw-draggable').forEach(el=>{
+      const pos=CW_DEFAULT_LAYOUT[el.id]||{x:0,y:0};
+      el.style.left=pos.x+'px';
+      el.style.top=pos.y+'px';
+    });
   });
   saveStorage();toast('Cockpit réinitialisé en grille','i');
 }
@@ -4848,6 +4995,7 @@ function resetOrgPositions(){
 // PLANNING & LIVRAISONS
 // ═══════════════════════════════════════════
 let editingPlanIdx=-1;
+let _editingPlanId=null;
 
 function setPlanningView(v,btn){
   S.planningView=v;
@@ -4867,6 +5015,7 @@ function togglePlanFields(){
 
 function openAddPlanModal(){
   editingPlanIdx=-1;
+  _editingPlanId=null;
   const g=id=>document.getElementById(id);
   g('plan-modal-title').textContent='Ajouter un élément';
   g('plan-save-btn').innerHTML='<i class="fas fa-plus"></i> Ajouter';
@@ -4882,31 +5031,54 @@ function openAddPlanModal(){
   g('plan-quoi').value='';
   g('plan-notes').value='';
   togglePlanFields();
+  openModal('modal-add-plan');
 }
 
 function savePlanItem(){
   const g=id=>document.getElementById(id)?.value||'';
   if(!g('plan-titre')){toast('Titre requis','d');return;}
+  if(!S.planning)S.planning=[];
   const item={
-    id:editingPlanIdx===-1?S.nextId++:((S.planning||[])[editingPlanIdx]?.id||S.nextId++),
     type:g('plan-type'), statut:g('plan-statut'),
     titre:g('plan-titre'), date:g('plan-date'), heure:g('plan-heure'),
     resp:g('plan-resp'), presta:g('plan-presta'),
     lieu:g('plan-lieu'), contact:g('plan-contact'),
     quoi:g('plan-quoi'), notes:g('plan-notes'),
-    created:Date.now()
   };
-  if(!S.planning)S.planning=[];
-  if(editingPlanIdx===-1){S.planning.push(item);toast('Élément ajouté','s');}
-  else{S.planning[editingPlanIdx]=item;toast('Mis à jour','s');}
+  if(editingPlanIdx===-1){
+    // Création : nouvel ID
+    item.id=S.nextId++;
+    item.created=Date.now();
+    S.planning.push(item);
+    toast('Élément ajouté','s');
+  } else {
+    // Modification : retrouver par ID pour éviter bug d'index après tri
+    const existingId=_editingPlanId;
+    const realIdx=S.planning.findIndex(it=>it.id===existingId);
+    if(realIdx>=0){
+      item.id=existingId;
+      item.created=S.planning[realIdx].created||Date.now();
+      S.planning[realIdx]=item;
+    } else {
+      // Fallback si ID perdu
+      item.id=S.nextId++;
+      item.created=Date.now();
+      S.planning.push(item);
+    }
+    toast('Mis à jour','s');
+  }
   editingPlanIdx=-1;
+  _editingPlanId=null;
   closeModal('modal-add-plan');
   renderPlanning();saveStorage();
 }
 
 function editPlanItem(idx){
+  // Utiliser l'index dans le tableau trié visible, mais stocker l'ID pour la sauvegarde
+  const sorted=[...(S.planning||[])].sort((a,b)=>(a.date+a.heure).localeCompare(b.date+b.heure));
+  const it=sorted[idx];if(!it)return;
   editingPlanIdx=idx;
-  const it=(S.planning||[])[idx];if(!it)return;
+  _editingPlanId=it.id; // stocker l'ID réel pour retrouver l'item
   const g=id=>document.getElementById(id);
   g('plan-modal-title').textContent='Modifier';
   g('plan-save-btn').innerHTML='<i class="fas fa-floppy-disk"></i> Mettre à jour';
@@ -4927,7 +5099,10 @@ function editPlanItem(idx){
 
 function deletePlanItem(idx){
   if(!confirm('Supprimer cet élément ?'))return;
-  S.planning.splice(idx,1);renderPlanning();saveStorage();toast('Supprimé','i');
+  const sorted=[...(S.planning||[])].sort((a,b)=>(a.date+a.heure).localeCompare(b.date+b.heure));
+  const it=sorted[idx];if(!it)return;
+  S.planning=S.planning.filter(p=>p.id!==it.id);
+  renderPlanning();saveStorage();toast('Supprimé','i');
 }
 
 function autoUpdatePlanningStatuts(){
@@ -4947,8 +5122,10 @@ function autoUpdatePlanningStatuts(){
 }
 
 function togglePlanDone(idx){
-  const it=(S.planning||[])[idx];if(!it)return;
-  it.statut=it.statut==='done'?'todo':'done';
+  const sorted=[...(S.planning||[])].sort((a,b)=>(a.date+a.heure).localeCompare(b.date+b.heure));
+  const it=sorted[idx];if(!it)return;
+  const real=S.planning.find(p=>p.id===it.id);if(!real)return;
+  real.statut=real.statut==='done'?'todo':'done';
   renderPlanning();saveStorage();
 }
 
@@ -5124,13 +5301,18 @@ function renderPlanning(){
   setPlanningView(S.planningView||'timeline', document.querySelector('#planning-view-sel .phase-btn.active')||document.querySelector('#planning-view-sel .phase-btn'));
 }
 
-// Patch openModal pour planning (organigramme utilise openOrgNodeModal directement)
+// Patch openModal pour planning et organigramme
 const _origOpenModal=window.openModal;
 window.openModal=function(id){
-  if(id==='modal-org-node'){openOrgNodeModal();return;}
+  if(id==='modal-org-node'){openOrgLinkModal();return;}
   if(id==='modal-add-plan'){openAddPlanModal();}
   if(typeof _origOpenModal==='function')_origOpenModal(id);
-  else{document.getElementById(id).classList.add('open');populateCrewSelects();if(id==='modal-canaux-config')openCanauxConfig();}
+  else{
+    const el=document.getElementById(id);
+    if(el){el.classList.add('open');}
+    populateCrewSelects();
+    if(id==='modal-canaux-config')openCanauxConfig();
+  }
 };
 
 // ═══════════════════════════════════════════
