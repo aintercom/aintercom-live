@@ -461,15 +461,31 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
   min-height: 600px;
   padding: 0;
 }
+/* Taille uniforme des widgets cockpit */
 .cw-draggable {
   position: absolute;
   cursor: grab;
   user-select: none;
   transition: box-shadow .15s, border-color .15s;
-  min-width: 200px;
+  width: 240px !important;
+  min-height: 120px;
 }
 .cw-draggable:hover { border-color: var(--border2); box-shadow: 0 6px 20px rgba(0,0,0,.18); }
-.cw-draggable.dragging { cursor: grabbing; box-shadow: 0 12px 36px rgba(0,0,0,.35); z-index: 100; border-color: var(--accent); }
+.cw-draggable.dragging { cursor: grabbing; box-shadow: 0 12px 36px rgba(0,0,0,.35); z-index: 100; border-color: var(--accent); opacity:.92; }
+/* Ghost de collision */
+.cw-collision-ghost {
+  position: absolute;
+  background: rgba(220,38,38,.12);
+  border: 2px dashed var(--danger);
+  border-radius: var(--r);
+  pointer-events: none;
+  z-index: 99;
+  transition: none;
+}
+.cw-drop-target {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 2px var(--accent-glow) !important;
+}
 .cw-drag-handle {
   position: absolute;
   top: 6px; right: 6px;
@@ -798,7 +814,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
         <div id="cockpit-drag-canvas">
 
           <!-- W1: EN DIRECT -->
-          <div class="cw cw-draggable cw-now" id="cw-w1" style="width:280px">
+          <div class="cw cw-draggable cw-now" id="cw-w1">
             <div class="cw-drag-handle"><i class="fas fa-grip-dots-vertical"></i></div>
             <div class="cw-label"><span class="live-dot" id="live-dot-label">EN ATTENTE</span></div>
             <div class="cw-now-title" id="cw-now-title">Prêt au démarrage</div>
@@ -810,7 +826,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
           </div>
 
           <!-- W2: SUIVANTE -->
-          <div class="cw cw-draggable" id="cw-w2" style="width:220px">
+          <div class="cw cw-draggable" id="cw-w2">
             <div class="cw-drag-handle"><i class="fas fa-grip-dots-vertical"></i></div>
             <div class="cw-label"><i class="fas fa-forward" style="color:var(--tx3)"></i> Suivante</div>
             <div style="font-size:14px;font-weight:700;color:var(--tx2);margin-bottom:6px" id="cw-next-title">—</div>
@@ -821,7 +837,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
           </div>
 
           <!-- W3: TIMER SHOW -->
-          <div class="cw cw-draggable" id="cw-w3" style="width:200px;background:var(--bg3)">
+          <div class="cw cw-draggable" id="cw-w3" style="background:var(--bg3)">
             <div class="cw-drag-handle"><i class="fas fa-grip-dots-vertical"></i></div>
             <div class="cw-label">⏱ Timer show</div>
             <div class="cw-big" id="cw-global-timer" style="color:var(--accent);font-family:Arial,Helvetica,sans-serif!important">00:00:00</div>
@@ -833,7 +849,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
           </div>
 
           <!-- W4: HORLOGE RÉGIE -->
-          <div class="cw cw-draggable" id="cw-w4" style="width:220px;background:linear-gradient(135deg,#0a0f1a,#0e1a2e);border:1px solid rgba(37,99,235,.35);text-align:center;overflow:hidden;padding:16px 14px">
+          <div class="cw cw-draggable" id="cw-w4" style="background:linear-gradient(135deg,#0a0f1a,#0e1a2e);border:1px solid rgba(37,99,235,.35);text-align:center;overflow:hidden;padding:16px 14px">
             <div class="cw-drag-handle" style="color:#fff6"><i class="fas fa-grip-dots-vertical"></i></div>
             <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(37,99,235,.18),transparent 70%);pointer-events:none"></div>
             <div style="position:absolute;top:8px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:5px">
@@ -846,7 +862,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
           </div>
 
           <!-- W5: POWER -->
-          <div class="cw cw-draggable" id="cw-w5" style="width:190px;cursor:pointer" onclick="switchTab('tech',navBtnByTab('tech'))">
+          <div class="cw cw-draggable" id="cw-w5" style="cursor:pointer" onclick="switchTab('tech',navBtnByTab('tech'))">
             <div class="cw-drag-handle"><i class="fas fa-grip-dots-vertical"></i></div>
             <div class="cw-label">⚡ Power</div>
             <div style="font-family:Arial,Helvetica,sans-serif!important;font-size:22px;font-weight:700" id="cw-elec">0 W</div>
@@ -855,7 +871,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
           </div>
 
           <!-- W6: INCIDENTS -->
-          <div class="cw cw-draggable" id="cw-w6" style="width:170px;cursor:pointer" onclick="switchTab('tech',navBtnByTab('tech'))">
+          <div class="cw cw-draggable" id="cw-w6" style="cursor:pointer" onclick="switchTab('tech',navBtnByTab('tech'))">
             <div class="cw-drag-handle"><i class="fas fa-grip-dots-vertical"></i></div>
             <div class="cw-label">🚨 Incidents</div>
             <div style="font-family:Arial,Helvetica,sans-serif!important;font-size:22px;font-weight:700;color:var(--danger)" id="cw-inc">0</div>
@@ -863,7 +879,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
           </div>
 
           <!-- W7: STAFF -->
-          <div class="cw cw-draggable" id="cw-w7" style="width:170px;cursor:pointer" onclick="switchTab('staff',navBtnByTab('staff'))">
+          <div class="cw cw-draggable" id="cw-w7" style="cursor:pointer" onclick="switchTab('staff',navBtnByTab('staff'))">
             <div class="cw-drag-handle"><i class="fas fa-grip-dots-vertical"></i></div>
             <div class="cw-label">👥 Staff</div>
             <div style="font-family:Arial,Helvetica,sans-serif!important;font-size:22px;font-weight:700;color:var(--success)" id="cw-crew">0</div>
@@ -871,7 +887,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
           </div>
 
           <!-- W8: BUDGET -->
-          <div class="cw cw-draggable" id="cw-w8" style="width:190px;cursor:pointer" onclick="if(!S.budgetUnlocked)toggleBudget();switchTab('budget',navBtnByTab('budget'))" id="cw-budget-widget">
+          <div class="cw cw-draggable" id="cw-w8" style="cursor:pointer" onclick="if(!S.budgetUnlocked)toggleBudget();switchTab('budget',navBtnByTab('budget'))" id="cw-budget-widget">
             <div class="cw-drag-handle"><i class="fas fa-grip-dots-vertical"></i></div>
             <div class="cw-label">💰 Marge nette</div>
             <div style="font-family:Arial,Helvetica,sans-serif!important;font-size:22px;font-weight:700" id="cw-budget">—</div>
@@ -879,7 +895,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
           </div>
 
           <!-- W9: MÉTÉO -->
-          <div class="cw cw-draggable" id="cw-w9" style="width:220px">
+          <div class="cw cw-draggable" id="cw-w9">
             <div class="cw-drag-handle"><i class="fas fa-grip-dots-vertical"></i></div>
             <div class="cw-label" style="display:flex;justify-content:space-between;align-items:center">
               🌤 Météo
@@ -899,14 +915,14 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
           </div>
 
           <!-- W10: NOTE -->
-          <div class="cw cw-draggable" id="cw-w10" style="width:220px">
+          <div class="cw cw-draggable" id="cw-w10">
             <div class="cw-drag-handle"><i class="fas fa-grip-dots-vertical"></i></div>
             <div class="cw-label" style="display:flex;justify-content:space-between">📝 Note<button class="btn btn-ghost btn-sm" onclick="saveNote()" style="margin-top:-2px"><i class="fas fa-check" style="font-size:9px"></i></button></div>
             <textarea id="quick-note" rows="3" placeholder="Mémo permanent..." style="font-size:12px;resize:none"></textarea>
           </div>
 
           <!-- W11: MATOS ASSIGNÉS -->
-          <div class="cw cw-draggable" id="cw-w11" style="width:260px">
+          <div class="cw cw-draggable" id="cw-w11">
             <div class="cw-drag-handle"><i class="fas fa-grip-dots-vertical"></i></div>
             <div class="cw-label" style="display:flex;justify-content:space-between;align-items:center">📡 MATOS ASSIGNÉS<button class="btn btn-ghost btn-sm" style="margin-top:-2px;padding:2px 6px" onclick="switchTab('matos',navBtnByTab('matos'))"><i class="fas fa-arrow-right" style="font-size:9px"></i></button></div>
             <div id="cw-matos-list" style="display:flex;flex-direction:column;gap:5px;margin-top:8px;max-height:120px;overflow-y:auto"></div>
@@ -983,12 +999,20 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
       <!-- ══ ORGANIGRAMME ══ -->
       <section class="tab" id="tab-org">
         <div class="sec-hdr">
-          <div><div class="sec-title">🗂️ Organigramme</div><div class="sec-sub">Toile d'araignée · Drag & Drop libre · Liaisons hiérarchiques</div></div>
+          <div><div class="sec-title">🗂️ Organigramme</div><div class="sec-sub">Drag & Drop libre · Liaisons hiérarchiques · Connexion parent→enfant</div></div>
           <div class="sec-actions">
             <button class="btn btn-ghost btn-sm" onclick="resetOrgPositions()" title="Réorganiser en grille"><i class="fas fa-grid-2"></i> Reset layout</button>
-            <button class="btn btn-ghost btn-sm" onclick="openModal('modal-org-node')"><i class="fas fa-plus"></i> Nœud manuel</button>
+            <button class="btn btn-primary btn-sm" onclick="openOrgNodeModal()"><i class="fas fa-plus"></i> Ajouter un nœud</button>
             <button class="btn btn-ghost btn-sm" onclick="renderOrg()"><i class="fas fa-rotate"></i> Rafraîchir</button>
+            <button class="btn btn-ghost btn-sm" onclick="doPrint()"><i class="fas fa-print"></i></button>
           </div>
+        </div>
+        <!-- Légende connexions -->
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 14px;margin-bottom:10px;display:flex;align-items:center;gap:16px;font-size:11px;color:var(--tx3)">
+          <span><i class="fas fa-mouse-pointer" style="color:var(--accent)"></i> Cliquer sur une carte pour l'éditer</span>
+          <span><i class="fas fa-arrows-up-down-left-right" style="color:var(--tx3)"></i> Glisser pour repositionner</span>
+          <span><i class="fas fa-link" style="color:var(--info)"></i> Le parent est défini dans le formulaire</span>
+          <span id="org-node-count" style="margin-left:auto;font-weight:700;color:var(--tx2)">0 nœud</span>
         </div>
         <div id="org-canvas" style="min-height:520px"></div>
       </section>
@@ -1004,6 +1028,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
               <option value="count">Trier par membres</option>
               <option value="color">Trier par couleur</option>
             </select>
+            <button class="btn btn-ghost btn-sm" onclick="doPrint()" title="Imprimer les postes"><i class="fas fa-print"></i></button>
             <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-poste')"><i class="fas fa-plus"></i> Nouveau poste</button>
           </div>
         </div>
@@ -1019,6 +1044,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
             <select id="staff-filter-poste" style="width:130px" onchange="renderStaff()">
               <option value="">Tous les postes</option>
             </select>
+            <button class="btn btn-ghost btn-sm" onclick="doPrint()" title="Imprimer le staff"><i class="fas fa-print"></i></button>
             <button class="btn btn-primary btn-sm" onclick="openAddStaffModal()"><i class="fas fa-plus"></i> Ajouter</button>
           </div>
         </div>
@@ -1044,6 +1070,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
                 <option value="libre">Libres</option>
               </select>
               <button class="btn btn-ghost btn-sm" onclick="toggleMatosView()" id="matos-view-toggle"><i class="fas fa-list"></i> Vue liste</button>
+              <button class="btn btn-ghost btn-sm" onclick="doPrint()" title="Imprimer le matos"><i class="fas fa-print"></i></button>
               <button class="btn btn-ghost btn-sm" onclick="openModal('modal-add-matos')"><i class="fas fa-plus"></i> Équipement</button>
             </div>
           </div>
@@ -1142,12 +1169,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
               <button class="phase-btn active" onclick="setBudgetMode('ht',this)">HT</button>
               <button class="phase-btn" onclick="setBudgetMode('ttc',this)">TTC</button>
             </div>
-            <select id="budget-tva-rate" style="width:80px" onchange="renderBudget()" title="Taux TVA">
-              <option value="0">TVA 0%</option>
-              <option value="5.5">TVA 5.5%</option>
-              <option value="10">TVA 10%</option>
-              <option value="20" selected>TVA 20%</option>
-            </select>
+            <span class="badge b-info" style="font-size:10px" title="TVA calculée ligne par ligne"><i class="fas fa-calculator"></i> TVA par ligne</span>
             <span class="badge b-warning" id="budget-lock-badge"><i class="fas fa-lock"></i> Verrouillé</span>
             <button class="btn btn-ghost btn-sm" onclick="toggleBudget()"><i class="fas fa-lock" id="budget-lock-ico"></i> <span id="budget-lock-lbl">Déverrouiller</span></button>
             <button class="btn btn-success btn-sm" id="btn-add-recette" style="display:none" onclick="openBudgetModal('recette')"><i class="fas fa-plus"></i> Recette</button>
@@ -1163,8 +1185,13 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
             <div class="cw"><div class="cw-label">💚 Recettes HT</div><div class="card-value" style="color:var(--success)" id="b-recettes">0 €</div><div style="font-size:10px;color:var(--tx3);margin-top:3px" id="b-recettes-ttc">TTC —</div></div>
             <div class="cw"><div class="cw-label">🔴 Dépenses HT</div><div class="card-value" style="color:var(--danger)" id="b-depenses">0 €</div><div style="font-size:10px;color:var(--tx3);margin-top:3px" id="b-depenses-ttc">TTC —</div></div>
             <div class="cw"><div class="cw-label">⚡ Marge brute</div><div class="card-value" id="b-marge">0 €</div><div style="font-size:10px;color:var(--tx3);margin-top:3px" id="b-marge-pct">0%</div></div>
-            <div class="cw"><div class="cw-label">💸 TVA collectée</div><div class="card-value" id="b-tva-col" style="color:var(--info)">0 €</div><div style="font-size:10px;color:var(--tx3);margin-top:3px" id="b-tva-rate-lbl">Taux 20%</div></div>
+            <div class="cw"><div class="cw-label">💸 TVA collectée</div><div class="card-value" id="b-tva-col" style="color:var(--info)">0 €</div><div style="font-size:10px;color:var(--tx3);margin-top:3px" id="b-tva-rate-lbl">Multi-taux</div></div>
             <div class="cw"><div class="cw-label">📊 Réalisé</div><div class="card-value" id="b-pct">0%</div><div class="prog" style="margin-top:8px"><div class="prog-fill" id="b-bar" style="width:0%;background:var(--success)"></div></div></div>
+          </div>
+          <!-- TVA Breakdown par taux -->
+          <div id="b-tva-breakdown" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 14px;margin-bottom:14px">
+            <div style="font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Détail TVA par taux</div>
+            <div id="b-tva-breakdown-content" style="display:flex;gap:10px;flex-wrap:wrap"></div>
           </div>
 
           <!-- Recettes -->
@@ -1404,7 +1431,9 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
               <button class="phase-btn" onclick="setPlanningView('livraisons',this)">Livraisons</button>
               <button class="phase-btn" onclick="setPlanningView('all',this)">Tout</button>
             </div>
+            <button class="btn btn-ghost btn-sm" onclick="autoUpdatePlanningStatuts()" title="Mettre à jour automatiquement les statuts selon les dates"><i class="fas fa-rotate"></i> Sync statuts</button>
             <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-plan')"><i class="fas fa-plus"></i> Ajouter</button>
+            <button class="btn btn-ghost btn-sm" onclick="doPrint()"><i class="fas fa-print"></i></button>
           </div>
         </div>
 
@@ -2445,14 +2474,26 @@ function renderRunDayTabs(){
   const cont=document.getElementById('run-day-tabs');if(!cont)return;
   if(!S.runDays||!S.runDays.length){S.runDays=['J1'];}
   if(!S.runCurrentDay||!S.runDays.includes(S.runCurrentDay))S.runCurrentDay=S.runDays[0];
-  cont.innerHTML=S.runDays.map(d=>`<button class="run-day-tab${d===S.runCurrentDay?' active':''}" onclick="selectRunDay('${d}')">${d} <span style="font-size:9px;opacity:.6">(${S.sequences.filter(s=>s.day===d).length})</span></button>`).join('');
+  cont.innerHTML=S.runDays.map(d=>`
+    <div style="display:inline-flex;align-items:center;gap:0;position:relative">
+      <button class="run-day-tab${d===S.runCurrentDay?' active':''}" onclick="selectRunDay('${d}')" style="border-radius:${S.runDays.length>1?'var(--r-sm) 0 0 var(--r-sm)':'var(--r-sm)'};padding-right:${S.runDays.length>1?'6px':'12px'}">
+        ${d} <span style="font-size:9px;opacity:.6">(${S.sequences.filter(s=>s.day===d).length})</span>
+      </button>
+      ${S.runDays.length>1?`<button onclick="deleteRunDay('${d}')" title="Supprimer ce jour" style="height:100%;padding:0 5px;border:1px solid var(--border);border-left:none;border-radius:0 var(--r-sm) var(--r-sm) 0;background:var(--bg4);color:var(--tx3);cursor:pointer;font-size:10px;line-height:1;transition:var(--tr)" onmouseover="this.style.background='var(--danger-bg)';this.style.color='var(--danger)'" onmouseout="this.style.background='var(--bg4)';this.style.color='var(--tx3)'">✕</button>`:''}
+    </div>`).join('');
   renderRunSceneTabs();
 }
 function renderRunSceneTabs(){
   const cont=document.getElementById('run-scene-tabs');if(!cont)return;
   if(!S.runScenes||!S.runScenes.length){S.runScenes=['Scène 1'];}
   if(!S.runCurrentScene||!S.runScenes.includes(S.runCurrentScene))S.runCurrentScene=S.runScenes[0];
-  cont.innerHTML=S.runScenes.map(sc=>`<button class="run-scene-tab${sc===S.runCurrentScene?' active':''}" onclick="selectRunScene('${sc}')" ondblclick="renameRunScene('${sc}')">${sc} <span style="font-size:9px;opacity:.6">(${S.sequences.filter(s=>s.day===S.runCurrentDay&&s.scene===sc).length})</span></button>`).join('');
+  cont.innerHTML=S.runScenes.map(sc=>`
+    <div style="display:inline-flex;align-items:center;gap:0">
+      <button class="run-scene-tab${sc===S.runCurrentScene?' active':''}" onclick="selectRunScene('${sc}')" ondblclick="renameRunScene('${sc}')" style="border-radius:${S.runScenes.length>1?'20px 0 0 20px':'20px'};padding-right:${S.runScenes.length>1?'6px':'10px'}">
+        ${sc} <span style="font-size:9px;opacity:.6">(${S.sequences.filter(s=>s.day===S.runCurrentDay&&s.scene===sc).length})</span>
+      </button>
+      ${S.runScenes.length>1?`<button onclick="deleteRunScene('${sc}')" title="Supprimer cette scène" style="height:100%;padding:0 5px;border:1px solid var(--border2);border-left:none;border-radius:0 20px 20px 0;background:var(--bg4);color:var(--tx3);cursor:pointer;font-size:9px;line-height:1;transition:var(--tr)" onmouseover="this.style.background='var(--danger-bg)';this.style.color='var(--danger)'" onmouseout="this.style.background='var(--bg4)';this.style.color='var(--tx3)'">✕</button>`:''}
+    </div>`).join('');
 }
 function selectRunDay(d){S.runCurrentDay=d;renderRunDayTabs();renderRun();saveStorage();}
 function selectRunScene(sc){S.runCurrentScene=sc;renderRunSceneTabs();renderRun();saveStorage();}
@@ -2461,6 +2502,24 @@ function addRunDay(){
 }
 function addRunScene(){
   const n='Scène '+(S.runScenes.length+1);S.runScenes.push(n);S.runCurrentScene=n;renderRunSceneTabs();renderRun();saveStorage();toast(n+' ajoutée','s');
+}
+function deleteRunDay(d){
+  if(S.runDays.length<=1){toast('Impossible de supprimer le seul jour','d');return;}
+  const seqCount=S.sequences.filter(s=>s.day===d).length;
+  if(seqCount>0&&!confirm(`Supprimer "${d}" et ses ${seqCount} séquence(s) ?`))return;
+  S.sequences=S.sequences.filter(s=>s.day!==d);
+  S.runDays=S.runDays.filter(x=>x!==d);
+  if(S.runCurrentDay===d)S.runCurrentDay=S.runDays[0];
+  renderRunDayTabs();renderRun();saveStorage();toast('Jour '+d+' supprimé','i');
+}
+function deleteRunScene(sc){
+  if(S.runScenes.length<=1){toast('Impossible de supprimer la seule scène','d');return;}
+  const seqCount=S.sequences.filter(s=>s.day===S.runCurrentDay&&s.scene===sc).length;
+  if(seqCount>0&&!confirm(`Supprimer "${sc}" et ses ${seqCount} séquence(s) ?`))return;
+  S.sequences=S.sequences.filter(s=>!(s.scene===sc&&s.day===S.runCurrentDay));
+  S.runScenes=S.runScenes.filter(x=>x!==sc);
+  if(S.runCurrentScene===sc)S.runCurrentScene=S.runScenes[0];
+  renderRunSceneTabs();renderRun();saveStorage();toast('Scène '+sc+' supprimée','i');
 }
 function renameRunScene(sc){
   const nn=prompt('Renommer la scène :',sc);if(!nn||nn===sc)return;
@@ -3565,56 +3624,88 @@ function openBudgetModal(type){
 function renderBudget(){
   if(!S.budgetUnlocked)return;
   const lignes=S.budget.lignes||[];
-  const tva=parseFloat(document.getElementById('budget-tva-rate')?.value)||20;
   const isHT=budgetDisplayMode==='ht';
   const recettes=lignes.filter(l=>l.type==='recette');
   const depenses=lignes.filter(l=>l.type!=='recette');
-  const sumReel=arr=>arr.reduce((a,l)=>a+(l.reel||l.prevu||0),0);
+
+  // ── Calculs corrects : chaque ligne a son propre taux TVA ──
+  const sumHT=arr=>arr.reduce((a,l)=>a+(l.reel||l.prevu||0),0);
   const sumPrevu=arr=>arr.reduce((a,l)=>a+(l.prevu||0),0);
-  const totRec=sumReel(recettes), totDep=sumReel(depenses);
-  const marge=totRec-totDep;
-  const pct=totRec>0?Math.round((totDep/totRec)*100):0;
-  const tvaCol=totRec*(tva/100);
+  const sumTTC=arr=>arr.reduce((a,l)=>{const ht=l.reel||l.prevu||0;return a+ht*(1+(l.tva??20)/100);},0);
+  const sumTVA=arr=>arr.reduce((a,l)=>{const ht=l.reel||l.prevu||0;return a+ht*((l.tva??20)/100);},0);
+
+  const totRecHT=sumHT(recettes), totDepHT=sumHT(depenses);
+  const totRecTTC=sumTTC(recettes), totDepTTC=sumTTC(depenses);
+  const tvaCollectee=sumTVA(recettes); // TVA sur recettes uniquement (TVA collectée)
+  const tvaDeductible=sumTVA(depenses); // TVA déductible sur achats
+  const marge=totRecHT-totDepHT;
+  const pct=totRecHT>0?Math.round((totDepHT/totRecHT)*100):0;
+
   const fmt=(n)=>n.toLocaleString('fr-FR',{minimumFractionDigits:0,maximumFractionDigits:2})+' €';
-  const fmtTTC=(n)=>fmt(n*(1+tva/100));
+
   // KPIs
-  document.getElementById('b-recettes').textContent=fmt(totRec);
-  document.getElementById('b-recettes-ttc').textContent='TTC '+fmtTTC(totRec);
-  document.getElementById('b-depenses').textContent=fmt(totDep);
-  document.getElementById('b-depenses-ttc').textContent='TTC '+fmtTTC(totDep);
+  document.getElementById('b-recettes').textContent=fmt(totRecHT);
+  document.getElementById('b-recettes-ttc').textContent='TTC '+fmt(totRecTTC);
+  document.getElementById('b-depenses').textContent=fmt(totDepHT);
+  document.getElementById('b-depenses-ttc').textContent='TTC '+fmt(totDepTTC);
   const margeEl=document.getElementById('b-marge');
   margeEl.textContent=fmt(marge);
   margeEl.style.color=marge>=0?'var(--success)':'var(--danger)';
-  document.getElementById('b-marge-pct').textContent=totRec>0?Math.round((marge/totRec)*100)+'% marge':'—';
-  document.getElementById('b-tva-col').textContent=fmt(tvaCol);
-  document.getElementById('b-tva-rate-lbl').textContent='Taux '+tva+'%';
+  document.getElementById('b-marge-pct').textContent=totRecHT>0?Math.round((marge/totRecHT)*100)+'% marge':'—';
+  document.getElementById('b-tva-col').textContent=fmt(tvaCollectee);
+  document.getElementById('b-tva-rate-lbl').textContent='Déductible: '+fmt(tvaDeductible);
   document.getElementById('b-pct').textContent=pct+'%';
   const bar=document.getElementById('b-bar');
   bar.style.width=Math.min(pct,100)+'%';
   bar.style.background=pct>100?'var(--danger)':pct>80?'var(--warning)':'var(--success)';
   document.getElementById('b-recettes-count').textContent=recettes.length+' ligne'+(recettes.length>1?'s':'');
   document.getElementById('b-depenses-count').textContent=depenses.length+' ligne'+(depenses.length>1?'s':'');
-  document.getElementById('b-recettes-total').textContent=fmt(sumPrevu(recettes))+' prévu · '+fmt(totRec)+' réel';
-  document.getElementById('b-depenses-total').textContent=fmt(sumPrevu(depenses))+' prévu · '+fmt(totDep)+' réel';
-  // Statut colors
+  document.getElementById('b-recettes-total').textContent=fmt(sumPrevu(recettes))+' prévu · '+fmt(totRecHT)+' réel';
+  document.getElementById('b-depenses-total').textContent=fmt(sumPrevu(depenses))+' prévu · '+fmt(totDepHT)+' réel';
+
+  // ── Ventilation TVA par taux ──
+  const tvaTaux={};
+  lignes.forEach(l=>{
+    const ht=l.reel||l.prevu||0;if(!ht)return;
+    const taux=l.tva??20;
+    if(!tvaTaux[taux])tvaTaux[taux]={base:0,tva:0,label:taux+'%'};
+    tvaTaux[taux].base+=ht;
+    tvaTaux[taux].tva+=ht*(taux/100);
+  });
+  const tauxKeys=Object.keys(tvaTaux).sort((a,b)=>a-b);
+  const breakdownEl=document.getElementById('b-tva-breakdown');
+  const breakdownContent=document.getElementById('b-tva-breakdown-content');
+  if(tauxKeys.length>0&&breakdownEl&&breakdownContent){
+    breakdownEl.style.display='block';
+    breakdownContent.innerHTML=tauxKeys.map(t=>`
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 12px;min-width:140px">
+        <div style="font-size:10px;font-weight:800;color:var(--tx3);margin-bottom:3px">TVA ${t}%</div>
+        <div style="font-size:12px;font-weight:700;color:var(--info)">${fmt(tvaTaux[t].tva)}</div>
+        <div style="font-size:10px;color:var(--tx3)">Base: ${fmt(tvaTaux[t].base)}</div>
+      </div>`).join('');
+  } else if(breakdownEl){breakdownEl.style.display='none';}
+
+  // ── Lignes tableau ──
   const sb={Estimé:'b-neutral','Devis reçu':'b-neutral',Commandé:'b-info',Facturé:'b-warning',Payé:'b-success',Annulé:'b-neutral'};
   const rowHTML=(l,isRec)=>{
-    const tvaPct=l.tva??tva;
+    const tvaPct=l.tva??20;
     const prevuHT=l.prevu||0;const reelHT=l.reel||0;
     const prevuTTC=prevuHT*(1+tvaPct/100);const reelTTC=reelHT*(1+tvaPct/100);
+    const reelTVA=reelHT*(tvaPct/100);
     const ecart=reelHT-prevuHT;
     const dispPrevu=isHT?fmt(prevuHT):fmt(prevuTTC);
     const dispReel=isHT?fmt(reelHT):fmt(reelTTC);
     const color=isRec?'var(--success)':'var(--danger)';
+    const ecartColor=ecart===0?'var(--tx2)':(isRec?(ecart>0?'var(--success)':'var(--danger)'):(ecart>0?'var(--danger)':'var(--success)'));
     return `<tr>
       <td><span class="badge" style="background:${isRec?'rgba(22,163,74,.12)':'rgba(220,38,38,.1)'};color:${color};font-size:10px">${l.cat}</span></td>
       <td><div style="font-weight:700;font-size:13px">${l.desc}</div>${l.note?`<div style="font-size:10px;color:var(--tx3)">${l.note}</div>`:''}</td>
       <td style="color:var(--tx2);font-size:11px">${l.fourn||'—'}</td>
       <td style="font-family:var(--mono);color:var(--tx2)">${fmt(prevuHT)}</td>
       <td style="font-family:var(--mono);font-weight:700;color:${color}">${fmt(reelHT)}</td>
-      <td style="font-family:var(--mono);font-size:11px;color:var(--tx3)">${tvaPct}%</td>
-      <td style="font-family:var(--mono);font-size:11px;color:var(--tx2)">${fmt(reelTTC)}</td>
-      <td style="font-family:var(--mono);font-weight:700;color:${ecart>0&&!isRec?'var(--danger)':ecart<0&&isRec?'var(--danger)':ecart===0?'var(--tx2)':'var(--success)'}">${ecart>0?'+':''}${fmt(ecart)}</td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--info);font-weight:700">${tvaPct}% <span style="color:var(--tx3);font-size:10px">(${fmt(reelTVA)})</span></td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--tx2);font-weight:600">${fmt(reelTTC)}</td>
+      <td style="font-family:var(--mono);font-weight:700;color:${ecartColor}">${ecart>0?'+':''}${fmt(ecart)}</td>
       <td><span class="badge ${sb[l.statut]||'b-neutral'}" style="font-size:10px">${l.statut||'—'}</span>${l.date?`<div style="font-size:10px;color:var(--tx3);margin-top:2px">${l.date}</div>`:''}</td>
       <td style="white-space:nowrap">
         <button onclick="editBudgetLine(${l.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-pen" style="font-size:10px"></i></button>
@@ -3623,8 +3714,12 @@ function renderBudget(){
     </tr>`;
   };
   const emptyRow=(msg)=>`<tr><td colspan="10" style="text-align:center;padding:20px;color:var(--tx3);font-size:12px;font-style:italic">${msg}</td></tr>`;
-  document.getElementById('budget-body-recettes').innerHTML=recettes.length?recettes.map(l=>rowHTML(l,true)).join('')+`<tr style="background:var(--bg3)"><td colspan="3" style="font-weight:800;font-size:11px;color:var(--tx3);padding:8px 12px;text-transform:uppercase">TOTAL RECETTES</td><td style="font-family:var(--mono);font-weight:700">${fmt(sumPrevu(recettes))}</td><td style="font-family:var(--mono);font-weight:800;color:var(--success)">${fmt(totRec)}</td><td colspan="5"></td></tr>`:emptyRow('Aucune recette — Cliquez sur + Recette');
-  document.getElementById('budget-body-depenses').innerHTML=depenses.length?depenses.map(l=>rowHTML(l,false)).join('')+`<tr style="background:var(--bg3)"><td colspan="3" style="font-weight:800;font-size:11px;color:var(--tx3);padding:8px 12px;text-transform:uppercase">TOTAL DÉPENSES</td><td style="font-family:var(--mono);font-weight:700">${fmt(sumPrevu(depenses))}</td><td style="font-family:var(--mono);font-weight:800;color:var(--danger)">${fmt(totDep)}</td><td colspan="5"></td></tr>`:emptyRow('Aucune dépense — Cliquez sur + Dépense');
+  document.getElementById('budget-body-recettes').innerHTML=recettes.length
+    ?recettes.map(l=>rowHTML(l,true)).join('')+`<tr style="background:var(--bg3)"><td colspan="3" style="font-weight:800;font-size:11px;color:var(--tx3);padding:8px 12px;text-transform:uppercase">TOTAL RECETTES</td><td style="font-family:var(--mono);font-weight:700">${fmt(sumPrevu(recettes))}</td><td style="font-family:var(--mono);font-weight:800;color:var(--success)">${fmt(totRecHT)}</td><td style="font-family:var(--mono);font-size:10px;color:var(--info)">${fmt(sumTVA(recettes))}</td><td style="font-family:var(--mono);font-weight:700">${fmt(totRecTTC)}</td><td colspan="3"></td></tr>`
+    :emptyRow('Aucune recette — Cliquez sur + Recette');
+  document.getElementById('budget-body-depenses').innerHTML=depenses.length
+    ?depenses.map(l=>rowHTML(l,false)).join('')+`<tr style="background:var(--bg3)"><td colspan="3" style="font-weight:800;font-size:11px;color:var(--tx3);padding:8px 12px;text-transform:uppercase">TOTAL DÉPENSES</td><td style="font-family:var(--mono);font-weight:700">${fmt(sumPrevu(depenses))}</td><td style="font-family:var(--mono);font-weight:800;color:var(--danger)">${fmt(totDepHT)}</td><td style="font-family:var(--mono);font-size:10px;color:var(--info)">${fmt(tvaDeductible)}</td><td style="font-family:var(--mono);font-weight:700">${fmt(totDepTTC)}</td><td colspan="3"></td></tr>`
+    :emptyRow('Aucune dépense — Cliquez sur + Dépense');
   updateCockpit();
 }
 
@@ -4275,7 +4370,7 @@ function toggleMatosView() {
 // ═══════════════════════════════════════════
 let editingOrgId=-1;
 
-function openModal_org(){
+function openOrgNodeModal(){
   editingOrgId=-1;
   document.getElementById('org-modal-title').textContent='Ajouter un nœud';
   ['org-nom','org-person'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
@@ -4283,8 +4378,11 @@ function openModal_org(){
   document.getElementById('org-color').value='#2563EB';
   populateOrgParentSelect();
   document.getElementById('org-parent').value='';
-  openModal('modal-org-node');
+  // Ouvrir directement sans passer par le patch openModal
+  document.getElementById('modal-org-node').classList.add('open');
 }
+
+function openModal_org(){openOrgNodeModal();}
 
 function populateOrgParentSelect(){
   const sel=document.getElementById('org-parent');
@@ -4335,6 +4433,10 @@ function editOrgNode(id){
 function renderOrg(){
   const canvas=document.getElementById('org-canvas');if(!canvas)return;
   if(!S.orgPositions)S.orgPositions={};
+  // Update node count badge
+  const countEl=document.getElementById('org-node-count');
+  const totalNodes=(S.orgNodes||[]).length+(S.staff||[]).length*(!(S.orgNodes||[]).length?1:0);
+  if(countEl)countEl.textContent=totalNodes+' nœud'+(totalNodes>1?'s':'');
 
   // ── Construire la liste de nœuds à afficher ──
   let nodes=[];
@@ -4590,18 +4692,20 @@ function orgGetNodes(){
 // ═══════════════════════════════════════════
 
 // Positions par défaut (grille 4 colonnes, gap=16, padding=24)
-const CW_DEFAULT_LAYOUT = {
-  'cw-w1':  {x:0,   y:0},
-  'cw-w2':  {x:296, y:0},
-  'cw-w3':  {x:532, y:0},
-  'cw-w4':  {x:748, y:0},
-  'cw-w5':  {x:0,   y:170},
-  'cw-w6':  {x:206, y:170},
-  'cw-w7':  {x:392, y:170},
-  'cw-w8':  {x:578, y:170},
-  'cw-w9':  {x:0,   y:330},
-  'cw-w10': {x:236, y:330},
-  'cw-w11': {x:472, y:330},
+// Grille uniforme : 4 colonnes × 256px, rangées × 156px
+const CW_GRID_COL=256, CW_GRID_ROW=156;
+const CW_DEFAULT_LAYOUT={
+  'cw-w1':  {x:CW_GRID_COL*0, y:CW_GRID_ROW*0},
+  'cw-w2':  {x:CW_GRID_COL*1, y:CW_GRID_ROW*0},
+  'cw-w3':  {x:CW_GRID_COL*2, y:CW_GRID_ROW*0},
+  'cw-w4':  {x:CW_GRID_COL*3, y:CW_GRID_ROW*0},
+  'cw-w5':  {x:CW_GRID_COL*0, y:CW_GRID_ROW*1},
+  'cw-w6':  {x:CW_GRID_COL*1, y:CW_GRID_ROW*1},
+  'cw-w7':  {x:CW_GRID_COL*2, y:CW_GRID_ROW*1},
+  'cw-w8':  {x:CW_GRID_COL*3, y:CW_GRID_ROW*1},
+  'cw-w9':  {x:CW_GRID_COL*0, y:CW_GRID_ROW*2},
+  'cw-w10': {x:CW_GRID_COL*1, y:CW_GRID_ROW*2},
+  'cw-w11': {x:CW_GRID_COL*2, y:CW_GRID_ROW*2},
 };
 
 // ── État drag cockpit global (un seul listener sur document) ──
@@ -4612,17 +4716,44 @@ function initCockpitDrag(){
   if(!S.cockpitLayout)S.cockpitLayout={};
   const canvas=document.getElementById('cockpit-drag-canvas');
   if(!canvas)return;
-  const COCKPIT_SNAP=8;
+  // Snap sur la grille uniforme
+  const SNAP_X=CW_GRID_COL, SNAP_Y=CW_GRID_ROW;
 
   function updateCanvasHeight(){
     let maxY=0;
     document.querySelectorAll('.cw-draggable').forEach(el=>{
       maxY=Math.max(maxY,(S.cockpitLayout[el.id]?.y||0)+el.offsetHeight+16);
     });
-    canvas.style.minHeight=Math.max(600,maxY)+'px';
+    canvas.style.minHeight=Math.max(500,maxY)+'px';
   }
 
-  // Positionner + mousedown par widget (pas de cumul sur document)
+  // Détecte chevauchement entre deux boîtes
+  function overlaps(ax,ay,aw,ah,bx,by,bw,bh){
+    return ax<bx+bw&&ax+aw>bx&&ay<by+bh&&ay+ah>by;
+  }
+  // Cherche si la position (nx,ny) entre en collision avec un autre widget
+  function hasCollision(dragId,nx,ny){
+    const dragEl=document.getElementById(dragId);
+    const dw=dragEl?dragEl.offsetWidth:240;
+    const dh=dragEl?dragEl.offsetHeight:120;
+    let col=false;
+    document.querySelectorAll('.cw-draggable').forEach(el=>{
+      if(el.id===dragId)return;
+      const p=S.cockpitLayout[el.id]||{x:0,y:0};
+      if(overlaps(nx,ny,dw,dh,p.x,p.y,el.offsetWidth,el.offsetHeight))col=true;
+    });
+    return col;
+  }
+  // Ghost de collision
+  let _ghost=null;
+  function showCollisionGhost(el){
+    if(!_ghost){_ghost=document.createElement('div');_ghost.className='cw-collision-ghost';canvas.appendChild(_ghost);}
+    _ghost.style.left=el.style.left;_ghost.style.top=el.style.top;
+    _ghost.style.width=el.offsetWidth+'px';_ghost.style.height=el.offsetHeight+'px';
+    _ghost.style.display='block';
+  }
+  function hideGhost(){if(_ghost)_ghost.style.display='none';}
+
   document.querySelectorAll('.cw-draggable').forEach(el=>{
     const id=el.id;
     const pos=S.cockpitLayout[id]||CW_DEFAULT_LAYOUT[id]||{x:0,y:0};
@@ -4637,7 +4768,9 @@ function initCockpitDrag(){
       _cwDragState={
         el,id,canvas,
         ox:e.clientX-el.getBoundingClientRect().left,
-        oy:e.clientY-el.getBoundingClientRect().top
+        oy:e.clientY-el.getBoundingClientRect().top,
+        startX:S.cockpitLayout[id].x,
+        startY:S.cockpitLayout[id].y
       };
       el.classList.add('dragging');
       el.style.zIndex=100;
@@ -4645,30 +4778,48 @@ function initCockpitDrag(){
     });
   });
 
-  // UN SEUL listener global (guard _cwDragInited evite la duplication)
   if(!_cwDragInited){
     _cwDragInited=true;
     document.addEventListener('mousemove',e=>{
       const {el,id,ox,oy,canvas}=_cwDragState;
       if(!el)return;
       const rect=canvas.getBoundingClientRect();
-      const x=Math.max(0,e.clientX-rect.left-ox);
-      const y=Math.max(0,e.clientY-rect.top-oy);
-      el.style.left=x+'px';
-      el.style.top=y+'px';
-      S.cockpitLayout[id]={x,y};
+      const rawX=Math.max(0,e.clientX-rect.left-ox);
+      const rawY=Math.max(0,e.clientY-rect.top-oy);
+      // Snap sur grille
+      const snapX=Math.round(rawX/SNAP_X)*SNAP_X;
+      const snapY=Math.round(rawY/SNAP_Y)*SNAP_Y;
+      el.style.left=snapX+'px';
+      el.style.top=snapY+'px';
+      // Feedback collision
+      if(hasCollision(id,snapX,snapY)){
+        el.style.opacity='.6';
+        showCollisionGhost(el);
+      } else {
+        el.style.opacity='1';
+        hideGhost();
+        S.cockpitLayout[id]={x:snapX,y:snapY};
+      }
     });
     document.addEventListener('mouseup',()=>{
-      const {el,id}=_cwDragState;
+      const {el,id,startX,startY}=_cwDragState;
       if(!el)return;
       el.classList.remove('dragging');
       el.style.zIndex='';
-      const snapX=Math.round(parseFloat(el.style.left)/COCKPIT_SNAP)*COCKPIT_SNAP;
-      const snapY=Math.round(parseFloat(el.style.top)/COCKPIT_SNAP)*COCKPIT_SNAP;
-      el.style.left=snapX+'px';
-      el.style.top=snapY+'px';
-      S.cockpitLayout[id]={x:snapX,y:snapY};
-      _cwDragState={el:null,id:null,ox:0,oy:0,canvas:null};
+      el.style.opacity='1';
+      hideGhost();
+      const finalX=parseFloat(el.style.left);
+      const finalY=parseFloat(el.style.top);
+      // Si collision finale, remettre à la position de départ
+      if(hasCollision(id,finalX,finalY)){
+        el.style.left=(startX||0)+'px';
+        el.style.top=(startY||0)+'px';
+        S.cockpitLayout[id]={x:startX||0,y:startY||0};
+        toast('Position occupée — replacé à l\'origine','i');
+      } else {
+        S.cockpitLayout[id]={x:finalX,y:finalY};
+      }
+      _cwDragState={el:null,id:null,ox:0,oy:0,canvas:null,startX:0,startY:0};
       updateCanvasHeight();
       saveStorage();
     });
@@ -4678,13 +4829,14 @@ function initCockpitDrag(){
 
 function resetCockpitLayout(){
   if(!confirm('Réinitialiser la disposition du Cockpit ?'))return;
-  S.cockpitLayout={...CW_DEFAULT_LAYOUT};
+  S.cockpitLayout={};
+  Object.keys(CW_DEFAULT_LAYOUT).forEach(k=>S.cockpitLayout[k]={...CW_DEFAULT_LAYOUT[k]});
   document.querySelectorAll('.cw-draggable').forEach(el=>{
     const pos=CW_DEFAULT_LAYOUT[el.id]||{x:0,y:0};
     el.style.left=pos.x+'px';
     el.style.top=pos.y+'px';
   });
-  saveStorage();toast('Cockpit réinitialisé','i');
+  saveStorage();toast('Cockpit réinitialisé en grille','i');
 }
 
 function resetOrgPositions(){
@@ -4778,6 +4930,22 @@ function deletePlanItem(idx){
   S.planning.splice(idx,1);renderPlanning();saveStorage();toast('Supprimé','i');
 }
 
+function autoUpdatePlanningStatuts(){
+  if(!S.planning||!S.planning.length){toast('Aucun élément à mettre à jour','i');return;}
+  const now=new Date();
+  let updated=0;
+  S.planning.forEach(it=>{
+    if(it.statut==='done')return; // Ne pas toucher les terminés
+    if(!it.date)return;
+    const dt=new Date(it.date+'T'+(it.heure||'23:59'));
+    if(dt<now&&it.statut!=='retard'){
+      it.statut='retard';updated++;
+    }
+  });
+  renderPlanning();saveStorage();
+  toast(updated>0?updated+' statut(s) mis en retard automatiquement':'Tous les statuts sont à jour','s');
+}
+
 function togglePlanDone(idx){
   const it=(S.planning||[])[idx];if(!it)return;
   it.statut=it.statut==='done'?'todo':'done';
@@ -4803,24 +4971,40 @@ function renderPlanning(){
   const items=S.planning;
   // Sort by date
   const sorted=[...items].sort((a,b)=>(a.date+a.heure).localeCompare(b.date+b.heure));
+  const now=new Date();
+
+  // Auto-flag retard (silencieux, sans save)
+  items.forEach(it=>{
+    if(it.statut==='done')return;
+    if(!it.date)return;
+    const dt=new Date(it.date+'T'+(it.heure||'23:59'));
+    if(dt<now&&it.statut==='todo')it._overdue=true;
+    else it._overdue=false;
+  });
 
   // KPIs
   const kpiEl=document.getElementById('plan-kpis');
   if(kpiEl){
     const total=items.length;
     const done=items.filter(i=>i.statut==='done').length;
-    const retard=items.filter(i=>i.statut==='retard').length;
+    const retard=items.filter(i=>i.statut==='retard'||i._overdue).length;
     const livs=items.filter(i=>i.type==='livraison');
     const nextLiv=livs.filter(i=>i.statut!=='done').sort((a,b)=>(a.date+a.heure).localeCompare(b.date+b.heure))[0];
     kpiEl.innerHTML=`
       <div class="cw"><div class="cw-label">📋 Tâches total</div><div class="cw-big" style="font-family:'JetBrains Mono',Arial,monospace">${total}</div><div class="prog" style="margin-top:8px"><div class="prog-fill" style="width:${total?Math.round(done/total*100):0}%;background:var(--success)"></div></div><div style="font-size:10px;color:var(--tx3);margin-top:4px">${done}/${total} terminées</div></div>
       <div class="cw"><div class="cw-label">🚚 Livraisons</div><div class="cw-big" style="font-family:'JetBrains Mono',Arial,monospace;color:var(--warning)">${livs.length}</div><div style="font-size:10px;color:var(--tx3);margin-top:4px">${livs.filter(i=>i.statut==='done').length} reçues</div></div>
-      <div class="cw ${retard>0?'':''}"><div class="cw-label">⚠️ En retard</div><div class="cw-big" style="font-family:'JetBrains Mono',Arial,monospace;color:${retard>0?'var(--danger)':'var(--success)'}">${retard}</div><div style="font-size:10px;color:var(--tx3);margin-top:4px">${retard>0?'Attention!':'Tout est ok'}</div></div>
+      <div class="cw"><div class="cw-label">⚠️ En retard</div><div class="cw-big" style="font-family:'JetBrains Mono',Arial,monospace;color:${retard>0?'var(--danger)':'var(--success)'}">${retard}</div><div style="font-size:10px;color:var(--tx3);margin-top:4px">${retard>0?'Attention!':'Tout est ok'}</div></div>
       <div class="cw"><div class="cw-label">📦 Prochaine livraison</div><div style="font-size:13px;font-weight:700;color:var(--tx);margin-top:4px;line-height:1.3">${nextLiv?nextLiv.presta||nextLiv.titre:'—'}</div><div style="font-size:11px;color:var(--warning);margin-top:3px">${nextLiv?fmtPlanDate(nextLiv.date,nextLiv.heure):'Aucune prévue'}</div></div>`;
   }
 
   const taches=sorted.filter(i=>i.type==='tache');
   const livraisons=sorted.filter(i=>i.type==='livraison');
+
+  // Helper badge statut avec couleur retard automatique
+  const statutBadge=(it)=>{
+    if(it._overdue&&it.statut!=='done')return'<span class="badge b-danger" style="animation:blink 1.4s infinite">⚠ En retard</span>';
+    return planStatutBadge(it.statut);
+  };
 
   // ── Timeline rétro-planning ──
   const retroEl=document.getElementById('plan-retro-list');
@@ -4828,20 +5012,22 @@ function renderPlanning(){
     if(!taches.length){
       retroEl.innerHTML='<div style="font-size:12px;color:var(--tx3);font-style:italic;padding:12px 0">Aucune tâche planifiée</div>';
     } else {
-      retroEl.innerHTML=taches.map((it,i)=>{
+      retroEl.innerHTML=taches.map((it)=>{
         const idx=items.indexOf(it);
         const isDone=it.statut==='done';
-        return`<div class="plan-item tache ${isDone?'done':''}">
+        const isOverdue=it._overdue&&!isDone;
+        const borderColor=isOverdue?'var(--danger)':isDone?'var(--success)':'var(--accent)';
+        return`<div class="plan-item tache ${isDone?'done':''}" style="border-left-color:${borderColor}">
           <div class="plan-dot tache ${isDone?'done':''}"></div>
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
             <div style="flex:1">
-              <div class="plan-date">${fmtPlanDate(it.date,it.heure)}</div>
+              <div class="plan-date" style="color:${isOverdue?'var(--danger)':'var(--accent)'}">${fmtPlanDate(it.date,it.heure)}</div>
               <div style="font-size:13px;font-weight:700;margin-top:3px;${isDone?'text-decoration:line-through;opacity:.6':''}">${it.titre}</div>
               ${it.resp?`<div class="plan-who"><i class="fas fa-user" style="font-size:9px"></i> ${it.resp}</div>`:''}
               ${it.notes?`<div style="font-size:11px;color:var(--tx3);margin-top:4px;font-style:italic">${it.notes}</div>`:''}
             </div>
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
-              ${planStatutBadge(it.statut)}
+              ${statutBadge(it)}
               <div style="display:flex;gap:3px;margin-top:4px">
                 <button onclick="togglePlanDone(${idx})" class="btn btn-ghost btn-sm btn-icon" title="${isDone?'Rouvrir':'Terminer'}"><i class="fas ${isDone?'fa-rotate-left':'fa-check'}" style="font-size:9px;color:var(--success)"></i></button>
                 <button onclick="editPlanItem(${idx})" class="btn btn-ghost btn-sm btn-icon" title="Modifier"><i class="fas fa-pen" style="font-size:9px"></i></button>
@@ -4863,15 +5049,16 @@ function renderPlanning(){
       livCol.innerHTML=livraisons.map((it)=>{
         const idx=items.indexOf(it);
         const isDone=it.statut==='done';
-        return`<div class="livraison-card ${isDone?'done':''}" style="margin-bottom:12px;${isDone?'opacity:.5':''}">
+        const isOverdue=it._overdue&&!isDone;
+        return`<div class="livraison-card ${isDone?'done':''}" style="margin-bottom:12px;${isDone?'opacity:.5':''}${isOverdue?';border-top-color:var(--danger)':''}">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
             <div style="flex:1">
               <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
                 <span style="font-size:16px">🚚</span>
                 <span style="font-size:13px;font-weight:800;color:var(--tx)">${it.presta||'—'}</span>
-                ${planStatutBadge(it.statut)}
+                ${statutBadge(it)}
               </div>
-              <div class="plan-date">${fmtPlanDate(it.date,it.heure)}</div>
+              <div class="plan-date" style="color:${isOverdue?'var(--danger)':'var(--warning)'}">${fmtPlanDate(it.date,it.heure)}</div>
               ${it.quoi?`<div style="font-size:12px;color:var(--tx2);margin-top:5px;line-height:1.4"><i class="fas fa-box" style="font-size:9px;color:var(--warning)"></i> ${it.quoi}</div>`:''}
               ${it.lieu?`<div style="font-size:11px;color:var(--tx3);margin-top:3px"><i class="fas fa-location-dot" style="font-size:9px"></i> ${it.lieu}</div>`:''}
               ${it.contact?`<div style="font-size:11px;color:var(--tx3);margin-top:2px"><i class="fas fa-phone" style="font-size:9px"></i> ${it.contact}</div>`:''}
@@ -4893,13 +5080,14 @@ function renderPlanning(){
   if(livTbl){
     livTbl.innerHTML=livraisons.length?livraisons.map((it)=>{
       const idx=items.indexOf(it);
-      return`<tr class="${it.statut==='done'?'done-row':''}">
-        <td style="font-weight:700">${it.presta||'—'}</td>
-        <td style="font-family:'JetBrains Mono',Arial,monospace;font-size:11px">${fmtPlanDate(it.date,it.heure)}</td>
+      const isOverdue=it._overdue&&it.statut!=='done';
+      return`<tr class="${it.statut==='done'?'done-row':''}${isOverdue?' ' :''}">
+        <td style="font-weight:700;color:${isOverdue?'var(--danger)':'var(--tx)'}">${it.presta||'—'}</td>
+        <td style="font-family:'JetBrains Mono',Arial,monospace;font-size:11px;color:${isOverdue?'var(--danger)':''}">${fmtPlanDate(it.date,it.heure)}</td>
         <td>${it.quoi||'—'}</td>
         <td>${it.lieu||'—'}</td>
         <td>${it.contact||'—'}</td>
-        <td>${planStatutBadge(it.statut)}</td>
+        <td>${statutBadge(it)}</td>
         <td><div style="display:flex;gap:3px">
           <button onclick="togglePlanDone(${idx})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-check" style="font-size:9px;color:var(--success)"></i></button>
           <button onclick="editPlanItem(${idx})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-pen" style="font-size:9px"></i></button>
@@ -4915,14 +5103,16 @@ function renderPlanning(){
     allTbl.innerHTML=sorted.length?sorted.map((it)=>{
       const idx=items.indexOf(it);
       const typeIcon=it.type==='livraison'?'🚚':'📋';
-      return`<tr>
+      const isOverdue=it._overdue&&it.statut!=='done';
+      return`<tr style="${isOverdue?'background:var(--danger-bg)':''}">
         <td>${typeIcon} <span style="font-size:10px;color:var(--tx3)">${it.type==='livraison'?'Livraison':'Tâche'}</span></td>
-        <td style="font-family:'JetBrains Mono',Arial,monospace;font-size:11px">${fmtPlanDate(it.date,it.heure)}</td>
+        <td style="font-family:'JetBrains Mono',Arial,monospace;font-size:11px;color:${isOverdue?'var(--danger)':''}">${fmtPlanDate(it.date,it.heure)}</td>
         <td style="font-weight:700">${it.titre}</td>
         <td>${it.resp||'—'}</td>
         <td>${it.presta||'—'}</td>
-        <td>${planStatutBadge(it.statut)}</td>
+        <td>${statutBadge(it)}</td>
         <td><div style="display:flex;gap:3px">
+          <button onclick="togglePlanDone(${idx})" class="btn btn-ghost btn-sm btn-icon" title="Terminer/Rouvrir"><i class="fas fa-check" style="font-size:9px;color:var(--success)"></i></button>
           <button onclick="editPlanItem(${idx})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-pen" style="font-size:9px"></i></button>
           <button onclick="deletePlanItem(${idx})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-trash" style="font-size:9px;color:var(--danger)"></i></button>
         </div></td>
@@ -4931,13 +5121,13 @@ function renderPlanning(){
   }
 
   // Sync vues
-  setPlanningView(S.planningView||'timeline', document.querySelector('#planning-view-sel .phase-btn'));
+  setPlanningView(S.planningView||'timeline', document.querySelector('#planning-view-sel .phase-btn.active')||document.querySelector('#planning-view-sel .phase-btn'));
 }
 
-// Patch openModal pour organigramme + planning
+// Patch openModal pour planning (organigramme utilise openOrgNodeModal directement)
 const _origOpenModal=window.openModal;
 window.openModal=function(id){
-  if(id==='modal-org-node'){openModal_org();return;}
+  if(id==='modal-org-node'){openOrgNodeModal();return;}
   if(id==='modal-add-plan'){openAddPlanModal();}
   if(typeof _origOpenModal==='function')_origOpenModal(id);
   else{document.getElementById(id).classList.add('open');populateCrewSelects();if(id==='modal-canaux-config')openCanauxConfig();}
