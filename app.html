@@ -7,7 +7,7 @@
 <link rel="icon" href="assets/favicon/favicon_aintercom-live.png" type="image/png">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,900&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════
@@ -21,7 +21,7 @@
   --success:#16A34A; --success-bg:rgba(22,163,74,.08);
   --warning:#D97706; --warning-bg:rgba(217,119,6,.08);
   --info:#0891B2;
-  --font:'DM Sans',sans-serif; --mono:'DM Mono',monospace;
+  --font:'DM Sans',sans-serif; --mono:'JetBrains Mono',monospace;
   --r:10px; --r-sm:6px; --r-lg:16px;
   --tr:.15s ease;
 }
@@ -42,23 +42,24 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 /* ── LAYOUT ── */
 #page-home{display:none}
 #app{display:flex;flex-direction:column;height:100vh}
-#hdr{height:52px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;padding:0 16px;z-index:100;flex-shrink:0}
+#hdr{height:64px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;padding:0 20px;z-index:100;flex-shrink:0;box-shadow:0 1px 0 var(--border)}
 #body{display:flex;flex:1;overflow:hidden}
-#nav{width:200px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:10px 6px;gap:1px;overflow-y:auto;flex-shrink:0}
+#nav{width:210px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:10px 6px;gap:1px;overflow-y:auto;flex-shrink:0}
 #main{flex:1;overflow-y:auto;background:var(--bg)}
-#ftr{height:30px;background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex-shrink:0}
+#ftr{height:32px;background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex-shrink:0}
 
 /* ── HEADER ── */
-.hdr-logo{font-size:17px;font-weight:900;letter-spacing:-.5px;color:var(--accent);cursor:pointer;white-space:nowrap}
+.hdr-logo{font-size:20px;font-weight:900;letter-spacing:-1px;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:8px}
 .hdr-logo span{color:var(--tx)}
-.hdr-sep{width:1px;height:28px;background:var(--border);flex-shrink:0}
-.hdr-clock{font-family:var(--mono);font-size:24px;font-weight:700;letter-spacing:-1px;color:var(--tx);line-height:1}
-.hdr-date{font-size:9px;color:var(--accent);font-weight:700;letter-spacing:.1em;text-transform:uppercase}
-.hdr-cue{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 14px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;max-width:240px;overflow:hidden}
-.hdr-cue-dot{width:7px;height:7px;border-radius:50%;background:var(--success);animation:blink 1.4s infinite}
+.hdr-logo::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);flex-shrink:0}
+.hdr-sep{width:1px;height:32px;background:var(--border);flex-shrink:0}
+.hdr-clock{font-family:var(--mono);font-size:26px;font-weight:700;letter-spacing:-1px;color:var(--tx);line-height:1}
+.hdr-date{font-size:9px;color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.hdr-cue{background:linear-gradient(135deg,rgba(37,99,235,.15),rgba(37,99,235,.05));border:1px solid rgba(37,99,235,.3);border-radius:20px;padding:6px 16px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:7px;max-width:260px;overflow:hidden}
+.hdr-cue-dot{width:8px;height:8px;border-radius:50%;background:var(--success);animation:blink 1.4s infinite;box-shadow:0 0 6px var(--success);flex-shrink:0}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 .hdr-spacer{flex:1}
-.hdr-time-container{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.hdr-time-container{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:4px 12px}
 
 /* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:var(--r-sm);font-size:11px;font-weight:700;letter-spacing:.02em;border:none;cursor:pointer;transition:var(--tr);white-space:nowrap;font-family:var(--font)}
@@ -206,24 +207,28 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 .mc-select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;font-family:var(--font);font-size:13px;font-weight:600;color:var(--tx);cursor:pointer;transition:var(--tr)}
 .mc-select:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-glow)}
 /* ── POSTE CARD V2 ── */
-.poste-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px;display:flex;align-items:center;gap:14px;transition:var(--tr);position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05)}
-.poste-card:hover{border-color:var(--border2);box-shadow:0 4px 16px rgba(0,0,0,.1);transform:translateY(-2px)}
-.poste-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--pc,var(--accent));opacity:.8}
-.poste-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;border:2px solid var(--bg2);box-shadow:0 0 0 2px var(--border)}
-.poste-nom{font-size:16px;font-weight:800;flex:1;color:var(--tx);letter-spacing:-.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
-.poste-count{font-size:12px;font-weight:700;color:var(--tx3);background:var(--bg3);padding:3px 8px;border-radius:12px;border:1px solid var(--border);flex-shrink:0}
-.poste-actions{display:flex;gap:4px;opacity:.6;transition:var(--tr);flex-shrink:0}
+.poste-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;display:flex;align-items:center;gap:14px;transition:var(--tr);position:relative;overflow:hidden}
+.poste-card:hover{border-color:var(--border2);box-shadow:0 4px 20px rgba(0,0,0,.12);transform:translateY(-1px)}
+.poste-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--pc,var(--accent))}
+.poste-icon-wrap{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.poste-nom{font-size:15px;font-weight:800;flex:1;color:var(--tx);letter-spacing:-.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.poste-cat-lbl{font-size:10px;color:var(--tx3);font-weight:600;margin-top:2px}
+.poste-count{font-size:11px;font-weight:800;color:var(--tx2);background:var(--bg3);padding:4px 10px;border-radius:20px;border:1px solid var(--border);flex-shrink:0;white-space:nowrap}
+.poste-actions{display:flex;gap:4px;opacity:0;transition:var(--tr);flex-shrink:0}
 .poste-card:hover .poste-actions{opacity:1}
 /* ── SORT SELECT ── */
 #postes-sort{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 10px;font-size:11px;font-weight:600;color:var(--tx);cursor:pointer;transition:var(--tr);outline:none}
 #postes-sort:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
 /* ── STAFF CARD ── */
-.staff-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;transition:var(--tr)}
-.staff-card:hover{border-color:var(--border2)}
-.staff-avatar{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
-.staff-name{font-size:16px;font-weight:800;color:var(--tx);letter-spacing:-.2px}
-.staff-poste{font-size:12px;font-weight:600;margin-top:3px}
-.staff-matos{font-size:11px;color:var(--tx3);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.staff-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:12px;transition:var(--tr);position:relative}
+.staff-card:hover{border-color:var(--border2);box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.staff-avatar{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
+.staff-info{flex:1;min-width:0}
+.staff-name{font-size:15px;font-weight:800;color:var(--tx);letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.staff-poste{font-size:11px;font-weight:600;margin-top:2px}
+.staff-matos{font-size:10px;color:var(--tx3);margin-top:6px;padding-top:6px;border-top:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.staff-actions{display:flex;flex-direction:column;gap:3px;flex-shrink:0;opacity:0;transition:var(--tr)}
+.staff-card:hover .staff-actions{opacity:1}
 /* ── MATOS STATS ── */
 .matos-stat{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;text-align:center}
 .matos-stat-num{font-family:var(--mono);font-size:28px;font-weight:700;line-height:1}
@@ -278,18 +283,21 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  #hdr { height: 52px; padding: 0 12px; gap: 8px; }
-  .hdr-clock { font-size: 20px; }
+  #hdr { height: 56px; padding: 0 12px; gap: 8px; }
+  .hdr-clock { font-size: 18px; }
   .hdr-date { font-size: 8px; }
-  .hdr-cue { max-width: 130px; font-size: 11px; padding: 3px 9px; }
-    .btn-sos, .btn-next { padding: 5px 11px; font-size: 10px; }
-  .btn-ghost.btn-icon { padding: 4px 6px; }
+  .hdr-cue { max-width: 110px; font-size: 10px; padding: 4px 8px; }
+  .hdr-time-container { padding: 3px 8px; }
+  .hdr-logo { font-size: 16px; }
+  .hdr-logo::before { display: none; }
+  .btn-sos, .btn-next { padding: 5px 11px; font-size: 10px; }
+  .btn-ghost.btn-icon { padding: 5px 8px; }
+  #nav-toggle { display:flex!important; width:40px; height:40px; font-size:18px; border-radius:var(--r-sm); }
   #nav { position:fixed;left:-240px;top:0;bottom:0;width:240px;z-index:500;transition:left .25s ease;box-shadow:none }
   #nav.open { left:0; box-shadow:6px 0 30px rgba(0,0,0,.5) }
   #nav-overlay { display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:499 }
   #nav-overlay.open { display:block }
-  #nav-toggle { display:flex!important }
-  .nav-btn { padding: 9px 10px; font-size: 13px; }
+  .nav-btn { padding: 11px 12px; font-size: 14px; }
   .sec-title { font-size: 18px; }
   .sec-sub { font-size: 10px; }
   .g2, .g3 { grid-template-columns: 1fr; gap: 10px; }
@@ -448,7 +456,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 
   <!-- HEADER -->
   <header id="hdr">
-    <button id="nav-toggle" onclick="toggleNav()" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 9px;cursor:pointer;color:var(--tx);font-size:14px;align-items:center;justify-content:center"><i class="fas fa-bars"></i></button>
+    <button id="nav-toggle" onclick="toggleNav()" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);width:40px;height:40px;cursor:pointer;color:var(--tx);font-size:18px;align-items:center;justify-content:center;flex-shrink:0"><i class="fas fa-bars"></i></button>
     <div class="hdr-logo" onclick="goHome()">AINTERCOM <span>PRO</span></div>
     <div class="hdr-sep"></div>
     <div class="hdr-time-container">
@@ -494,6 +502,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
       <div class="nav-section">Navigation</div>
       <button class="nav-btn active" draggable="true" ondragstart="navDragStart(event)" ondragover="navDragOver(event)" ondrop="navDrop(event)" ondragend="navDragEnd(event)" onclick="switchTab('cockpit',this)"><i class="fas fa-gauge-high"></i>Cockpit</button>
       <button class="nav-btn" draggable="true" ondragstart="navDragStart(event)" ondragover="navDragOver(event)" ondrop="navDrop(event)" ondragend="navDragEnd(event)" onclick="switchTab('conducteur',this)"><i class="fas fa-film"></i>Conducteur</button>
+      <button class="nav-btn" draggable="true" ondragstart="navDragStart(event)" ondragover="navDragOver(event)" ondrop="navDrop(event)" ondragend="navDragEnd(event)" onclick="switchTab('org',this)"><i class="fas fa-sitemap"></i>Organigramme</button>
       <button class="nav-btn" draggable="true" ondragstart="navDragStart(event)" ondragover="navDragOver(event)" ondrop="navDrop(event)" ondragend="navDragEnd(event)" onclick="switchTab('postes',this)"><i class="fas fa-tags"></i>Postes</button>
       <button class="nav-btn" draggable="true" ondragstart="navDragStart(event)" ondragover="navDragOver(event)" ondrop="navDrop(event)" ondragend="navDragEnd(event)" onclick="switchTab('staff',this)"><i class="fas fa-users"></i>Staff</button>
       <button class="nav-btn" draggable="true" ondragstart="navDragStart(event)" ondragover="navDragOver(event)" ondrop="navDrop(event)" ondragend="navDragEnd(event)" onclick="switchTab('matos',this)"><i class="fas fa-walkie-talkie"></i>Matos</button>
@@ -559,10 +568,11 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
               <button class="btn btn-ghost btn-sm" onclick="gtReset()" title="Reset"><i class="fas fa-rotate-left"></i></button>
             </div>
           </div>
-          <div class="cw" style="background:var(--bg3);text-align:center">
-            <div class="cw-label">🕐 Heure</div>
-            <div class="cw-big" id="cockpit-clock" style="color:var(--accent);font-size:32px">00:00:00</div>
-            <div style="font-size:10px;color:var(--tx2);margin-top:4px" id="cockpit-date"></div>
+          <div class="cw" style="background:linear-gradient(135deg,var(--bg3),var(--bg4));text-align:center;border-color:var(--border2);position:relative;overflow:hidden">
+            <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(37,99,235,.08),transparent 70%);pointer-events:none"></div>
+            <div class="cw-label" style="letter-spacing:.2em;color:var(--tx3)">🕐 HEURE</div>
+            <div id="cockpit-clock" style="font-family:var(--mono);font-size:38px;font-weight:700;color:var(--tx);letter-spacing:-2px;line-height:1;margin:4px 0">00:00:00</div>
+            <div style="font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-top:2px" id="cockpit-date"></div>
           </div>
         </div>
 
@@ -615,8 +625,8 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
             <textarea id="quick-note" rows="3" placeholder="Mémo permanent..." style="font-size:12px;resize:none"></textarea>
           </div>
           <div class="cw">
-            <div class="cw-label" style="display:flex;justify-content:space-between">📡 Matos assignés<button class="btn btn-ghost btn-sm" style="margin-top:-2px" onclick="switchTab('matos',navBtnByTab('matos'))"><i class="fas fa-arrow-right" style="font-size:9px"></i></button></div>
-            <div id="cw-matos-list" style="display:flex;flex-direction:column;gap:4px;margin-top:6px;max-height:100px;overflow-y:auto"></div>
+            <div class="cw-label" style="display:flex;justify-content:space-between;align-items:center">📡 MATOS ASSIGNÉS<button class="btn btn-ghost btn-sm" style="margin-top:-2px;padding:2px 6px" onclick="switchTab('matos',navBtnByTab('matos'))"><i class="fas fa-arrow-right" style="font-size:9px"></i></button></div>
+            <div id="cw-matos-list" style="display:flex;flex-direction:column;gap:5px;margin-top:8px;max-height:120px;overflow-y:auto"></div>
           </div>
         </div>
       </section>
@@ -672,6 +682,18 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
         </div>
       </section>
 
+      <!-- ══ ORGANIGRAMME ══ -->
+      <section class="tab" id="tab-org">
+        <div class="sec-hdr">
+          <div><div class="sec-title">🗂️ Organigramme</div><div class="sec-sub">Structure hiérarchique de l'équipe · Cliquez sur un nœud pour éditer</div></div>
+          <div class="sec-actions">
+            <button class="btn btn-primary btn-sm" onclick="openModal('modal-org-node')"><i class="fas fa-plus"></i> Ajouter</button>
+            <button class="btn btn-ghost btn-sm" onclick="renderOrg()"><i class="fas fa-rotate"></i> Rafraîchir</button>
+          </div>
+        </div>
+        <div id="org-canvas" style="overflow-x:auto;overflow-y:auto;min-height:300px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:24px"></div>
+      </section>
+
       <!-- ══ POSTES ══ -->
       <section class="tab" id="tab-postes">
         <div class="sec-hdr">
@@ -686,7 +708,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
             <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-poste')"><i class="fas fa-plus"></i> Nouveau poste</button>
           </div>
         </div>
-        <div id="postes-grid" class="g-auto"></div>
+        <div id="postes-grid" style="display:flex;flex-direction:column;gap:6px"></div>
       </section>
 
       <!-- ══ STAFF ══ -->
@@ -701,7 +723,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
             <button class="btn btn-primary btn-sm" onclick="openAddStaffModal()"><i class="fas fa-plus"></i> Ajouter</button>
           </div>
         </div>
-        <div id="staff-grid" class="g-auto"></div>
+        <div id="staff-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px"></div>
       </section>
 
       <!-- ══ MATOS ══ -->
@@ -900,7 +922,17 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
 
           <!-- Elec -->
           <div>
-            <div style="font-size:14px;font-weight:800;margin-bottom:10px">⚡ Calculateur Électrique</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <div style="font-size:14px;font-weight:800">⚡ Calculateur Électrique</div>
+              <div style="display:flex;gap:6px;align-items:center">
+                <select id="elec-zone-sel" style="width:130px;font-size:11px" onchange="switchElecZone()">
+                  <option value="0">Zone A — Scène</option>
+                  <option value="1">Zone B — Salle</option>
+                  <option value="2">Zone C — Extérieur</option>
+                </select>
+                <button class="btn btn-ghost btn-sm btn-icon" onclick="resetElec()" title="Reset circuit actif"><i class="fas fa-rotate-left" style="font-size:10px"></i></button>
+              </div>
+            </div>
             <div class="card" style="margin-bottom:10px">
               <div class="g3" style="text-align:center;gap:8px">
                 <div><div class="cw-label">Total</div><div style="font-family:var(--mono);font-size:18px;font-weight:700" id="elec-total">0 W</div></div>
@@ -908,7 +940,7 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
                 <div><div class="cw-label">Tri 400V</div><div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--info)" id="elec-tri">0.0 A</div></div>
               </div>
               <div class="prog" style="margin-top:10px"><div class="prog-fill" id="elec-bar" style="width:0%;background:var(--success)"></div></div>
-              <div style="font-size:10px;color:var(--tx3);margin-top:6px;font-style:italic" id="elec-tip">Une prise standard = 16A max = 3 680W. Ne jamais cumuler sono + lumière + machines sur le même circuit.</div>
+              <div style="font-size:10px;color:var(--tx3);margin-top:6px;font-style:italic" id="elec-tip"></div>
             </div>
             <div id="elec-devices" style="display:flex;flex-direction:column;gap:5px;margin-bottom:8px"></div>
             <div style="display:flex;gap:6px;margin-bottom:6px">
@@ -917,10 +949,21 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
               <button class="btn btn-warning btn-sm" onclick="addElecDev()"><i class="fas fa-plus"></i></button>
             </div>
             <div style="display:flex;gap:5px;flex-wrap:wrap">
-              <button class="btn btn-ghost btn-sm" onclick="addPower(1000)">+1000W Lumière</button>
+              <button class="btn btn-ghost btn-sm" onclick="addPower(1000)">+1kW Lumière</button>
               <button class="btn btn-ghost btn-sm" onclick="addPower(500)">+500W Audio</button>
-              <button class="btn btn-ghost btn-sm" onclick="addPower(3500)">+3500W Chauffage</button>
-              <button class="btn btn-ghost btn-sm" onclick="resetElec()"><i class="fas fa-rotate-left"></i> Reset</button>
+              <button class="btn btn-ghost btn-sm" onclick="addPower(3500)">+3.5kW Chauffage</button>
+            </div>
+            <!-- Section éducative -->
+            <div style="margin-top:14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px">
+              <div style="font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">📚 Aide-mémoire électrique</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px;color:var(--tx2)">
+                <div><span style="color:var(--tx);font-weight:700">P = U × I</span> — Puissance = Tension × Intensité</div>
+                <div><span style="color:var(--tx);font-weight:700">1 prise 16A</span> = max 3 680 W à 230V</div>
+                <div><span style="color:var(--tx);font-weight:700">Disjoncteur 32A</span> = max 7 360 W mono</div>
+                <div><span style="color:var(--tx);font-weight:700">Triphasé 400V</span> = ×√3 ≈ 1,73× plus de puissance</div>
+                <div><span style="color:var(--warning);font-weight:700">⚠ Ne jamais</span> cumuler sono + lumière + machines sur même circuit</div>
+                <div><span style="color:var(--success);font-weight:700">Règle des 80%</span> — Ne pas dépasser 80% de la capacité nominale</div>
+              </div>
             </div>
           </div>
         </div>
@@ -1013,12 +1056,31 @@ label{font-size:10px;font-weight:700;color:var(--tx2);text-transform:uppercase;l
     <div style="font-size:10px;color:var(--tx3)">AINTERCOM PRO · <span id="ftr-save">Jamais sauvegardé</span></div>
     <div style="display:flex;gap:6px;align-items:center">
       <span id="ftr-phase" style="font-size:10px;font-weight:700;color:var(--tx3)"></span>
+      <button class="btn btn-ghost btn-sm" onclick="openModal('modal-feedback')" style="padding:2px 8px;font-size:9px;color:var(--tx3)"><i class="fas fa-lightbulb" style="font-size:9px"></i> Suggestion</button>
       <button class="btn btn-ghost btn-sm" onclick="saveManual()" style="padding:2px 8px;font-size:9px"><i class="fas fa-floppy-disk" style="font-size:9px"></i> Sauver</button>
     </div>
   </footer>
 </div>
 
 <!-- ═══════════════════════════════ MODALS ═══════════════════════════════ -->
+
+<!-- ORGANIGRAMME NODE -->
+<div class="overlay" id="modal-org-node">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title" id="org-modal-title">Ajouter un nœud</div><button class="modal-close" onclick="closeModal('modal-org-node')">✕</button></div>
+    <div class="fg"><label>Nom / Rôle</label><input id="org-nom" placeholder="Ex: Directeur Technique"></div>
+    <div class="fg"><label>Prénom Nom de la personne</label><input id="org-person" placeholder="Ex: Jean Dupont"></div>
+    <div class="fg-row">
+      <div class="fg"><label>Niveau hiérarchique</label><select id="org-level"><option value="0">Direction (niveau 1)</option><option value="1">Encadrement (niveau 2)</option><option value="2">Terrain (niveau 3)</option><option value="3">Support (niveau 4)</option></select></div>
+      <div class="fg"><label>Couleur</label><input type="color" id="org-color" value="#2563EB" style="height:36px;padding:2px 4px;cursor:pointer"></div>
+    </div>
+    <div class="fg"><label>Parent (supérieur hiérarchique)</label><select id="org-parent"><option value="">— Aucun (racine) —</option></select></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-org-node')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveOrgNode()"><i class="fas fa-check"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
 
 <!-- NOUVEL ÉVÉNEMENT -->
 <div class="overlay" id="modal-new-event">
@@ -1445,6 +1507,8 @@ let S = {
   globalTimer: {running:false, elapsed:0},
   elec: 0,
   elecDevices: [],
+  elecZone: 0,
+  elecZones: [{w:0,devices:[]},{w:0,devices:[]},{w:0,devices:[]}],
   sequences: [],
   crew: [],
   motorola: Array.from({length:12},(_,i)=>({id:i+1,canal:i+1,assigneA:'',zone:'',bat:100,statut:'Disponible',notes:''})),
@@ -1484,9 +1548,15 @@ window.onload = () => {
 // ═══════════════════════════════════════════
 // HORLOGE
 // ═══════════════════════════════════════════
+let _clockStarted=false;
 function startClock(){
+  if(_clockStarted)return;
+  _clockStarted=true;
+  let _lastTick=Date.now();
   function tick(){
     const now=new Date();
+    const delta=Date.now()-_lastTick;
+    _lastTick=Date.now();
     const hms=now.toLocaleTimeString('fr-FR');
     const hm=now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
     const dateShort=now.toLocaleDateString('fr-FR',{weekday:'short',day:'2-digit',month:'short'}).toUpperCase();
@@ -1496,23 +1566,21 @@ function startClock(){
     const hdrDate=document.getElementById('hdr-date');if(hdrDate)hdrDate.textContent=dateShort;
     const cpClock=document.getElementById('cockpit-clock');if(cpClock)cpClock.textContent=hms;
     const cpDate=document.getElementById('cockpit-date');if(cpDate)cpDate.textContent=dateLong;
-    // Timer global (show elapsed depuis gtToggle)
+    // Timer global show
     if(S.globalTimer.running){S.globalTimer.elapsed++;const gt=document.getElementById('cw-global-timer');if(gt)gt.textContent=fmtTime(S.globalTimer.elapsed)}
-    // Sequences : chrono + pause accumulation
+    // Sequences : chrono réel (1 tick = 1 vraie seconde)
     let anyActive=false;
     S.sequences.forEach((s,i)=>{
       if(s.active){
         anyActive=true;
         if(!s.paused){
-          s.elapsed++;
+          s.elapsed=(s.elapsed||0)+1;
           const el=document.getElementById('seq-chrono-'+i);if(el)el.textContent=fmtSec(s.elapsed);
           const ct=document.getElementById('cw-now-timer');if(ct)ct.textContent=fmtSec(s.elapsed);
         } else {
-          // Accumule le retard en temps réel
           s.pauseElapsed=(s.pauseElapsed||0)+1;
           if(!S.runDelay)S.runDelay=0;
           S.runDelay++;
-          // Mise à jour live de la barre de retard
           const dv=document.getElementById('run-delay-val');
           if(dv)dv.textContent=Math.round(S.runDelay/60)+'min';
           const planned=document.getElementById('run-end-planned')?.textContent;
@@ -1720,6 +1788,7 @@ function renderAll(){
   renderBudget();
   renderIncidents();
   renderElec();
+  renderOrg();
   if(document.getElementById('sign-history-list'))renderSignHistory();
   updateMatosStats();
   updateCockpit();
@@ -1837,12 +1906,14 @@ function updateCockpit(){
   // Matos list in cockpit
   const cwMatos=document.getElementById('cw-matos-list');
   if(cwMatos){
+    const colors=['#2563EB','#16A34A','#D97706','#DC2626','#0891B2','#7C3AED','#DB2777'];
+    let ci=0;
     const assigned=[
-      ...S.motorola.filter(m=>m.assigneA).map(m=>`<div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0"><span>📻 Talkie #${m.id} CH${m.canal}</span><span style="color:var(--tx2);font-weight:600">${m.assigneA}</span></div>`),
-      ...S.hollyland.filter(h=>h.assigneA).map(h=>`<div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0"><span>🎧 ${h.label}</span><span style="color:var(--tx2);font-weight:600">${h.assigneA}</span></div>`),
-      S.megaphone.assigneA?`<div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0"><span>📢 Mégaphone</span><span style="color:var(--tx2);font-weight:600">${S.megaphone.assigneA}</span></div>`:null
+      ...S.motorola.filter(m=>m.assigneA).map(m=>{const c=colors[ci++%colors.length];return`<div style="display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:5px 8px;border-left:3px solid ${c}"><div style="font-family:var(--mono);font-size:10px;font-weight:700;color:${c};flex-shrink:0">CH${m.canal}</div><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.assigneA}</div><div style="font-size:9px;color:var(--tx3)">📻 Talkie #${m.id}</div></div></div>`;}),
+      ...S.hollyland.filter(h=>h.assigneA).map(h=>{const c=colors[ci++%colors.length];return`<div style="display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:5px 8px;border-left:3px solid ${c}"><div style="font-size:14px;flex-shrink:0">🎧</div><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${h.assigneA}</div><div style="font-size:9px;color:var(--tx3)">${h.label}</div></div></div>`;}),
+      S.megaphone.assigneA?`<div style="display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:5px 8px;border-left:3px solid var(--warning)"><div style="font-size:14px;flex-shrink:0">📢</div><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:700">${S.megaphone.assigneA}</div><div style="font-size:9px;color:var(--tx3)">Mégaphone</div></div></div>`:null
     ].filter(Boolean);
-    cwMatos.innerHTML=assigned.length?assigned.join(''):'<div style="font-size:11px;color:var(--tx3);font-style:italic">Aucun matos assigné</div>';
+    cwMatos.innerHTML=assigned.length?assigned.join(''):'<div style="font-size:11px;color:var(--tx3);font-style:italic;text-align:center;padding:12px 0"><i class="fas fa-walkie-talkie" style="display:block;font-size:20px;margin-bottom:4px;opacity:.3"></i>Aucun matos assigné</div>';
   }
   // Live sequence
   const live=S.sequences.find(s=>s.active);
@@ -1954,6 +2025,17 @@ function toggleCue(ri,type){const s=S.sequences[ri];if(!s)return;if(type==='son'
 
 function toggleLive(ri){
   const was=S.sequences[ri].active;
+  // Anti-chevauchement : vérifier si une séquence active est encore en cours
+  if(!was){
+    const activeSeq=S.sequences.find(s=>s.active&&!s.paused);
+    if(activeSeq){
+      const timeToEnd=(activeSeq.dur||0)*60 - (activeSeq.elapsed||0);
+      if(timeToEnd>0){
+        // Séquence précédente non terminée — demander confirmation
+        if(!confirm(`⚠️ La séquence "${activeSeq.title}" est encore active (${Math.ceil(timeToEnd/60)}min restantes).\n\nForcer le démarrage de "${S.sequences[ri].title}" ?`))return;
+      }
+    }
+  }
   S.sequences.forEach(s=>{s.active=false;s.paused=false;});
   if(!was){
     S.sequences[ri].active=true;
@@ -1961,9 +2043,8 @@ function toggleLive(ri){
     addActivity('LIVE: '+S.sequences[ri].title,'s');
     const hc=document.getElementById('hdr-cue-name');if(hc)hc.textContent=S.sequences[ri].title;
     const pb=document.getElementById('run-pause-btn');if(pb){pb.style.display='inline-flex';pb.innerHTML='<i class="fas fa-pause"></i> Pause';pb.className='btn btn-ghost btn-sm';}
-    // Auto-trigger: check next seq
+    // Auto-trigger next seq
     const filtered=S.sequences.filter(s=>s.phase===S.runPhase);
-    const ni=filtered.findIndex((s,i)=>filtered[i+1]&&filtered[i].id===S.sequences[ri].id);
     const next=filtered[filtered.findIndex(s=>s.id===S.sequences[ri].id)+1];
     if(next&&next.autoTrig){const delay=next.delay||0;setTimeout(()=>{const nri=S.sequences.indexOf(next);if(nri>=0)toggleLive(nri);},((S.sequences[ri].dur||0)*60+delay)*1000);toast('Auto-trigger: '+next.title+' dans '+(S.sequences[ri].dur||0)+'min','i');}
   } else {
@@ -2176,20 +2257,18 @@ function renderPostes() {
   grid.innerHTML = postes.map(p=>{
     const count = (S.staff||[]).filter(s=>s.posteId===p.id).length;
     const icon = POSTE_CAT_ICONS[p.cat||'Autre']||'fa-circle';
-    return `<div class="poste-card" style="border-left-color:${p.color}">
-      <div style="width:40px;height:40px;border-radius:10px;background:${p.color}20;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <i class="fas ${icon}" style="color:${p.color};font-size:16px"></i>
+    return `<div class="poste-card" style="--pc:${p.color}">
+      <div class="poste-icon-wrap" style="background:${p.color}22">
+        <i class="fas ${icon}" style="color:${p.color};font-size:18px"></i>
       </div>
       <div style="flex:1;min-width:0">
-        <div style="display:flex;align-items:center;gap:6px">
-          <span class="poste-nom">${p.nom}</span>
-          <span style="width:8px;height:8px;border-radius:50%;background:${p.color};flex-shrink:0;display:inline-block"></span>
-        </div>
-        <div style="font-size:11px;color:var(--tx3);margin-top:2px">${p.cat||''} · ${count} membre${count!==1?'s':''}</div>
+        <div class="poste-nom">${p.nom}</div>
+        <div class="poste-cat-lbl">${p.cat||'Autre'}</div>
       </div>
+      <div class="poste-count">${count} membre${count!==1?'s':''}</div>
       <div class="poste-actions">
-        <button onclick="editPoste(${p.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-pen" style="font-size:10px"></i></button>
-        <button onclick="deletePoste(${p.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
+        <button onclick="editPoste(${p.id})" class="btn btn-ghost btn-sm btn-icon" title="Modifier"><i class="fas fa-pen" style="font-size:10px"></i></button>
+        <button onclick="deletePoste(${p.id})" class="btn btn-ghost btn-sm btn-icon" title="Supprimer"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
       </div>
     </div>`;
   }).join('');
@@ -2292,20 +2371,18 @@ function renderStaff() {
     const avatarHTML = s.photo
       ? `<div class="staff-avatar" style="background:${color};padding:0;overflow:hidden"><img src="${s.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:10px"></div>`
       : `<div class="staff-avatar" style="background:${color}">${initials}</div>`;
-    return `<div class="staff-card">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
-        ${avatarHTML}
-        <div style="flex:1;min-width:0">
-          <div class="staff-name">${s.prenom} ${s.nom}</div>
-          <div class="staff-poste" style="color:${color}">${poste ? poste.nom : '—'}</div>
-        </div>
-        <div style="display:flex;gap:4px">
-          ${s.tel ? `<button onclick="window.open('tel:${s.tel}')" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-phone" style="font-size:10px;color:var(--success)"></i></button>` : ''}
-          <button onclick="editStaff(${s.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-pen" style="font-size:10px"></i></button>
-          <button onclick="deleteStaff(${s.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
-        </div>
+    return `<div class="staff-card" style="border-left:3px solid ${color}">
+      ${avatarHTML}
+      <div class="staff-info">
+        <div class="staff-name">${s.prenom} ${s.nom}</div>
+        <div class="staff-poste" style="color:${color}">${poste ? poste.nom : '—'}</div>
+        ${matos ? `<div class="staff-matos"><i class="fas fa-walkie-talkie" style="font-size:9px;margin-right:4px"></i>${matos}</div>` : ''}
       </div>
-      ${matos ? `<div class="staff-matos"><i class="fas fa-walkie-talkie" style="font-size:9px;margin-right:4px"></i>${matos}</div>` : ''}
+      <div class="staff-actions">
+        ${s.tel ? `<button onclick="window.open('tel:${s.tel}')" class="btn btn-ghost btn-sm btn-icon" title="${s.tel}"><i class="fas fa-phone" style="font-size:10px;color:var(--success)"></i></button>` : ''}
+        <button onclick="editStaff(${s.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-pen" style="font-size:10px"></i></button>
+        <button onclick="deleteStaff(${s.id})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-trash" style="font-size:10px;color:var(--danger)"></i></button>
+      </div>
     </div>`;
   }).join('');
   populateAllStaffSelects();
@@ -2321,6 +2398,12 @@ function getMatosForStaff(name) {
 let staffPhotoData = null;
 function previewStaffPhoto(input) {
   if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 2 * 1024 * 1024) {
+    toast('Photo trop lourde — max 2 Mo (actuel : ' + (file.size/1024/1024).toFixed(1) + ' Mo)', 'd');
+    input.value = '';
+    return;
+  }
   const reader = new FileReader();
   reader.onload = e => {
     staffPhotoData = e.target.result;
@@ -2328,7 +2411,7 @@ function previewStaffPhoto(input) {
     prev.innerHTML = `<img src="${staffPhotoData}" style="width:100%;height:100%;object-fit:cover">`;
     prev.style.border = 'none';
   };
-  reader.readAsDataURL(input.files[0]);
+  reader.readAsDataURL(file);
 }
 function clearStaffPhoto() {
   staffPhotoData = null;
@@ -2694,36 +2777,42 @@ function deleteInc(id){S.incidents=S.incidents.filter(i=>i.id!==id);renderIncide
 // ═══════════════════════════════════════════
 // ELECTRICITE
 // ═══════════════════════════════════════════
-function addPower(w){S.elec+=w;renderElec();updateCockpit();saveStorage();}
-function resetElec(){S.elec=0;S.elecDevices=[];renderElec();updateCockpit();saveStorage();}
+function _curZone(){if(!S.elecZones)S.elecZones=[{w:0,devices:[]},{w:0,devices:[]},{w:0,devices:[]}];return S.elecZones[S.elecZone||0];}
+function switchElecZone(){const sel=document.getElementById('elec-zone-sel');if(sel)S.elecZone=parseInt(sel.value)||0;renderElec();}
+function addPower(w){const z=_curZone();z.w+=w;S.elec=S.elecZones.reduce((a,z)=>a+z.w,0);renderElec();updateCockpit();saveStorage();}
+function resetElec(){const z=_curZone();z.w=0;z.devices=[];S.elecDevices=[];S.elec=S.elecZones.reduce((a,z)=>a+z.w,0);renderElec();updateCockpit();saveStorage();}
 function addElecDev(){
   const name=document.getElementById('elec-dev-name').value;
   const w=parseInt(document.getElementById('elec-dev-w').value)||0;
   if(!name||!w)return;
-  S.elecDevices.push({name,w});S.elec+=w;
+  const z=_curZone();z.devices.push({name,w});z.w+=w;
+  S.elecDevices=z.devices;S.elec=S.elecZones.reduce((a,z)=>a+z.w,0);
   document.getElementById('elec-dev-name').value='';document.getElementById('elec-dev-w').value='';
   renderElec();updateCockpit();saveStorage();
 }
-function removeElecDev(i){S.elec-=S.elecDevices[i].w;S.elecDevices.splice(i,1);renderElec();updateCockpit();saveStorage();}
+function removeElecDev(i){const z=_curZone();z.w-=z.devices[i].w;z.devices.splice(i,1);S.elecDevices=z.devices;S.elec=S.elecZones.reduce((a,z)=>a+z.w,0);renderElec();updateCockpit();saveStorage();}
 
 function renderElec(){
-  const a230=(S.elec/230).toFixed(1);
-  const a400=(S.elec/(400*1.732)).toFixed(1);
-  const pct=Math.min((S.elec/7200)*100,100);
+  const z=_curZone();
+  const w=z.w||0;
+  const a230=(w/230).toFixed(1);
+  const a400=(w/(400*1.732)).toFixed(1);
+  const cap=7360; // 32A mono
+  const pct=Math.min((w/cap)*100,100);
   const color=pct>90?'var(--danger)':pct>70?'var(--warning)':'var(--success)';
-  document.getElementById('elec-total').textContent=S.elec+' W';
-  document.getElementById('elec-mono').textContent=a230+' A';
-  document.getElementById('elec-tri').textContent=a400+' A';
-  document.getElementById('elec-bar').style.width=pct+'%';
-  document.getElementById('elec-bar').style.background=color;
-  let tip='Une prise standard (16A) supporte max 3 680W. ';
-  if(pct>90)tip='⛔ SURCHARGE — Risque de disjonction imminent ! Réduisez la charge.';
-  else if(pct>70)tip='⚠️ Attention — Charge élevée. Ne pas ajouter d\'appareils puissants sur ce circuit.';
-  else tip+=`Il reste ${Math.round(7200-S.elec)}W disponibles sur ce circuit.`;
-  document.getElementById('elec-tip').textContent=tip;
-  document.getElementById('elec-tip').style.color=pct>90?'var(--danger)':pct>70?'var(--warning)':'var(--tx3)';
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  set('elec-total',w+' W');set('elec-mono',a230+' A');set('elec-tri',a400+' A');
+  const bar=document.getElementById('elec-bar');if(bar){bar.style.width=pct+'%';bar.style.background=color;}
+  const tip=document.getElementById('elec-tip');
+  if(tip){
+    let t='';
+    if(pct>90)t='⛔ SURCHARGE — Disjonction imminente ! Réduisez la charge.';
+    else if(pct>70)t='⚠️ Charge élevée ('+Math.round(pct)+'%) — Ne pas ajouter d\'appareils puissants.';
+    else t=`✅ Circuit OK — ${Math.round(cap-w)} W disponibles (${Math.round(100-pct)}% libre)`;
+    tip.textContent=t;tip.style.color=pct>90?'var(--danger)':pct>70?'var(--warning)':'var(--success)';
+  }
   const devs=document.getElementById('elec-devices');
-  devs.innerHTML=S.elecDevices.map((d,i)=>`<div class="elec-row"><span class="elec-name">${d.name}</span><span class="elec-w">${d.w} W</span><button onclick="removeElecDev(${i})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-times" style="font-size:10px;color:var(--danger)"></i></button></div>`).join('');
+  if(devs)devs.innerHTML=(z.devices||[]).map((d,i)=>`<div class="elec-row"><span class="elec-name">${d.name}</span><span class="elec-w">${d.w} W</span><button onclick="removeElecDev(${i})" class="btn btn-ghost btn-sm btn-icon"><i class="fas fa-times" style="font-size:10px;color:var(--danger)"></i></button></div>`).join('');
 }
 
 // ═══════════════════════════════════════════
@@ -3182,25 +3271,47 @@ function saveNote(){S.note=document.getElementById('quick-note').value;saveStora
 // PRINT / EXPORT
 // ═══════════════════════════════════════════
 function doPrint(){
-  // Print current tab
   const activeTab=document.querySelector('.tab.active');
   if(!activeTab)return;
   const w=window.open('','_blank');
   const ev=S.events.find(e=>e.id===S.currentEventId)||{};
-  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;900&family=DM+Mono:wght@400;700&display=swap" rel="stylesheet"><style>
-    body{font-family:'DM Sans',Arial,sans-serif;color:#000;background:#fff;padding:30px;font-size:13px}
-    h1{font-size:24px;font-weight:900;letter-spacing:-1px;margin-bottom:4px}
-    h2{font-size:16px;font-weight:800;margin:20px 0 10px;border-bottom:2px solid #000;padding-bottom:4px}
-    .meta{font-size:11px;color:#666;margin-bottom:20px}
-    table{width:100%;border-collapse:collapse;margin-bottom:16px}
-    th{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;border-bottom:2px solid #000;padding:6px 8px;text-align:left}
-    td{padding:6px 8px;border-bottom:1px solid #ddd;font-size:12px}
-    .badge{display:inline-block;padding:1px 6px;border:1px solid #ccc;border-radius:4px;font-size:10px;font-weight:700}
-    @media print{@page{margin:15mm}}
+  const tabTitle=document.querySelector('.nav-btn.active')?.textContent?.trim()||'Export';
+  const dateStr=ev.date?new Date(ev.date+'T12:00').toLocaleDateString('fr-FR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}):'';
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    @page{size:A4 landscape;margin:12mm 14mm}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',Arial,sans-serif;color:#111;background:#fff;font-size:11px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    /* HEADER BANDE */
+    .print-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 0 10px;border-bottom:3px solid #111;margin-bottom:12px}
+    .print-logo{font-size:18px;font-weight:900;letter-spacing:-1px;color:#1D4ED8}
+    .print-logo span{color:#111}
+    .print-ev{font-size:13px;font-weight:800;color:#111}
+    .print-meta{font-size:9px;color:#666;margin-top:2px}
+    .print-ts{font-size:9px;color:#999;text-align:right}
+    /* CONTENT */
+    h2{font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;margin:14px 0 8px;padding-bottom:4px;border-bottom:1px solid #ddd}
+    table{width:100%;border-collapse:collapse;margin-bottom:12px}
+    th{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;border-bottom:2px solid #111;padding:5px 8px;text-align:left;background:#f5f5f5}
+    td{padding:5px 8px;border-bottom:1px solid #eee;font-size:10px;vertical-align:middle}
+    tr:nth-child(even) td{background:#fafafa}
+    .badge{display:inline-block;padding:1px 6px;border:1px solid #ccc;border-radius:3px;font-size:9px;font-weight:700}
+    .mono{font-family:'JetBrains Mono',monospace;font-size:10px}
+    /* FOOTER */
+    .print-ftr{position:fixed;bottom:8mm;left:14mm;right:14mm;display:flex;justify-content:space-between;font-size:8px;color:#999;border-top:1px solid #eee;padding-top:4px}
+    @media screen{body{padding:20px;max-width:1100px;margin:0 auto}}
   </style></head><body>
-    <h1>AINTERCOM PRO</h1>
-    <div class="meta">${ev.nom||'Événement'} · ${ev.lieu||''} · ${ev.date?new Date(ev.date+'T12:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}):''} · Imprimé le ${new Date().toLocaleDateString('fr-FR')}</div>
-    ${activeTab.innerHTML}
+  <div class="print-hdr">
+    <div><div class="print-logo">AINTERCOM <span>PRO</span></div></div>
+    <div style="text-align:center">
+      <div class="print-ev">${ev.nom||'Événement'}</div>
+      <div class="print-meta">${ev.lieu||''}${dateStr?' · '+dateStr:''}${ev.heure?' · '+ev.heure:''}</div>
+    </div>
+    <div class="print-ts">${tabTitle}<br>${new Date().toLocaleDateString('fr-FR')} ${new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</div>
+  </div>
+  ${activeTab.innerHTML}
+  <div class="print-ftr"><span>AINTERCOM PRO — Document confidentiel</span><span>Imprimé le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</span></div>
   <script>window.onload=()=>window.print()<\/script></body></html>`);
   w.document.close();
 }
@@ -3346,11 +3457,146 @@ function toggleMatosView() {
 }
 
 // ═══════════════════════════════════════════
+// ORGANIGRAMME
+// ═══════════════════════════════════════════
+if(!S.orgNodes)S.orgNodes=[];
+let editingOrgId=-1;
+
+function openModal_org(){
+  editingOrgId=-1;
+  document.getElementById('org-modal-title').textContent='Ajouter un nœud';
+  ['org-nom','org-person'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('org-level').value='1';
+  document.getElementById('org-color').value='#2563EB';
+  populateOrgParentSelect();
+  document.getElementById('org-parent').value='';
+  openModal('modal-org-node');
+}
+
+function populateOrgParentSelect(){
+  const sel=document.getElementById('org-parent');
+  sel.innerHTML='<option value="">— Aucun (racine) —</option>'+(S.orgNodes||[]).map(n=>`<option value="${n.id}">${n.nom}${n.person?' ('+n.person+')':''}</option>`).join('');
+}
+
+function saveOrgNode(){
+  if(!S.orgNodes)S.orgNodes=[];
+  const node={
+    id:editingOrgId>=0?editingOrgId:S.nextId++,
+    nom:document.getElementById('org-nom').value||'Rôle',
+    person:document.getElementById('org-person').value||'',
+    level:parseInt(document.getElementById('org-level').value)||0,
+    color:document.getElementById('org-color').value||'#2563EB',
+    parentId:document.getElementById('org-parent').value||null,
+  };
+  if(editingOrgId>=0){const i=S.orgNodes.findIndex(n=>n.id===editingOrgId);if(i>=0)S.orgNodes[i]=node;}
+  else S.orgNodes.push(node);
+  closeModal('modal-org-node');
+  renderOrg();saveStorage();
+  toast(editingOrgId>=0?'Nœud mis à jour':'Nœud ajouté','s');
+  editingOrgId=-1;
+}
+
+function deleteOrgNode(id){
+  if(!confirm('Supprimer ce nœud et ses enfants ?'))return;
+  // Supprimer récursivement
+  const toDelete=new Set();
+  function collect(nid){toDelete.add(nid);(S.orgNodes||[]).filter(n=>n.parentId==nid).forEach(n=>collect(n.id));}
+  collect(id);
+  S.orgNodes=(S.orgNodes||[]).filter(n=>!toDelete.has(n.id));
+  renderOrg();saveStorage();toast('Nœud supprimé','i');
+}
+
+function editOrgNode(id){
+  const n=(S.orgNodes||[]).find(n=>n.id===id);if(!n)return;
+  editingOrgId=id;
+  document.getElementById('org-modal-title').textContent='Modifier le nœud';
+  document.getElementById('org-nom').value=n.nom;
+  document.getElementById('org-person').value=n.person||'';
+  document.getElementById('org-level').value=n.level||0;
+  document.getElementById('org-color').value=n.color||'#2563EB';
+  populateOrgParentSelect();
+  document.getElementById('org-parent').value=n.parentId||'';
+  openModal('modal-org-node');
+}
+
+function renderOrg(){
+  const canvas=document.getElementById('org-canvas');if(!canvas)return;
+  const nodes=S.orgNodes||[];
+  if(!nodes.length){
+    canvas.innerHTML='<div class="empty" style="padding:60px"><i class="fas fa-sitemap" style="font-size:32px;margin-bottom:12px"></i><p>Aucun nœud — Cliquez sur Ajouter pour construire votre organigramme</p></div>';
+    return;
+  }
+  // Group by level
+  const maxLevel=Math.max(...nodes.map(n=>n.level||0));
+  let html='<div style="display:flex;flex-direction:column;align-items:center;gap:0;min-width:max-content">';
+  for(let lv=0;lv<=maxLevel;lv++){
+    const lvNodes=nodes.filter(n=>(n.level||0)===lv);
+    html+=`<div style="display:flex;gap:16px;align-items:flex-start;justify-content:center;padding:10px 0;position:relative">`;
+    lvNodes.forEach(n=>{
+      const initials=(n.person?n.person.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2):n.nom.slice(0,2).toUpperCase());
+      html+=`<div style="display:flex;flex-direction:column;align-items:center;gap:0;cursor:pointer" onclick="editOrgNode(${n.id})">
+        ${lv>0?`<div style="width:2px;height:20px;background:var(--border);margin-bottom:0"></div>`:''}
+        <div style="background:var(--bg2);border:2px solid ${n.color};border-radius:var(--r);padding:12px 16px;text-align:center;min-width:130px;max-width:160px;transition:var(--tr);box-shadow:0 2px 12px rgba(0,0,0,.15)" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+          <div style="width:36px;height:36px;border-radius:8px;background:${n.color};display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#fff;margin:0 auto 8px">${initials}</div>
+          <div style="font-size:12px;font-weight:800;color:var(--tx);line-height:1.2">${n.nom}</div>
+          ${n.person?`<div style="font-size:10px;color:var(--tx2);margin-top:3px">${n.person}</div>`:''}
+          <div style="display:flex;gap:4px;justify-content:center;margin-top:8px">
+            <button onclick="event.stopPropagation();editOrgNode(${n.id})" class="btn btn-ghost btn-sm btn-icon" style="padding:2px 5px"><i class="fas fa-pen" style="font-size:9px"></i></button>
+            <button onclick="event.stopPropagation();deleteOrgNode(${n.id})" class="btn btn-ghost btn-sm btn-icon" style="padding:2px 5px"><i class="fas fa-trash" style="font-size:9px;color:var(--danger)"></i></button>
+          </div>
+        </div>
+      </div>`;
+    });
+    html+='</div>';
+    if(lv<maxLevel){html+=`<div style="width:2px;height:16px;background:var(--border);margin:0 auto"></div>`;}
+  }
+  html+='</div>';
+  canvas.innerHTML=html;
+}
+
+// Patch openModal pour organigramme
+const _origOpenModal=window.openModal;
+window.openModal=function(id){
+  if(id==='modal-org-node'){openModal_org();return;}
+  if(typeof _origOpenModal==='function')_origOpenModal(id);
+  else{document.getElementById(id).classList.add('open');populateCrewSelects();if(id==='modal-canaux-config')openCanauxConfig();}
+};
+
+// ═══════════════════════════════════════════
 // KEYBOARD SHORTCUTS
 // ═══════════════════════════════════════════
 document.addEventListener('keydown',e=>{
+  const tag=document.activeElement?.tagName;
+  const inInput=tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT';
+  // Escape — fermer tout modal ouvert
   if(e.key==='Escape')document.querySelectorAll('.overlay.open').forEach(m=>m.classList.remove('open'));
+  // Ctrl+S — sauvegarder
   if(e.ctrlKey&&e.key==='s'){e.preventDefault();saveManual();}
+  // Ctrl+1-9 — navigation onglets rapide
+  if(e.ctrlKey&&!inInput){
+    const tabs=['cockpit','conducteur','org','postes','staff','matos','meteo','budget','tech'];
+    const idx=parseInt(e.key)-1;
+    if(idx>=0&&idx<tabs.length){e.preventDefault();const btn=navBtnByTab(tabs[idx]);switchTab(tabs[idx],btn);}
+  }
+  // Enter dans modal → déclencher le bouton primary du footer
+  if(e.key==='Enter'&&!e.shiftKey&&!e.ctrlKey){
+    const openModal=document.querySelector('.overlay.open');
+    if(openModal){
+      const primaryBtn=openModal.querySelector('.modal-footer .btn-primary');
+      if(primaryBtn&&document.activeElement!==primaryBtn){e.preventDefault();primaryBtn.click();}
+    }
+  }
+  // F1 — SOS incident
+  if(e.key==='F1'&&!inInput){e.preventDefault();openModal('modal-incident');}
+  // Espace — toggle live sur la séquence sélectionnée (si conducteur actif)
+  if(e.key===' '&&!inInput){
+    const activTab=document.querySelector('.tab.active');
+    if(activTab&&activTab.id==='tab-conducteur'){
+      e.preventDefault();
+      const liveRow=S.sequences.findIndex(s=>s.active);
+      if(liveRow>=0)toggleLive(liveRow);
+    }
+  }
 });
 
 // ═══════════════════════════════════════════
